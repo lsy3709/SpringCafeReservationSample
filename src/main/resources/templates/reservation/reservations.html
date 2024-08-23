@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/layout.html}"
+>
+<body>
+<div layout:fragment="content">
+  <h2>Reservation List</h2>
+  <a th:href="@{/reservations/new}">Create New Reservation</a>
+  <ul>
+    <li th:each="reservation : ${reservations}">
+      <span th:text="${reservation.reservationTime}"></span> -
+      <span th:text="${reservation.numberOfGuests}"></span> guests -
+      <span th:text="${reservation.user.username}"></span>
+      <a th:href="@{/reservations/{id}/edit(id=${reservation.id})}">Edit</a> |
+      <a th:href="@{/reservations/{id}/delete(id=${reservation.id})}">Delete</a>
+    </li>
+  </ul>
+</div></body></html>

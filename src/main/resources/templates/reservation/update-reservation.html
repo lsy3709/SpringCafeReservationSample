@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/layout.html}"
+>
+<body>
+<div layout:fragment="content">
+  <h2>Update Reservation</h2>
+  <form th:action="@{/reservations/edit}" th:object="${reservation}" method="post">
+    <label>Reservation Time:</label>
+    <input type="hidden"  name="id" class="form-control" th:value="${reservation.id}" >
+    <input type="datetime-local"  name="reservationTime" class="form-control" th:value="${reservation.reservationTime}" >
+    <label>Number of Guests:</label>
+    <input type="number"  name="numberOfGuests" class="form-control" th:value="${reservation.numberOfGuests}" >
+    <label>User:</label>
+    <select th:field="*{user.id}">
+      <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+    </select>
+    <button type="submit">Update</button>
+  </form>
+</div>
+</body>
+</html>

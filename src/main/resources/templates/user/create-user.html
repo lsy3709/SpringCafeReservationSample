@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/layout.html}"
+>
+<body>
+<div layout:fragment="content">
+  <h2>Create New User</h2>
+  <form th:action="@{/users}" th:object="${user}" method="post">
+    <label>Username:</label>
+    <input type="text" th:field="*{username}" />
+    <label>Email:</label>
+    <input type="email" th:field="*{email}" />
+    <button type="submit">Create</button>
+  </form>
+</div>
+</body>
+</html>
