@@ -3,6 +3,7 @@ package com.busanit501lsy.springcafereservationsample.controller;
 import com.busanit501lsy.springcafereservationsample.entity.Payment;
 import com.busanit501lsy.springcafereservationsample.service.PaymentService;
 import com.busanit501lsy.springcafereservationsample.service.ReservationService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/payments")
+@Log4j2
 public class PaymentController {
 
     @Autowired
@@ -39,6 +41,7 @@ public class PaymentController {
 
     @PostMapping
     public String createPayment(@ModelAttribute Payment payment) {
+        log.info("Payment created : " + payment);
         paymentService.createPayment(payment);
         return "redirect:/payments";
         // Redirect to the list of payments

@@ -1,5 +1,6 @@
 package com.busanit501lsy.springcafereservationsample.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,5 +24,6 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(name = "reservation_id", nullable = false)
+    @JsonBackReference
     private Reservation reservation;
 }
