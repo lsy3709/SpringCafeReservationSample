@@ -14,7 +14,11 @@
     <label>Email:</label>
     <input type="text"  name="email" class="form-control" th:value="${user.email}" >
     <label for="profileImage">Profile Image:</label>
-    <input type="file" id="profileImage" name="profileImage"/><br/>
+    <input type="file" id="profileImage" name="profileImage" accept="image/*" onchange="previewImage(this)" /><br/>
+    <h3> 새 이미지</h3>
+    <!-- 미리보기 이미지를 표시할 곳 -->
+    <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 200px; height: auto; margin-top: 10px;"/>
+    <h3> 기존 이미지</h3>
     <span th:if="${user.profileImageId}">
         <img th:src="@{/api/users/{id}/profileImage(id=${user.id})}" alt="Profile Image" width="200"/>
       </span>
@@ -25,5 +29,21 @@
     <button type="submit">Update</button>
   </form>
 </div>
+<!--자바스크립트 추가하는 영역-->
+<script layout:fragment="javascript" th:inline="javascript">
+  function previewImage(input) {
+    var reader = new FileReader();
+
+    reader.onload = function(){
+      var imagePreview = document.getElementById('imagePreview');
+      imagePreview.src = reader.result;
+      imagePreview.style.display = 'block';
+    };
+
+    if (input.files && input.files[0]) {
+      reader.readAsDataURL(input.files[0]); // 이미지를 읽어 미리보기로 표시
+    }
+  }
+</script>
 </body>
 </html>
