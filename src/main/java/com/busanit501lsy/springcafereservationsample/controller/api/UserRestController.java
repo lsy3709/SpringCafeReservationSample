@@ -1,12 +1,16 @@
 package com.busanit501lsy.springcafereservationsample.controller.api;
 
 import com.busanit501lsy.springcafereservationsample.entity.User;
+import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +51,28 @@ public class UserRestController {
         log.info("Deleting user with id: " + id);
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // 프로필 이미지, 몽고 디비에 연결
+    @PostMapping("/{id}/uploadProfileImage")
+    public ResponseEntity<String> uploadProfileImage(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            userService.saveProfileImage(id, file);
+            return ResponseEntity.ok("Profile image uploaded successfully");
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Failed to upload profile image");
+        }
+    }
+
+    @GetMapping("/{id}/profileImage")
+    public ResponseEntity<byte[]> getProfileImage(@PathVariable Long id) {
+        Optional<User> user = userService.getUserById(id);
+        if (user.isPresent() && user.get().getProfileImageId() != null) {
+            ProfileImage profileImage = userService.getProfileImage(user.get().getProfileImageId());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(profileImage.getContentType()))
+                    .body(profileImage.getData());
+        }
+        return ResponseEntity.notFound().build();
     }
 }

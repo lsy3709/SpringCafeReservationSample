@@ -29,4 +29,8 @@ public class Reservation {
 
     @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Payment> payments;
+
+//    @JsonBackReference: 자식 객체에 이 어노테이션을 사용.
+//    Jackson은 이 어노테이션이 붙은 필드를 직렬화에서 제외합니다.
+//    이를 통해 자식 객체가 부모 객체를 참조하는 순환을 피할 수 있습니다.
 }

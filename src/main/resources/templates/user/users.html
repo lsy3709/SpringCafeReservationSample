@@ -10,10 +10,17 @@
   <a th:href="@{/users/new}">Create New User</a>
   <ul>
     <li th:each="user : ${users}">
+       <span th:if="${user.profileImageId}">
+        <img th:src="@{/api/users/{id}/profileImage(id=${user.id})}" alt="Profile Image" width="50"/>
+      </span>
+      <span th:if="${user != null and user.profileImageId == null}">
+        <p>No profile image uploaded.</p>
+      </span>
       <span th:text="${user.username}"></span> -
 <!--      <a th:href="@{/users/{id}(id=${user.id})}">Details</a> |-->
       <a th:href="@{/users/{id}/edit(id=${user.id})}">Edit</a> |
       <a th:href="@{/users/{id}/delete(id=${user.id})}">Delete</a>
+
     </li>
   </ul>
 </div>

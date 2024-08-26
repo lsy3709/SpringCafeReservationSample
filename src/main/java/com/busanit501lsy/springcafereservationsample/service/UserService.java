@@ -1,10 +1,14 @@
 package com.busanit501lsy.springcafereservationsample.service;
 
 import com.busanit501lsy.springcafereservationsample.entity.User;
+import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.repository.UserRepository;
+import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ProfileImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +17,10 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    // 프로필 이미지, 몽고디비 연결
+    @Autowired
+    ProfileImageRepository profileImageRepository;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -41,4 +49,29 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         userRepository.delete(user);
     }
+
+    //프로필 이미지 업로드, 레스트 형식
+    public void saveProfileImage(Long userId, MultipartFile file) throws IOException {
+        // Get the user
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Create and save the profile image
+        ProfileImage profileImage = new ProfileImage(
+                file.getOriginalFilename(),
+                file.getContentType(),
+                file.getBytes()
+        );
+        ProfileImage savedImage = profileImageRepository.save(profileImage);
+
+        // Link the profile image to the user
+        user.setProfileImageId(savedImage.getId());
+        userRepository.save(user);
+    }
+
+    public ProfileImage getProfileImage(String imageId) {
+        return profileImageRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Image not found"));
+    }
+
 }

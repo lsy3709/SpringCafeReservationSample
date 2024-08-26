@@ -2,12 +2,14 @@ package com.busanit501lsy.springcafereservationsample.controller;
 
 import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import lombok.extern.log4j.Log4j2;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -26,6 +28,7 @@ public class UserController {
         // returns users.html
     }
 
+
     @GetMapping("/new")
     public String showCreateUserForm(Model model) {
         model.addAttribute("user", new User());
@@ -33,9 +36,20 @@ public class UserController {
         // returns create-user.html
     }
 
+    //프로필 이미지 업로드 형식으로, 몽고디비에 연결하는 코드
     @PostMapping
-    public String createUser(@ModelAttribute User user) {
-        userService.createUser(user);
+    public String createUser(@ModelAttribute User user, @RequestParam("profileImage") MultipartFile file) {
+    log.info("User created" + user, "multipart : " + file
+    );
+        try {
+            if (!file.isEmpty()) {
+                User savedUser = userService.createUser(user);
+                userService.saveProfileImage(savedUser.getId(), file);
+            }
+            userService.createUser(user);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save user profile image", e);
+        }
         return "redirect:/users";
         // Redirect to the list of users
     }
