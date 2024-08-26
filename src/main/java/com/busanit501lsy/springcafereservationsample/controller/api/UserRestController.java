@@ -75,6 +75,11 @@ public class UserRestController {
 
             // 파일이 존재할 경우 프로필 이미지 저장
             if (file !=null && !file.isEmpty()) {
+                // 기존 프로필 삭제
+                Optional<User> loadUser = userService.getUserById(id);
+                User loadedUser = loadUser.get();
+                userService.deleteProfileImage(loadedUser);
+
                 userService.saveProfileImage(id, file);
             }
 
