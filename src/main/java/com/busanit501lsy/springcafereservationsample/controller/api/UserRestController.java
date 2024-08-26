@@ -75,4 +75,17 @@ public class UserRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    // 프로필 이미지 삭제
+    @PostMapping("/{id}/deleteProfileImage")
+    public String deleteProfileImage(@RequestParam Long id) {
+        Optional<User> user = userService.getUserById(id);
+        User user1 = user.get();
+        if (user1 != null) {
+            userService.deleteProfileImage(user1);
+            return "Profile image deleted successfully";
+        } else {
+            return "User not found";
+        }
+    }
 }

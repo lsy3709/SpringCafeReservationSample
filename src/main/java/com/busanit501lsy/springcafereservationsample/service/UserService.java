@@ -47,6 +47,10 @@ public class UserService {
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        // 프로필 이미지 삭제
+        if(!user.getProfileImageId().isEmpty()) {
+            deleteProfileImage(user);
+        }
         userRepository.delete(user);
     }
 
@@ -72,6 +76,24 @@ public class UserService {
     public ProfileImage getProfileImage(String imageId) {
         return profileImageRepository.findById(imageId)
                 .orElseThrow(() -> new RuntimeException("Image not found"));
+    }
+
+    // 프로필 이미지만 삭제
+    public void deleteProfileImage(User user) {
+        // 현재 사용자가 가진 프로필 이미지 ID 가져오기
+        String profileImageId = user.getProfileImageId();
+
+        // 프로필 이미지 ID가 null이 아닌 경우에만 삭제 작업 수행
+        if (profileImageId != null) {
+            // MongoDB에서 프로필 이미지 삭제
+            profileImageRepository.deleteById(profileImageId);
+
+            // 사용자의 profileImageId 필드를 null로 설정
+            user.setProfileImageId(null);
+
+            // 업데이트된 사용자 정보 저장
+            userRepository.save(user);
+        }
     }
 
 }
