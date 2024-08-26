@@ -1,6 +1,8 @@
 package com.busanit501lsy.springcafereservationsample.config;
 
 import com.busanit501lsy.springcafereservationsample.security.filter.APILoginFilter;
+import com.busanit501lsy.springcafereservationsample.security.filter.RefreshTokenFilter;
+import com.busanit501lsy.springcafereservationsample.security.filter.TokenCheckFilter;
 import com.busanit501lsy.springcafereservationsample.security.handler.APILoginSuccessHandler;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import com.busanit501lsy.springcafereservationsample.util.JWTUtil;
@@ -43,10 +45,10 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil, APIUserDetailsService
-//            apiUserDetailsService){
-//        return new TokenCheckFilter(apiUserDetailsService, jwtUtil);
-//    }
+    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil, UserDetailsService
+            apiUserDetailsService){
+        return new TokenCheckFilter(apiUserDetailsService, jwtUtil);
+    }
 
 
     @Bean
@@ -83,15 +85,15 @@ public class SecurityConfig {
         http.addFilterBefore(apiLoginFilter, UsernamePasswordAuthenticationFilter.class);
 
 
-        //api로 시작하는 모든 경로는 TokenCheckFilter 동작
-//        http.addFilterBefore(
-//                tokenCheckFilter(jwtUtil, apiUserDetailsService),
-//                UsernamePasswordAuthenticationFilter.class
-//        );
+        //api로 시작하는 모든 경로는 TokenCheckFilter 동작, 세팅3
+        http.addFilterBefore(
+                tokenCheckFilter(jwtUtil, apiUserDetailsService),
+                UsernamePasswordAuthenticationFilter.class
+        );
 
         //refreshToken 호출 처리
-//        http.addFilterBefore(new RefreshTokenFilter("/refreshToken", jwtUtil),
-//                TokenCheckFilter.class);
+        http.addFilterBefore(new RefreshTokenFilter("/refreshToken", jwtUtil),
+                TokenCheckFilter.class);
 
         http.csrf(csrf -> csrf.disable());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

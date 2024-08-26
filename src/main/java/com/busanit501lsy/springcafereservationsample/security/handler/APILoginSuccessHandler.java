@@ -35,7 +35,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         //Access Token 유효기간 1일
         String accessToken = jwtUtil.generateToken(claim, 1);
         //Refresh Token 유효기간 30일
-        String refreshToken = jwtUtil.generateToken(claim, 10);
+        String refreshToken = jwtUtil.generateToken(claim, 30);
 
         Gson gson = new Gson();
 
