@@ -1,10 +1,12 @@
 package com.busanit501lsy.springcafereservationsample.config;
 
-import com.busanit501lsy.springcafereservationsample.entity.User;
+import com.busanit501lsy.springcafereservationsample.dto.LoginRequestDto;
+import com.busanit501lsy.springcafereservationsample.dto.PrincipalDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,8 +14,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.PrintWriter;
+
+@Log4j2
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -30,26 +33,38 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         try {
-            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            LoginRequestDto user = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException {
-        User user = (User) authResult.getPrincipal();
-        String accessToken = jwtUtils.generateAccessToken(user);
-        String refreshToken = jwtUtils.generateRefreshToken(user);
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", accessToken);
-        tokens.put("refresh_token", refreshToken);
-        response.setContentType("application/json");
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+
+        JwtUtils jwtUtils1 = new JwtUtils();
+        String jwtToken = jwtUtils1.generateAccessToken(principalDetails);
+
+        response.addHeader("Authorization", "Bearer " + jwtToken);
+
+        log.info("successfulAuthentication jwtToken : 내용 : " + jwtToken);
+
+        ObjectMapper om = new ObjectMapper();
+        LoginRequestDto cmRequestDto = new LoginRequestDto();
+        cmRequestDto.setUsername(principalDetails.getUser().getUsername());
+        cmRequestDto.setPassword(principalDetails.getUser().getPassword());
+
+        String cmRequestDtoJson = om.writeValueAsString(cmRequestDto);
+        System.out.println("om.writeValueAsString(cmRequestDto); 내용 : " + cmRequestDtoJson);
+        PrintWriter out = response.getWriter();
+        out.print(cmRequestDtoJson);
+        out.flush();
     }
 }

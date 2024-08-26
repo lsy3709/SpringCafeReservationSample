@@ -4,6 +4,7 @@ import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    PasswordEncoder bCryptPasswordEncoder;
+
     @GetMapping
     public String getAllUsers(Model model) {
         List<User> users = userService.getAllUsers();
@@ -29,6 +33,11 @@ public class UserController {
         // returns users.html
     }
 
+    @GetMapping("/login")
+    public String showLoginUserForm() {
+        return "user/login";
+        // returns create-user.html
+    }
 
     @GetMapping("/new")
     public String showCreateUserForm(Model model) {
@@ -43,6 +52,7 @@ public class UserController {
     log.info("User created" + user, "multipart : " + file
     );
         try {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             if (!file.isEmpty()) {
                 User savedUser = userService.createUser(user);
                 userService.saveProfileImage(savedUser.getId(), file);

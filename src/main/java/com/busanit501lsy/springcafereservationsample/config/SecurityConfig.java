@@ -1,6 +1,7 @@
 package com.busanit501lsy.springcafereservationsample.config;
 
 import com.busanit501lsy.springcafereservationsample.service.UserDetailsServiceImpl;
+import com.busanit501lsy.springcafereservationsample.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,18 +29,18 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserService userService) throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtils);
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/users/*/profileImage","/users","/users/new","/api/login", "/api/token/refresh").permitAll()
+                        .requestMatchers("/api/users/*/profileImage","/users","/users/new","/users/login", "/api/token/refresh").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtAuthorizationFilter(jwtUtils, userDetailsService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthorizationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), userService), UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();

@@ -6,6 +6,7 @@ import com.busanit501lsy.springcafereservationsample.repository.UserRepository;
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ProfileImageRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,12 +25,19 @@ public class UserService {
     @Autowired
     ProfileImageRepository profileImageRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
+    }
+
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     public User createUser(User user) {
