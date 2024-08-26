@@ -34,10 +34,33 @@ public class UserRestController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // 파일업로드 없을 경우
+//    @PostMapping
+//    public ResponseEntity<User> createUser(@RequestBody User user) {
+//        User createdUser = userService.createUser(user);
+//        return ResponseEntity.ok(createdUser);
+//    }
+
+    // 파일 업로드 할 경우
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.ok(createdUser);
+    public ResponseEntity<User> createUser( @RequestPart("user") User user,
+                                            @RequestParam("profileImage") MultipartFile file) {
+        try {
+//            @RequestPart를 사용하여 멀티파트 요청의 user 부분을 User 객체로 자동 변환
+
+            // 사용자 정보 저장
+            User createdUser = userService.createUser(user);
+
+            // 파일이 존재할 경우 프로필 이미지 저장
+            if (!file.isEmpty()) {
+                userService.saveProfileImage(createdUser.getId(), file);
+            }
+
+            return ResponseEntity.ok(createdUser);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save user or profile image", e);
+        }
     }
 
     @PutMapping("/{id}")
