@@ -1,22 +1,21 @@
 package com.busanit501lsy.springcafereservationsample.config;
 
-import com.busanit501lsy.springcafereservationsample.service.UserDetailsServiceImpl;
+import com.busanit501lsy.springcafereservationsample.security.filter.APILoginFilter;
+import com.busanit501lsy.springcafereservationsample.security.handler.APILoginSuccessHandler;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
+import com.busanit501lsy.springcafereservationsample.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -32,11 +31,12 @@ import java.util.Arrays;
 // 위 어노테이션 지원중단, 아래 어노테이션 으로 교체, 기본으로 prePostEnabled = true ,
 @EnableMethodSecurity
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-//    private final JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 //    //주입
-//    private final APIUserDetailsService apiUserDetailsService;
+    private final UserDetailsService apiUserDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -53,27 +53,34 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, UserService userService) throws Exception {
         log.info("-----------------------configuration---------------------");
 
-        //AuthenticationManager설정
-//        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-//        authenticationManagerBuilder.userDetailsService(apiUserDetailsService).passwordEncoder(passwordEncoder());
-        // Get AuthenticationManager
-//        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+        // 1) 로그인 처리하는 겅로 설정과
+        // 2) 실제 인증 처리하는 AuthenticationManager설정
+        // 세팅1
+        // apiLoginFilter 는 /generateToken 경로로 지정
+        // 스프링 시큐리티에서 username, password 처리하는 UsernamePasswordAuthenticationFilter 의 앞쪽으로 동작 설정.
+        // 확인.
+        // 브라우저로 /generateToken 경로 호출시 , 로그로 실행 확인
+        //AuthenticationManager설정 세팅1
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(apiUserDetailsService).passwordEncoder(passwordEncoder());
+        // Get AuthenticationManager 세팅1
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
-        //반드시 필요
-//        http.authenticationManager(authenticationManager);
+        //반드시 필요 세팅1
+        http.authenticationManager(authenticationManager);
 
-        //APILoginFilter
-//        APILoginFilter apiLoginFilter = new APILoginFilter("/generateToken");
-//        apiLoginFilter.setAuthenticationManager(authenticationManager);
+        //APILoginFilter 세팅1
+        APILoginFilter apiLoginFilter = new APILoginFilter("/generateToken");
+        apiLoginFilter.setAuthenticationManager(authenticationManager);
 
 
-        //APILoginSuccessHandler
-//        APILoginSuccessHandler successHandler = new APILoginSuccessHandler(jwtUtil);
-        //SuccessHandler 세팅
-//        apiLoginFilter.setAuthenticationSuccessHandler(successHandler);
+        //APILoginSuccessHandler , 세팅2
+        APILoginSuccessHandler successHandler = new APILoginSuccessHandler(jwtUtil);
+        //SuccessHandler 세팅2
+        apiLoginFilter.setAuthenticationSuccessHandler(successHandler);
 
-        //APILoginFilter의 위치 조정
-//        http.addFilterBefore(apiLoginFilter, UsernamePasswordAuthenticationFilter.class);
+        //APILoginFilter의 위치 조정 세팅1
+        http.addFilterBefore(apiLoginFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         //api로 시작하는 모든 경로는 TokenCheckFilter 동작
