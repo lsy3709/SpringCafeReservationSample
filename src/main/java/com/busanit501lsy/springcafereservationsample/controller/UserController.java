@@ -38,7 +38,7 @@ public class UserController {
     }
 
     //프로필 이미지 업로드 형식으로, 몽고디비에 연결하는 코드
-    @PostMapping
+    @PostMapping("/new")
     public String createUser(@ModelAttribute User user, @RequestParam("profileImage") MultipartFile file) {
     log.info("User created" + user, "multipart : " + file
     );
