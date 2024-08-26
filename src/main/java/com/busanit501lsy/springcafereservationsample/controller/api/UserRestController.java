@@ -44,7 +44,7 @@ public class UserRestController {
     // 파일 업로드 할 경우
     @PostMapping
     public ResponseEntity<User> createUser( @RequestPart("user") User user,
-                                            @RequestParam("profileImage") MultipartFile file) {
+                                            @RequestParam(value = "profileImage", required = false) MultipartFile file) {
         try {
 //            @RequestPart를 사용하여 멀티파트 요청의 user 부분을 User 객체로 자동 변환
 
@@ -52,7 +52,7 @@ public class UserRestController {
             User createdUser = userService.createUser(user);
 
             // 파일이 존재할 경우 프로필 이미지 저장
-            if (!file.isEmpty()) {
+            if (file !=null && !file.isEmpty()) {
                 userService.saveProfileImage(createdUser.getId(), file);
             }
 
@@ -63,11 +63,34 @@ public class UserRestController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        User updatedUser = userService.updateUser(id, userDetails);
-        return ResponseEntity.ok(updatedUser);
+    // 이미지 같이 수정.
+    @PutMapping("/{id}/update")
+    public ResponseEntity<User> updateUser(
+            @PathVariable Long id,
+            @RequestPart("user") User user,
+            @RequestParam(value = "profileImage", required = false) MultipartFile file) {
+
+        try {
+            User updatedUser = userService.updateUser(id, user);
+
+            // 파일이 존재할 경우 프로필 이미지 저장
+            if (file !=null && !file.isEmpty()) {
+                userService.saveProfileImage(id, file);
+            }
+
+            return ResponseEntity.ok(updatedUser);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save user or profile image", e);
+        }
     }
+
+//    이미지 없이 수정
+//    @PutMapping("/{id}")
+//    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+//        User updatedUser = userService.updateUser(id, userDetails);
+//        return ResponseEntity.ok(updatedUser);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {

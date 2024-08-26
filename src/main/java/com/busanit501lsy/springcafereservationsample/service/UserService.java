@@ -50,7 +50,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         // 프로필 이미지 삭제
-        if(!user.getProfileImageId().isEmpty()) {
+        if(user.getProfileImageId() != null && !user.getProfileImageId().isEmpty()) {
             deleteProfileImage(user);
         }
         userRepository.delete(user);
