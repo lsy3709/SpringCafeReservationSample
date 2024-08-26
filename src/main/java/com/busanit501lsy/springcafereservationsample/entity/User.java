@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
+@Builder
 public class User {
 
     @Id
@@ -25,8 +25,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private boolean enabled = true;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -40,6 +38,9 @@ public class User {
     @Column(name = "profile_image_id")
     private String profileImageId;
 
+    public void changePassword(String password) {
+        this.password = password;
+    }
 
     // Reference to the image stored in MongoDB
 }
