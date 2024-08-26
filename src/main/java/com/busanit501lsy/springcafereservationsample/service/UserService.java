@@ -4,6 +4,7 @@ import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.repository.UserRepository;
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ProfileImageRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class UserService {
 
     @Autowired
@@ -81,7 +83,9 @@ public class UserService {
     // 프로필 이미지만 삭제
     public void deleteProfileImage(User user) {
         // 현재 사용자가 가진 프로필 이미지 ID 가져오기
+        log.info("user : " + user);
         String profileImageId = user.getProfileImageId();
+        log.info("profileImageId : " + profileImageId);
 
         // 프로필 이미지 ID가 null이 아닌 경우에만 삭제 작업 수행
         if (profileImageId != null) {

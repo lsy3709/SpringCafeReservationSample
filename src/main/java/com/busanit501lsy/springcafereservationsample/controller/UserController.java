@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
@@ -62,9 +63,24 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String updateUser( @ModelAttribute User userDetails) {
-        log.info("userDetails id : " + userDetails.getId());
-        userService.updateUser( userDetails.getId(), userDetails);
+    public String updateUser( @ModelAttribute User user , @RequestParam("profileImage") MultipartFile file) {
+
+        try {
+            if (!file.isEmpty()) {
+                // 기존 프로필 삭제
+                Optional<User> loadUser = userService.getUserById(user.getId());
+                User loadedUser = loadUser.get();
+                userService.deleteProfileImage(loadedUser);
+                // 프로필 이미지 업데이트
+                userService.saveProfileImage(user.getId(), file);
+                userService.updateUser( user.getId(), user);
+            } else {
+                userService.updateUser( user.getId(), user);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save user profile image", e);
+        }
+
         return "redirect:/users";
         // Redirect to the list of users
     }
