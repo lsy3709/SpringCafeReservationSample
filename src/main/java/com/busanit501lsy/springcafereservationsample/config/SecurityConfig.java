@@ -110,6 +110,20 @@ public class SecurityConfig {
 
         return http.build();
     }
+    // 세션 분리 해서 정책 설정 샘플코드
+    //     .formLogin()
+    //                .loginPage("/login")
+    //                .permitAll()
+    //            .and()
+    //            .authorizeRequests()
+    //                .antMatchers("/web/**").authenticated() // Override session management for web endpoints
+    //            .and()
+    //            // Override session management for specific paths
+    //            .sessionManagement()
+    //                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create session only if required
+    //            .and()
+    //            .authorizeRequests()
+    //                .antMatchers("/web/**").authenticated();
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
