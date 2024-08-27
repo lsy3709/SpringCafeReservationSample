@@ -4,6 +4,7 @@ import com.busanit501lsy.springcafereservationsample.security.exception.RefreshT
 import com.busanit501lsy.springcafereservationsample.util.JWTUtil;
 import com.google.gson.Gson;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -85,24 +86,25 @@ public class RefreshTokenFilter  extends OncePerRequestFilter {
         log.info("expTime: " + expTime);
         log.info("gap: " + gapTime );
 
-        String mid = (String)refreshClaims.get("mid");
+        String username = (String)refreshClaims.get("username");
 
         //이상태까지 오면 무조건 AccessToken은 새로 생성
-        String accessTokenValue = jwtUtil.generateToken(Map.of("mid", mid), 1);
+        String accessTokenValue = jwtUtil.generateToken(Map.of("username", username), 1);
 
         String refreshTokenValue = tokens.get("refreshToken");
 
-        //RefrshToken이 3일도 안남았다면..
-        if(gapTime < (1000 * 60  * 60  ) ){
-            //if(gapTime < (1000 * 60 * 60 * 24 * 3  ) ){
+        //RefrshToken이 3분도 안남았다면..
+        if(gapTime < (1000 * 60  * 3  ) ){
+            //RefrshToken이 3일도 안남았다면..
+//            if(gapTime < (1000 * 60 * 60 * 24 * 3  ) ){
             log.info("new Refresh Token required...  ");
-            refreshTokenValue = jwtUtil.generateToken(Map.of("mid", mid), 30);
+            refreshTokenValue = jwtUtil.generateToken(Map.of("username", username), 3);
         }
 
         log.info("Refresh Token result....................");
         log.info("accessToken: " + accessTokenValue);
         log.info("refreshToken: " + refreshTokenValue);
-
+//
         sendTokens(accessTokenValue, refreshTokenValue, response);
 
 
@@ -143,7 +145,11 @@ public class RefreshTokenFilter  extends OncePerRequestFilter {
 
         }catch(ExpiredJwtException expiredJwtException){
             throw new RefreshTokenException(RefreshTokenException.ErrorCase.OLD_REFRESH);
-        }catch(Exception exception){
+        }catch (MalformedJwtException malformedJwtException) {
+            log.error("MalformedJwtException============================== ");
+            throw new RefreshTokenException(RefreshTokenException.ErrorCase.NO_REFRESH);
+        }
+        catch(Exception exception){
             exception.printStackTrace();
             new RefreshTokenException(RefreshTokenException.ErrorCase.NO_REFRESH);
         }

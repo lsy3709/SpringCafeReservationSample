@@ -37,7 +37,7 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JWTUtil jwtUtil;
-//    //주입
+    //    //주입
     private final UserDetailsService apiUserDetailsService;
 
     @Bean
@@ -49,6 +49,9 @@ public class SecurityConfig {
             apiUserDetailsService){
         return new TokenCheckFilter(apiUserDetailsService, jwtUtil);
     }
+//    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil) {
+//        return new TokenCheckFilter(jwtUtil);
+//    }
 
 
     @Bean
@@ -88,6 +91,7 @@ public class SecurityConfig {
         //api로 시작하는 모든 경로는 TokenCheckFilter 동작, 세팅3
         http.addFilterBefore(
                 tokenCheckFilter(jwtUtil, apiUserDetailsService),
+//                tokenCheckFilter(jwtUtil),
                 UsernamePasswordAuthenticationFilter.class
         );
 

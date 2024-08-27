@@ -14,7 +14,7 @@ public class RefreshTokenException extends RuntimeException {
     private ErrorCase errorCase;
 
     public enum ErrorCase {
-        NO_ACCESS, NO_REFRESH, OLD_REFRESH
+        NO_ACCESS, NO_REFRESH, OLD_REFRESH, BAD_ACCESS, BAD_REFRESH
     }
 
     public RefreshTokenException(ErrorCase errorCase) {

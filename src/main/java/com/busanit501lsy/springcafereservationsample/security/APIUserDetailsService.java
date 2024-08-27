@@ -36,7 +36,7 @@ public class APIUserDetailsService implements UserDetailsService {
                 apiUser.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
-        log.info(dto);
+        log.info("dto : "+dto);
 
         return dto;
     }

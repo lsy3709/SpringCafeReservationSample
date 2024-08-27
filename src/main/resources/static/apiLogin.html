@@ -20,6 +20,8 @@
             const accessToken = res.data.accessToken
             const refreshToken = res.data.refreshToken
 
+            // 웹 브라우저의 로컬 스토리지 저장.
+            // 확인, 크롬 -> 개발자도구 -> application -> local Storage 확인 가능.
             localStorage.setItem("accessToken", accessToken)
             localStorage.setItem("refreshToken", refreshToken)
 

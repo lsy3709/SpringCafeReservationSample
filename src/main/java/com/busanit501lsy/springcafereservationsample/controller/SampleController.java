@@ -13,12 +13,12 @@ import java.util.List;
 public class SampleController {
 
     @GetMapping("/doA")
-//    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<String> doA() {
         return Arrays.asList("123","456","789");
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/doB")
     public List<String> doB() {
         return Arrays.asList("Admin123","Admin456","Admin789");
