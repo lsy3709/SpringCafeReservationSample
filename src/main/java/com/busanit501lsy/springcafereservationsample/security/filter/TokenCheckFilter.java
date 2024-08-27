@@ -1,5 +1,6 @@
 package com.busanit501lsy.springcafereservationsample.security.filter;
 
+import com.busanit501lsy.springcafereservationsample.security.APIUserDetailsService;
 import com.busanit501lsy.springcafereservationsample.security.exception.AccessTokenException;
 import com.busanit501lsy.springcafereservationsample.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -14,7 +15,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class TokenCheckFilter extends OncePerRequestFilter {
     //JWT 토큰을 검사하는 역할
     // OncePerRequestFilter : 하나의 요청에 대해서 한번씩 동작하는 필터
 
-    private final UserDetailsService apiUserDetailsService;
+    private final APIUserDetailsService apiUserDetailsService;
     private final JWTUtil jwtUtil;
 
     @Override

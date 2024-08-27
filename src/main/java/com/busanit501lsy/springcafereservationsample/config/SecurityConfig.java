@@ -1,5 +1,6 @@
 package com.busanit501lsy.springcafereservationsample.config;
 
+import com.busanit501lsy.springcafereservationsample.security.APIUserDetailsService;
 import com.busanit501lsy.springcafereservationsample.security.filter.APILoginFilter;
 import com.busanit501lsy.springcafereservationsample.security.filter.RefreshTokenFilter;
 import com.busanit501lsy.springcafereservationsample.security.filter.TokenCheckFilter;
@@ -16,7 +17,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -38,21 +38,17 @@ public class SecurityConfig {
 
     private final JWTUtil jwtUtil;
     //    //주입
-    private final UserDetailsService apiUserDetailsService;
+    private final APIUserDetailsService apiUserDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil, UserDetailsService
+    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil, APIUserDetailsService
             apiUserDetailsService){
         return new TokenCheckFilter(apiUserDetailsService, jwtUtil);
     }
-//    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil) {
-//        return new TokenCheckFilter(jwtUtil);
-//    }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, UserService userService) throws Exception {
