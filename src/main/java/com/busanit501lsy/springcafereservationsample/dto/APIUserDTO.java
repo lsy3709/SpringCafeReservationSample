@@ -18,9 +18,11 @@ public class APIUserDTO extends User {
     private String email;
     private String profileImageId;
 
-    public APIUserDTO(String username, String password, Collection<GrantedAuthority> authorities) {
+    public APIUserDTO(String username, String password, String email, String profileImageId, Collection<GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.profileImageId = profileImageId;
     }
 }

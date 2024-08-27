@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @ToString
@@ -37,6 +39,20 @@ public class User {
     // 프로필 이미지, 몽고디비에 업로드
     @Column(name = "profile_image_id")
     private String profileImageId;
+
+    // 멤버를 조회시 roleSet 를 같이 조회를 하기.
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<MemberRole> roleSet = new HashSet<>();
+
+    public void addRole(MemberRole memberRole) {
+        this.roleSet.add(memberRole);
+
+    }
+    public void clearRole() {
+        this.roleSet.clear();
+    }
+
 
     public void changePassword(String password) {
         this.password = password;

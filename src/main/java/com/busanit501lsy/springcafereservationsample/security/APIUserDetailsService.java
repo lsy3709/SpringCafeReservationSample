@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -31,10 +31,15 @@ public class APIUserDetailsService implements UserDetailsService {
 
         log.info("lsy APIUserDetailsService apiUser-------------------------------------");
 
+        // 일반 유저 로그인과, api 로그인 처리 확인 필요
         APIUserDTO dto =  new APIUserDTO(
                 apiUser.getUsername(),
                 apiUser.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")));
+                apiUser.getEmail(),
+                apiUser.getProfileImageId(),
+                apiUser.getRoleSet().stream().map(
+                        memberRole -> new SimpleGrantedAuthority("ROLE_"+ memberRole.name())
+                ).collect(Collectors.toList()));
 
         log.info("lsy dto : "+dto);
 

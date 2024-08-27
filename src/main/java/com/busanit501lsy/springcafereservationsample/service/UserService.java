@@ -1,5 +1,6 @@
 package com.busanit501lsy.springcafereservationsample.service;
 
+import com.busanit501lsy.springcafereservationsample.entity.MemberRole;
 import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.repository.UserRepository;
@@ -41,6 +42,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        user.addRole(MemberRole.USER);
         return userRepository.save(user);
     }
 

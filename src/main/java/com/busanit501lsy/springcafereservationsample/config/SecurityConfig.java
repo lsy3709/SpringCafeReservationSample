@@ -100,9 +100,27 @@ public class SecurityConfig {
 
         http.csrf(csrf -> csrf.disable());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        http.authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/api/users/*/profileImage","/users","/users/new","/users/login", "/api/token/refresh").permitAll()
-//                        .anyRequest().authenticated());
+
+// 폼 기반
+        http.formLogin(
+                formLogin -> formLogin.loginPage("/users/login").permitAll()
+        );
+
+        // 로그 아웃 설정.
+        http.logout(
+                logout -> logout.logoutUrl("/users/logout").logoutSuccessUrl("/users/login")
+
+        );
+
+        //로그인 후, 성공시 리다이렉트 될 페이지 지정, 간단한 버전.
+        http.formLogin(formLogin ->
+                formLogin.defaultSuccessUrl("/users",true)
+        );
+
+
+        http.authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/**","/refreshTest.html","/sendJWT.html","/v3/api-docs/**","/swagger-ui/**","/js**","/css/**","/generateToken","/users/*/profileImage","/api/users/*/profileImage","/users","/users/new","/users/login", "/api/token/refresh").permitAll()
+                        .anyRequest().authenticated());
         http.cors(httpSecurityCorsConfigurer -> {
             httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
         });
