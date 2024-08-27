@@ -62,6 +62,9 @@ public class SecurityConfig {
         // 확인.
         // 브라우저로 /generateToken 경로 호출시 , 로그로 실행 확인
         //AuthenticationManager설정 세팅1
+        // 인증을 위해 UserDetailsService와 PasswordEncoder를 설정한 후,
+        // AuthenticationManager를 통해 인증 프로세스를 처리
+
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(apiUserDetailsService).passwordEncoder(passwordEncoder());
         // Get AuthenticationManager 세팅1
@@ -80,11 +83,11 @@ public class SecurityConfig {
         //SuccessHandler 세팅2
         apiLoginFilter.setAuthenticationSuccessHandler(successHandler);
 
-        //APILoginFilter의 위치 조정 세팅1
+        //APILoginFilter의 위치 조정 세팅1, 사용자 인증 전에 ,
         http.addFilterBefore(apiLoginFilter, UsernamePasswordAuthenticationFilter.class);
 
 
-        //api로 시작하는 모든 경로는 TokenCheckFilter 동작, 세팅3
+        //api로 시작하는 모든 경로는 TokenCheckFilter 동작, 세팅3, 사용자 인증 전에 ,
         http.addFilterBefore(
                 tokenCheckFilter(jwtUtil, apiUserDetailsService),
 //                tokenCheckFilter(jwtUtil),

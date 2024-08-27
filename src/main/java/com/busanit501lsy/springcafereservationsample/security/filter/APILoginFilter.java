@@ -26,18 +26,18 @@ public class APILoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        log.info("APILoginFilter-----------------------------------");
+        log.info("lsy APILoginFilter-----------------------------------");
 
         if (request.getMethod().equalsIgnoreCase("GET")) {
             log.info("GET METHOD NOT SUPPORT");
             return null;
         }
         log.info("-----------------------------------------");
-        log.info(request.getMethod());
+        log.info("lsy request.getMethod()" + request.getMethod());
 
         Map<String, String> jsonData = parseRequestJSON(request);
 
-        log.info("jsonData: "+jsonData);
+        log.info("lsy jsonData: "+jsonData);
 
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(

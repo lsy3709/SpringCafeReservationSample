@@ -1,9 +1,12 @@
 package com.busanit501lsy.springcafereservationsample.controller;
 
 import com.busanit501lsy.springcafereservationsample.entity.User;
+import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +52,7 @@ public class UserController {
     //프로필 이미지 업로드 형식으로, 몽고디비에 연결하는 코드
     @PostMapping("/new")
     public String createUser(@ModelAttribute User user, @RequestParam("profileImage") MultipartFile file) {
-    log.info("User created" + user, "multipart : " + file
+    log.info("lsy User created" + user, "multipart : " + file
     );
         try {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -100,5 +103,18 @@ public class UserController {
         userService.deleteUser(id);
         return "redirect:/users";
         // Redirect to the list of users
+    }
+
+    @GetMapping("/{id}/profileImage")
+    public ResponseEntity<byte[]> getProfileImage(@PathVariable Long id) {
+        log.info("lsy users image 확인 ");
+        Optional<User> user = userService.getUserById(id);
+        if (user.isPresent() && user.get().getProfileImageId() != null) {
+            ProfileImage profileImage = userService.getProfileImage(user.get().getProfileImageId());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(profileImage.getContentType()))
+                    .body(profileImage.getData());
+        }
+        return ResponseEntity.notFound().build();
     }
 }

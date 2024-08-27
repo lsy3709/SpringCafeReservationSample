@@ -29,14 +29,14 @@ public class APIUserDetailsService implements UserDetailsService {
 
         User apiUser = result.orElseThrow(() -> new UsernameNotFoundException("Cannot find mid"));
 
-        log.info("APIUserDetailsService apiUser-------------------------------------");
+        log.info("lsy APIUserDetailsService apiUser-------------------------------------");
 
         APIUserDTO dto =  new APIUserDTO(
                 apiUser.getUsername(),
                 apiUser.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
-        log.info("dto : "+dto);
+        log.info("lsy dto : "+dto);
 
         return dto;
     }

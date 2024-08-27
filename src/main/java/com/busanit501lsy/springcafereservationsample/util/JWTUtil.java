@@ -41,7 +41,7 @@ public class JWTUtil {
 
     public String generateToken(Map<String, Object> valueMap, int days){
 
-        log.info("generateKey..." + key);
+        log.info("lsy generateKey..." + key);
 
         //헤더 부분
         Map<String, Object> headers = new HashMap<>();
@@ -77,10 +77,24 @@ public class JWTUtil {
         Map<String, Object> claim = null;
 
         claim = Jwts.parser()
+                //이 키는 서명 검증에 사용
                 .setSigningKey(key.getBytes()) // Set Key
+                // 주어진 token을 파싱하여 클레임을 검증
                 .parseClaimsJws(token) // 파싱 및 검증, 실패 시 에러
+                // JWT의 바디(body) 부분인 클레임을 추출
                 .getBody();
         return claim;
+        // claim 의 샘플 예시, 사용자 정의 포함
+//        {
+//            "sub": "user123",                // subject, 사용자 ID 또는 주체 식별자
+//                "iss": "example.com",            // issuer, 토큰을 발급한 서버의 정보
+//                "iat": 1622470420,               // issued at, 토큰 발급 시간 (유닉스 타임스탬프)
+//                "exp": 1622474020,               // expiration, 토큰 만료 시간 (유닉스 타임스탬프)
+//                "aud": "exampleClient",          // audience, 토큰의 대상
+//                "role": "admin",                 // 사용자 정의 클레임, 사용자의 역할 정보
+//                "email": "user123@example.com",  // 사용자 정의 클레임, 사용자의 이메일
+//                "name": "John Doe"               // 사용자 정의 클레임, 사용자의 이름
+//        }
     }
 
 }

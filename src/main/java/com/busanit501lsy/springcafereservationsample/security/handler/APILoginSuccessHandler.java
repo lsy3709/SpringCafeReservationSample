@@ -23,12 +23,12 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        log.info("Login Success Handler................................");
+        log.info("lsy Login Success Handler................................");
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        log.info("authentication : " +authentication);
-        log.info("authentication.getName() : " +authentication.getName()); //username
+        log.info("lsy authentication : " +authentication);
+        log.info("lsy authentication.getName() : " +authentication.getName()); //username
 
         // 인증한 유저명 으로 교체
         Map<String, Object> claim = Map.of("username", authentication.getName());

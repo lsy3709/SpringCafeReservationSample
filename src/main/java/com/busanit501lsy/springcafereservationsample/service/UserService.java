@@ -91,9 +91,9 @@ public class UserService {
     // 프로필 이미지만 삭제
     public void deleteProfileImage(User user) {
         // 현재 사용자가 가진 프로필 이미지 ID 가져오기
-        log.info("user : " + user);
+        log.info("lsy user : " + user);
         String profileImageId = user.getProfileImageId();
-        log.info("profileImageId : " + profileImageId);
+        log.info("lsy profileImageId : " + profileImageId);
 
         // 프로필 이미지 ID가 null이 아닌 경우에만 삭제 작업 수행
         if (profileImageId != null) {

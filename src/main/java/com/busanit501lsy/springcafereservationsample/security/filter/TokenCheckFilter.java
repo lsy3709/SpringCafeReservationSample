@@ -42,8 +42,8 @@ public class TokenCheckFilter extends OncePerRequestFilter {
             return;
         }
 
-        log.info("Token Check Filter..........................");
-        log.info("JWTUtil: " + jwtUtil);
+        log.info("lsy Token Check Filter..........................");
+        log.info("lsy JWTUtil: " + jwtUtil);
 
 
 
@@ -51,7 +51,7 @@ public class TokenCheckFilter extends OncePerRequestFilter {
 //            validateAccessToken(request);
 
             Map<String, Object> payload = validateAccessToken(request);
-
+            log.info("payload: " + payload);
             //username
             String username = (String)payload.get("username");
 
@@ -97,7 +97,9 @@ public class TokenCheckFilter extends OncePerRequestFilter {
 
         try{
             Map<String, Object> values = jwtUtil.validateToken(tokenStr);
-
+            log.info("TokenCheckFilter 의 jwtUtil.validateToken(tokenStr) values-----------------------------");
+            log.info(values);
+            log.info("----------------------------------------");
             return values;
         }catch(MalformedJwtException malformedJwtException){
             log.error("MalformedJwtException----------------------");
