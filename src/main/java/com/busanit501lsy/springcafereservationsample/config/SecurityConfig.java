@@ -110,8 +110,9 @@ public class SecurityConfig {
                 )
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/users/new").permitAll()
+                                .requestMatchers("/users/new","/refreshToken").permitAll()
                                 .requestMatchers("/users/**").authenticated()
+
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement
@@ -119,8 +120,9 @@ public class SecurityConfig {
                 )
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/users/new").permitAll()
+                                .requestMatchers("/users/new","/refreshToken").permitAll()
                                 .requestMatchers("/users/**","/reservations/**","/payments/**").authenticated()
+
 
                 );
 

@@ -14,7 +14,8 @@
 
     document.querySelector(".btn1").addEventListener("click",()=> {
 
-        const data = {username:"user1", password:"1111"}
+        // 샘플 데이터 베이스 각 디비에 있는 유저로 확인 하기
+        const data = {username:"lsy", password:"1234"}
 
         axios.post("http://localhost:8080/generateToken", data).then(res => {
             const accessToken = res.data.accessToken
