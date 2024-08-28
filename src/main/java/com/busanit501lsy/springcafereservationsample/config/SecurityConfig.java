@@ -110,7 +110,7 @@ public class SecurityConfig {
                 )
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/users/new","/refreshToken").permitAll()
+                                .requestMatchers("/api/users","/users/new","/refreshToken").permitAll()
                                 .requestMatchers("/users/**").authenticated()
 
                 )
