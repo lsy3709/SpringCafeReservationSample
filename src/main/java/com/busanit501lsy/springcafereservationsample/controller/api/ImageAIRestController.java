@@ -28,7 +28,7 @@ public class ImageAIRestController {
 
     @PostMapping("/predict")
     public Mono<ResponseEntity<PredictionResponseDTO>> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-
+        log.info("ailsy 1 controller file.getOriginalFilename() : " + file.getOriginalFilename());
         return imageUploadService.uploadImage(file)
                 .map(response -> ResponseEntity.ok().body(response));
     }

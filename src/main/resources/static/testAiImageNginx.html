@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+</head>
+<body>
+
+<h2>Select an image to upload</h2>
+<form action="http://localhost:8000/api/classify/" method="post" enctype="multipart/form-data">
+    <label for="image">Choose an image:</label>
+    <input type="file" id="image" name="image" accept="image/*">
+    <br><br>
+    <button type="submit">Upload Image</button>
+</form>
+
+</body>
+</html>
