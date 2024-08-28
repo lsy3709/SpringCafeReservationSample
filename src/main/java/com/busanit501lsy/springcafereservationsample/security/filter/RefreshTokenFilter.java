@@ -95,9 +95,9 @@ public class RefreshTokenFilter  extends OncePerRequestFilter {
         String refreshTokenValue = tokens.get("refreshToken");
 
         //RefrshToken이 3분도 안남았다면..
-        if(gapTime < (1000 * 60  * 3  ) ){
+//        if(gapTime < (1000 * 60  * 3  ) ){
             //RefrshToken이 3일도 안남았다면..
-//            if(gapTime < (1000 * 60 * 60 * 24 * 3  ) ){
+            if(gapTime < (1000 * 60 * 60 * 24 * 3  ) ){
             log.info("new Refresh Token required...  ");
             refreshTokenValue = jwtUtil.generateToken(Map.of("username", username), 3);
         }
