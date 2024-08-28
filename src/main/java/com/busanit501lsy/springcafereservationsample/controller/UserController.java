@@ -33,8 +33,19 @@ public class UserController {
     @GetMapping
     public String getAllUsers(@AuthenticationPrincipal UserDetails user, Model model) {
         List<User> users = userService.getAllUsers();
+        Optional<User> user1 = userService.getUserByUsername(user.getUsername());
+        if (user1 != null && user1.isPresent()) {
+            User user2 = user1.get();
+            model.addAttribute("user2", user2);
+            model.addAttribute("user2_id", user2.getId());
+            log.info("User found: " + user2.getId());
+            log.info("User found: " + user2.getUsername());
+        }
+
         model.addAttribute("users", users);
+
         model.addAttribute("user", user);
+
 
         return "user/users";
         // returns users.html
