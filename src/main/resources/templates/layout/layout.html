@@ -29,7 +29,7 @@
                         <!--      <nav class="navbar bg-primary navbar-expand-lg bg-body-tertiary bg-primary"  data-bs-theme="" >-->
                         <!--      <nav class="navbar bg-primary" data-bs-theme="dark">-->
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="#">목록가기</a>
+                            <a class="navbar-brand" href="#">LogoImg</a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#navbarTogglerDemo02"
                                     aria-controls="navbarTogglerDemo02" aria-expanded="false"
@@ -48,7 +48,15 @@
                                         <a th:href="@{/payments}">Payments  &nbsp;&nbsp;</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href="@{/users/login}">Login</a>
+                                        <a th:href="@{/users/login}">Login &nbsp;&nbsp;</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a th:href="@{/users/new}">Join &nbsp;&nbsp;</a>
+                                    </li>
+
+                                    <li class="nav-item " th:if="${user} != null ">
+                                        <a th:href="@{/users/logout}">Logout</a>
                                     </li>
                                 </ul>
                             </div>

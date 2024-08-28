@@ -101,9 +101,44 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/**","/refreshTest.html","/sendJWT.html","/v3/api-docs/**","/swagger-ui/**","/js**","/css/**","/generateToken","/users/*/profileImage","/api/users/*/profileImage","/users","/users/new","/users/login", "/api/token/refresh").permitAll()
-                        .anyRequest().authenticated());
+        // 폼 방식 일경우
+        http
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/users/login")
+                                .permitAll()
+                )
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/users/new").permitAll()
+                                .requestMatchers("/users/**").authenticated()
+                )
+                .sessionManagement(sessionManagement ->
+                        sessionManagement
+                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                )
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/users/new").permitAll()
+                                .requestMatchers("/users/**","/reservations/**","/payments/**").authenticated()
+
+                );
+
+        // 로그 아웃 설정.
+        http.logout(
+                logout -> logout.logoutUrl("/users/logout").logoutSuccessUrl("/users/login")
+
+        );
+
+        //로그인 후, 성공시 리다이렉트 될 페이지 지정, 간단한 버전.
+        http.formLogin(formLogin ->
+                formLogin.defaultSuccessUrl("/users",true)
+        );
+
+
+//        http.authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/api/**","/refreshTest.html","/sendJWT.html","/v3/api-docs/**","/swagger-ui/**","/js**","/css/**","/generateToken","/users/*/profileImage","/api/users/*/profileImage","/users","/users/new","/users/login", "/api/token/refresh").permitAll()
+//                        .anyRequest().authenticated());
         http.cors(httpSecurityCorsConfigurer -> {
             httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
         });
@@ -111,19 +146,24 @@ public class SecurityConfig {
         return http.build();
     }
     // 세션 분리 해서 정책 설정 샘플코드
-    //     .formLogin()
-    //                .loginPage("/login")
-    //                .permitAll()
-    //            .and()
-    //            .authorizeRequests()
-    //                .antMatchers("/web/**").authenticated() // Override session management for web endpoints
-    //            .and()
-    //            // Override session management for specific paths
-    //            .sessionManagement()
-    //                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create session only if required
-    //            .and()
-    //            .authorizeRequests()
-    //                .antMatchers("/web/**").authenticated();
+    //  http
+    //                .formLogin(formLogin ->
+    //                        formLogin
+    //                                .loginPage("/member/login")
+    //                                .permitAll()
+    //                )
+    //                .authorizeRequests(authorizeRequests ->
+    //                        authorizeRequests
+    //                                .requestMatchers("/web/**").authenticated()
+    //                )
+    //                .sessionManagement(sessionManagement ->
+    //                        sessionManagement
+    //                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+    //                )
+    //                .authorizeRequests(authorizeRequests ->
+    //                        authorizeRequests
+    //                                .requestMatchers("/web/**").authenticated()
+    //                );
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

@@ -7,6 +7,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +31,11 @@ public class UserController {
     PasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping
-    public String getAllUsers(Model model) {
+    public String getAllUsers(@AuthenticationPrincipal UserDetails user, Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
+        model.addAttribute("user", user);
+
         return "user/users";
         // returns users.html
     }
@@ -43,8 +47,9 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String showCreateUserForm(Model model) {
-        model.addAttribute("user", new User());
+    public String showCreateUserForm(@AuthenticationPrincipal UserDetails user, Model model) {
+//        model.addAttribute("user", new User());
+        model.addAttribute("user", user);
         return "user/create-user";
         // returns create-user.html
     }

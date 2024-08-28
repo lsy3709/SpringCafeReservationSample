@@ -5,6 +5,8 @@ import com.busanit501lsy.springcafereservationsample.service.ReservationService;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +25,10 @@ public class ReservationController {
     private UserService userService;
 
     @GetMapping
-    public String getAllReservations(Model model) {
+    public String getAllReservations(@AuthenticationPrincipal UserDetails user, Model model) {
         List<Reservation> reservations = reservationService.getAllReservations();
         model.addAttribute("reservations", reservations);
+        model.addAttribute("user", user);
         return "reservation/reservations";
         // returns reservations.html
     }

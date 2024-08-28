@@ -7,15 +7,15 @@
 <body>
 <div layout:fragment="content">
   <h2>Create New User</h2>
-  <form th:action="@{/users/new}" th:object="${user}" method="post" enctype="multipart/form-data">
+  <form th:action="@{/users/new}" method="post" enctype="multipart/form-data">
     <label>Username:</label>
-    <input type="text" th:field="*{username}" />
+    <input type="text" name="username" />
     <label>Email:</label>
-    <input type="email" th:field="*{email}" />
+    <input type="email" name="email" />
     <label>Password:</label>
-    <input type="password" th:field="*{password}" />
+    <input type="password" name="password" />
     <label>Password 확인:</label>
-    <input type="password"  />
+    <input type="password"  name="password2" />
     <label for="profileImage">Profile Image:</label>
     <input type="file" id="profileImage" name="profileImage"/><br/>
     <button type="submit">Create</button>

@@ -5,6 +5,8 @@ import com.busanit501lsy.springcafereservationsample.service.PaymentService;
 import com.busanit501lsy.springcafereservationsample.service.ReservationService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +25,10 @@ public class PaymentController {
     private ReservationService reservationService;
 
     @GetMapping
-    public String getAllPayments(Model model) {
+    public String getAllPayments(@AuthenticationPrincipal UserDetails user, Model model) {
         List<Payment> payments = paymentService.getAllPayments();
         model.addAttribute("payments", payments);
+        model.addAttribute("user", user);
         return "payment/payments";
         // returns payments.html
     }
