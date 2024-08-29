@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@ToString
+//@ToString
 @Getter
 @Setter
 @AllArgsConstructor

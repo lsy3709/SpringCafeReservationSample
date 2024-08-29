@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@ToString
+//@ToString
 @Getter
 @Setter
 @AllArgsConstructor
