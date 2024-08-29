@@ -1,6 +1,7 @@
 package com.busanit501lsy.springcafereservationsample.controller;
 
 import com.busanit501lsy.springcafereservationsample.entity.Reservation;
+import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.service.ReservationService;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/reservations")
@@ -27,6 +29,11 @@ public class ReservationController {
     @GetMapping
     public String getAllReservations(@AuthenticationPrincipal UserDetails user, Model model) {
         List<Reservation> reservations = reservationService.getAllReservations();
+        Optional<User> user1 = userService.getUserByUsername(user.getUsername());
+        if (user1 != null && user1.isPresent()) {
+            User user2 = user1.get();
+            model.addAttribute("user2", user2);
+        }
         model.addAttribute("reservations", reservations);
         model.addAttribute("user", user);
         return "reservation/reservations";

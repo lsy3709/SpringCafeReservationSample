@@ -1,8 +1,10 @@
 package com.busanit501lsy.springcafereservationsample.controller;
 
 import com.busanit501lsy.springcafereservationsample.entity.Payment;
+import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.service.PaymentService;
 import com.busanit501lsy.springcafereservationsample.service.ReservationService;
+import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/payments")
@@ -24,9 +27,17 @@ public class PaymentController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
     public String getAllPayments(@AuthenticationPrincipal UserDetails user, Model model) {
         List<Payment> payments = paymentService.getAllPayments();
+        Optional<User> user1 = userService.getUserByUsername(user.getUsername());
+        if (user1 != null && user1.isPresent()) {
+            User user2 = user1.get();
+            model.addAttribute("user2", user2);
+        }
         model.addAttribute("payments", payments);
         model.addAttribute("user", user);
         return "payment/payments";
