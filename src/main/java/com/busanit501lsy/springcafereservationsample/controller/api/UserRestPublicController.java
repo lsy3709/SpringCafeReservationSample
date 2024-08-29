@@ -5,6 +5,7 @@ import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,13 +19,16 @@ public class UserRestPublicController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    PasswordEncoder bCryptPasswordEncoder;
+
     // 파일 업로드 할 경우
     @PostMapping
     public ResponseEntity<User> createUser( @RequestPart("user") User user,
                                             @RequestParam(value = "profileImage", required = false) MultipartFile file) {
         try {
 //            @RequestPart를 사용하여 멀티파트 요청의 user 부분을 User 객체로 자동 변환
-
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             // 사용자 정보 저장
             User createdUser = userService.createUser(user);
 
