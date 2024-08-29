@@ -7,6 +7,8 @@ import com.busanit501lsy.springcafereservationsample.repository.UserRepository;
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ProfileImageRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +30,11 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    // 페이징 처리
+    public Page<User> getAllUsersWithPage(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
