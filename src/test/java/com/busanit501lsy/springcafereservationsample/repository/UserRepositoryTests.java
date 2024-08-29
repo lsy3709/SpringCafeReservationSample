@@ -25,6 +25,8 @@ public class UserRepositoryTests {
                     .username("user"+i)
                     .password( passwordEncoder.encode("1111") )
                     .email(("user"+i+"@naver.com"))
+                    // 아래 이미지는 현재 몽고디비에 있는 임의의 이미지를 재사용함
+                    .profileImageId("66ce760b8cb71c34f25f8b3f")
                     .build();
 
             apiUserRepository.save(apiUser);
