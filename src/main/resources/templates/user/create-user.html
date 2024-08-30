@@ -6,21 +6,39 @@
 >
 <body>
 <div layout:fragment="content">
-  <h2>Create New User</h2>
+
+
+  <div class="card-header">
+    <h2>Create New User</h2>
+  </div>
+  <div class="card-body">
   <form th:action="@{/users/new}" method="post" enctype="multipart/form-data">
-    <label>Username:</label>
-    <input type="text" name="username" />
-    <label>Email:</label>
-    <input type="email" name="email" />
-    <label>Password:</label>
-    <input type="password" name="password" />
-    <label>Password 확인:</label>
-    <input type="password"  name="password2" />
-    <label for="profileImage">Profile Image:</label>
-    <input type="file" id="profileImage" name="profileImage"/><br/>
-    <button type="submit">Create</button>
+    <div lass="input-group mb-3">
+    <input type="text" name="username" class="form-control" placeholder="username 입력해주세요"/>
+    </div>
+
+    <div class="input-group mb-3">
+    <input type="email" name="email" class="form-control" placeholder="email 입력해주세요"/>
+    </div>
+
+    <div class="input-group mb-3">
+    <input type="password" name="password" class="form-control" placeholder="password 입력해주세요"/>
+    </div>
+
+    <div class="input-group mb-3">
+    <input type="password"  name="password2" class="form-control" placeholder="password 한번 더 입력해주세요"/>
+    </div>
+
+    <div class="input-group mb-3">
+    <label for="profileImage">Profile Image: &nbsp;</label>
+    <input type="file" id="profileImage" name="profileImage" class="form-control" /><br/>
+    </div>
+
+    <button class="btn btn-primary w-100 submitBtn" type="submit">Join</button>
 <!--    profileImageId-->
   </form>
+  </div>
+
 </div>
 </body>
 </html>

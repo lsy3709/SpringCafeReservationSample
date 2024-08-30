@@ -6,18 +6,32 @@
 >
 <body>
 <div layout:fragment="content">
-  <h2>Create New Reservation</h2>
+
+  <div class="card-header">
+    <h2>Create New Reservation</h2>
+  </div>
+  <div class="card-body">
+
   <form th:action="@{/reservations}" th:object="${reservation}" method="post">
-    <label>Reservation Time:</label>
-    <input type="datetime-local" th:field="*{reservationTime}" />
-    <label>Number of Guests:</label>
-    <input type="number" th:field="*{numberOfGuests}" />
-    <label>User:</label>
+    <label class="form-control">Reservation Time:</label>
+    <div class="input-group mb-3">
+    <input class="form-control" type="datetime-local" th:field="*{reservationTime}" />
+    </div>
+    <label class="form-control">Number of Guests:</label>
+    <div class="input-group mb-3">
+    <input class="form-control" type="number" th:field="*{numberOfGuests}" />
+    </div>
+    <label class="form-control">User:</label>
+    <div class="input-group mb-3">
     <select th:field="*{user.id}">
-      <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+      <option  th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
     </select>
-    <button type="submit">Create</button>
+    </div>
+    <button class="btn btn-primary w-100 submitBtn" type="submit">Create</button>
+
   </form>
+  </div>
+
 </div>
 </body>
 </html>
