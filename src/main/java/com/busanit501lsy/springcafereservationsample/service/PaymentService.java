@@ -2,6 +2,7 @@ package com.busanit501lsy.springcafereservationsample.service;
 
 import com.busanit501lsy.springcafereservationsample.entity.Payment;
 import com.busanit501lsy.springcafereservationsample.repository.PaymentRepository;
+import com.siot.IamportRestClient.IamportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +12,15 @@ import java.util.Optional;
 @Service
 public class PaymentService {
 
+    private IamportClient api;
+
     @Autowired
     PaymentRepository paymentRepository;
+
+
+//    public PaymentService() {
+//        this.api = new IamportClient("REST API KEY", "REST API SECRET");
+//    }
 
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
