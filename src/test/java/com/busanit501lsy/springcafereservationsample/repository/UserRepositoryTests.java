@@ -23,10 +23,10 @@ public class UserRepositoryTests {
         IntStream.rangeClosed(1,100).forEach(i -> {
             User apiUser = User.builder()
                     .username("user"+i)
-                    .password( passwordEncoder.encode("1111") )
+                    .password( passwordEncoder.encode("1234") )
                     .email(("user"+i+"@naver.com"))
                     // 아래 이미지는 현재 몽고디비에 있는 임의의 이미지를 재사용함
-                    .profileImageId("66ce760b8cb71c34f25f8b3f")
+                    .profileImageId("66d115e28a408826f8412116")
                     .build();
 
             apiUserRepository.save(apiUser);

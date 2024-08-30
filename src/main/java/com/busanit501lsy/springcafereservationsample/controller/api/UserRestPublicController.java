@@ -1,6 +1,8 @@
 package com.busanit501lsy.springcafereservationsample.controller.api;
 
+import com.busanit501lsy.springcafereservationsample.dto.PredictionResponseDTO;
 import com.busanit501lsy.springcafereservationsample.entity.User;
+import com.busanit501lsy.springcafereservationsample.service.ImageUploadService;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,15 @@ public class UserRestPublicController {
     @Autowired
     PasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    ImageUploadService imageUploadService;
+
     // 파일 업로드 할 경우
     @PostMapping
     public ResponseEntity<User> createUser( @RequestPart("user") User user,
                                             @RequestParam(value = "profileImage", required = false) MultipartFile file) {
         try {
+            log.info("image 확인 : " + file);
 //            @RequestPart를 사용하여 멀티파트 요청의 user 부분을 User 객체로 자동 변환
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             // 사용자 정보 저장
@@ -43,5 +49,6 @@ public class UserRestPublicController {
             throw new RuntimeException("Failed to save user or profile image", e);
         }
     }
+
 
 }

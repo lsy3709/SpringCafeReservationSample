@@ -25,8 +25,10 @@ public class ImageAIRestController {
     }
 
     @PostMapping("/predict")
-    public PredictionResponseDTO uploadImage(@RequestParam("image") MultipartFile image) throws IOException {
+    public PredictionResponseDTO uploadImage( @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         // Django 서버로 이미지 전송 및 응답 처리
+        //
+        log.info("image 확인 : " + image);
         PredictionResponseDTO responseDTO = imageUploadService.sendImageToDjangoServer(image.getBytes(), image.getOriginalFilename());
 
         // PredictionResponseDTO 객체를 JSON으로 반환
