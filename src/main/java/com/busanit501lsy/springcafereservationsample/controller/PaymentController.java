@@ -45,9 +45,16 @@ public class PaymentController {
     }
 
     @GetMapping("/new")
-    public String showCreatePaymentForm(Model model) {
+    public String showCreatePaymentForm(@AuthenticationPrincipal UserDetails user,Model model) {
+        List<Payment> payments = paymentService.getAllPayments();
+        Optional<User> user1 = userService.getUserByUsername(user.getUsername());
+        if (user1 != null && user1.isPresent()) {
+            User user2 = user1.get();
+            model.addAttribute("user2", user2);
+        }
         model.addAttribute("payment", new Payment());
         model.addAttribute("reservations", reservationService.getAllReservations());
+        model.addAttribute("user", user);
         // Provide reservations list to populate dropdown
         return "payment/create-pay";
         // returns create-payments.html

@@ -18,4 +18,46 @@
         </select>
         <button type="submit">Create</button>
     </form>
-</div></body></html>
+    <input type="hidden" id="userid" name="id" class="form-control" th:value="${user2.id}" >
+    <input type="hidden" id="username" name="id" class="form-control" th:value="${user2.username}" >
+    <button type="button" id="orderBtn">결제하기</button>
+</div>
+<!--자바스크립트 추가하는 영역-->
+<script layout:fragment="javascript" th:inline="javascript">
+    $("#orderBtn").on("click", function () {
+        var userid = $("#userid").val();
+        var username = $("#username").val();
+
+        var merchant_uid = "O" + new Date().getTime(); // 고유한 주문번호 생성
+
+        var IMP = window.IMP;
+        IMP.init('impxxx'); // 가맹점 식별코드 입력
+
+        IMP.request_pay({
+                pg: "html5_inicis",           // 등록된 pg사 (적용된 pg사는 KG이니시스)
+                pay_method: "card",           // 결제방식: card(신용카드), trans(실시간계좌이체), vbank(가상계좌), phone(소액결제)
+                merchant_uid: merchant_uid,   // 주문번호
+                name: "상품1",                  // 상품명
+                amount: "100",           // 금액
+                buyer_name: username,         // 주문자
+                buyer_tel: "",             // 전화번호 (필수입력)
+                buyer_addr: "부산진구",    		  // 주소
+                buyer_postcode: ""          // 우편번호
+            }, function (rsp) {
+                if (rsp.success) {
+                    var mesg = '결제가 완료되었습니다.';
+
+                    // 겅증 후 결제 정보 & 주문 정보 DB 저장
+
+                } else {
+                    var mesg = '결제를 실패하였습니다.';
+                    alert(msg);
+                }
+            }
+        );
+    });
+</script>
+
+
+</body>
+</html>
