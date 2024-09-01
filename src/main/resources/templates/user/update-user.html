@@ -20,6 +20,12 @@
     <input type="text"  name="email" class="form-control" placeholder="email 입력해주세요" th:value="${user.email}" >
     </div>
     <div class="input-group mb-3">
+      <input type="text"  name="phone" class="form-control" placeholder="phone 입력해주세요" th:value="${user.phone}" >
+    </div>
+    <div class="input-group mb-3">
+      <input type="text"  name="address" class="form-control" placeholder="address 입력해주세요" th:value="${user.address}" >
+    </div>
+    <div class="input-group mb-3">
       <label for="profileImage">Profile Image: &nbsp;</label>
     <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*" onchange="previewImage(this)" /><br/>
     </div>
