@@ -41,7 +41,12 @@ public class ReservationController {
     }
 
     @GetMapping("/new")
-    public String showCreateReservationForm(Model model) {
+    public String showCreateReservationForm(@AuthenticationPrincipal UserDetails user, Model model) {
+        Optional<User> user1 = userService.getUserByUsername(user.getUsername());
+        if (user1 != null && user1.isPresent()) {
+            User user2 = user1.get();
+            model.addAttribute("user2", user2);
+        }
         model.addAttribute("reservation", new Reservation());
         model.addAttribute("users", userService.getAllUsers());
         // Provide users list to populate dropdown
