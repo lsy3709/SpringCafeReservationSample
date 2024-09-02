@@ -14,7 +14,10 @@
   <form th:action="@{/users/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
     <input type="hidden"  name="id" class="form-control" th:value="${user.id}" >
     <div class="input-group mb-3">
-    <input type="text"  name="username" class="form-control" placeholder="username 입력해주세요" th:value="${user.username}" >
+    <input type="text"  name="username" class="form-control" placeholder="id 입력해주세요" th:value="${user.username}" >
+    </div>
+    <div class="input-group mb-3">
+      <input type="text"  name="name" class="form-control" placeholder="name 입력해주세요" th:value="${user.name}" >
     </div>
     <div class="input-group mb-3">
     <input type="text"  name="email" class="form-control" placeholder="email 입력해주세요" th:value="${user.email}" >

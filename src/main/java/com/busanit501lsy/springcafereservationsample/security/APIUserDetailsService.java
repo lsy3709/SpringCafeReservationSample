@@ -36,6 +36,9 @@ public class APIUserDetailsService implements UserDetailsService {
                 apiUser.getUsername(),
                 apiUser.getPassword(),
                 apiUser.getEmail(),
+                apiUser.getName(),
+                apiUser.getPhone(),
+                apiUser.getAddress(),
                 apiUser.getProfileImageId(),
                 apiUser.getRoleSet().stream().map(
                         memberRole -> new SimpleGrantedAuthority("ROLE_"+ memberRole.name())

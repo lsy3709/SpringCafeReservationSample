@@ -13,8 +13,12 @@
   </div>
   <div class="card-body">
   <form th:action="@{/users/new}" method="post" enctype="multipart/form-data">
-    <div lass="input-group mb-3">
-    <input type="text" name="username" class="form-control" placeholder="username 입력해주세요"/>
+    <div class="input-group mb-3">
+    <input type="text" name="username" class="form-control" placeholder="id 입력해주세요"/>
+    </div>
+
+    <div class="input-group mb-3">
+      <input type="text" name="name" class="form-control" placeholder="name 입력해주세요"/>
     </div>
 
     <div class="input-group mb-3">

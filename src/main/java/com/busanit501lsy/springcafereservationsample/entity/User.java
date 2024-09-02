@@ -30,6 +30,8 @@ public class User {
 
     private String phone;
 
+    private String name;
+
     @Column(nullable = false)
     private String password;
 
