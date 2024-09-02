@@ -14,7 +14,8 @@
     <form th:action="@{/payments}" th:object="${payment}" method="post">
         <label>Amount:</label>
         <div class="input-group mb-3">
-        <input type="number" id="amount" step="1" th:field="*{amount}" />
+<!--        <input type="number" id="amount" step="1" th:field="*{amount}" />-->
+            <input type="text" id="amount"  th:value="100" readonly />
         </div>
 
         <label>Payment Time:</label>
@@ -55,6 +56,28 @@
 </div>
 <!--자바스크립트 추가하는 영역-->
 <script layout:fragment="javascript" th:inline="javascript">
+//사전 검증
+$(document).ready(function () {
+    var merchant_uid = "O" + new Date().getTime();
+    var totalPrice = $("#amount").val();
+    console.log(merchant_uid,totalPrice)
+
+    $.ajax({
+        url: "http://localhost:8080/api/payments/prepare",
+        method: "post",
+        contentType: "application/json",
+        headers: {
+            // Authorization 헤더에 JWT 토큰 추가
+            "Authorization": "Bearer " + localStorage.getItem("accessToken")
+        },
+        data: JSON.stringify({
+            merchant_uid: merchant_uid, // 가맹점 주문번호
+            amount: totalPrice // 결제 예정금액
+
+        })
+    });
+});
+
     $("#orderBtn").on("click", function () {
         var userid = $("#userid").val();
         var username = $("#name").val();
