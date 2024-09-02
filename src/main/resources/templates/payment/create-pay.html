@@ -15,7 +15,7 @@
         <label>Amount:</label>
         <div class="input-group mb-3">
 <!--        <input type="number" id="amount" step="1" th:field="*{amount}" />-->
-            <input type="text" id="amount"  th:value="100" readonly />
+            <input type="text" id="amount"  th:value="100" />
         </div>
 
         <label>Payment Time:</label>
@@ -58,29 +58,39 @@
 <script layout:fragment="javascript" th:inline="javascript">
 //사전 검증
 $(document).ready(function () {
-    var merchant_uid = "O" + new Date().getTime();
-    var totalPrice = $("#amount").val();
+    // var merchant_uid = "O" + new Date().getTime();
+    var merchant_uid = "12345";
+    // var totalPrice = $("#amount").val();
+    var totalPrice = 100;
     console.log(merchant_uid,totalPrice)
 
     $.ajax({
         url: "http://localhost:8080/api/payments/prepare",
         method: "post",
         contentType: "application/json",
-        headers: {
-            // Authorization 헤더에 JWT 토큰 추가
-            "Authorization": "Bearer " + localStorage.getItem("accessToken")
-        },
+        headers: { "Content-Type": "application/json" ,
+            "Authorization": "Bearer " + localStorage.getItem("accessToken")},
         data: JSON.stringify({
             merchant_uid: merchant_uid, // 가맹점 주문번호
             amount: totalPrice // 결제 예정금액
 
-        })
+        }),
+        success: function(response) {
+            // 요청이 성공했을 때 실행되는 콜백 함수
+            console.log("사전 검증 Success:", response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            // 요청이 실패했을 때 실행되는 콜백 함수
+            alert("사전 검증 실패 : " + textStatus)
+            console.error("사전 검증  Error:", textStatus, errorThrown);
+        }
     });
 });
 
     $("#orderBtn").on("click", function () {
         var userid = $("#userid").val();
         var username = $("#name").val();
+        var amount2 = $("#amount").val();
         var phone = $("#user_phone").val();
         var address = $("#user_address").val();
         var zipCode = address.match(/\d{5}/)[0];
@@ -93,14 +103,14 @@ $(document).ready(function () {
         // 포트원
         // 관린자 콘솔 , https://admin.portone.io/
         // 로그인 후, 연동관리 -> 연동정보 -> 고객사 식별코드 가져오기,
-        IMP.init('impxxxxxxxx'); // 가맹점 식별코드 입력
+        IMP.init('imp18751406'); // 가맹점 식별코드 입력
 
         IMP.request_pay({
                 pg: "html5_inicis",           // 등록된 pg사 (적용된 pg사는 KG이니시스)
                 pay_method: "card",           // 결제방식: card(신용카드), trans(실시간계좌이체), vbank(가상계좌), phone(소액결제)
-                merchant_uid: merchant_uid,   // 주문번호
+                merchant_uid: "12345",   // 주문번호
                 name: "상품(예약)1",                  // 상품명
-                amount: "100",           // 금액
+                amount: amount2,           // 금액
                 buyer_name: username,         // 주문자
                 buyer_tel: phone,             // 전화번호 (필수입력)
                 buyer_addr: address,    		  // 주소
@@ -112,7 +122,7 @@ $(document).ready(function () {
                     // 겅증 후 결제 정보 & 주문 정보 DB 저장
 
                 } else {
-                    var mesg = '결제를 실패하였습니다.';
+                    var msg = '결제를 실패하였습니다.';
                     alert(msg);
                 }
             }

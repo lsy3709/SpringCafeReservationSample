@@ -60,6 +60,7 @@ public class PaymentRestController {
     @PostMapping("/prepare")
     public void preparePayment(@RequestBody PrePaymentEntity request)
             throws IamportResponseException, IOException {
+//        paymentService.postPrepare(request);
         paymentService.postPrepare(request);
     }
 }
