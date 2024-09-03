@@ -2,10 +2,12 @@ package com.busanit501lsy.springcafereservationsample.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 //@ToString
@@ -27,8 +29,8 @@ public class Reservation {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Payment> payments;
+//    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Payment> payments;
 
 //    @JsonBackReference: 자식 객체에 이 어노테이션을 사용.
 //    Jackson은 이 어노테이션이 붙은 필드를 직렬화에서 제외합니다.

@@ -22,12 +22,14 @@ public class Payment {
     private BigDecimal amount;
     private LocalDateTime paymentTime;
 
-    @ManyToOne
-    @JoinColumn(name = "reservation_id", nullable = false)
-    @JsonBackReference
-    private Reservation reservation;
+//    @ManyToOne
+//    @JoinColumn(name = "reservation_id", nullable = false)
+//    @JsonBackReference
+//    private Reservation reservation;
 
-    @OneToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JoinColumn(name = "reservation_item_id", nullable = false)
+    private ReservationItem reservationItem;
+
 }

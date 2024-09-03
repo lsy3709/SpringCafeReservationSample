@@ -62,7 +62,7 @@ public class PaymentService {
 
         payment.setAmount(paymentDetails.getAmount());
         payment.setPaymentTime(paymentDetails.getPaymentTime());
-        payment.setReservation(paymentDetails.getReservation());
+//        payment.setReservation(paymentDetails.getReservation());
 
         return paymentRepository.save(payment);
     }
