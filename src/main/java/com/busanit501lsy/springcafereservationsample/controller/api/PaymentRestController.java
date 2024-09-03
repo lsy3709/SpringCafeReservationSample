@@ -1,12 +1,17 @@
 package com.busanit501lsy.springcafereservationsample.controller.api;
 
+import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO;
+import com.busanit501lsy.springcafereservationsample.entity.BuyerInfo;
 import com.busanit501lsy.springcafereservationsample.entity.Payment;
 import com.busanit501lsy.springcafereservationsample.entity.PrePaymentEntity;
 import com.busanit501lsy.springcafereservationsample.service.PaymentService;
 import com.busanit501lsy.springcafereservationsample.service.ReservationService;
 import com.siot.IamportRestClient.exception.IamportResponseException;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +29,7 @@ public class PaymentRestController {
 
     @Autowired
     private ReservationService reservationService;
+
 
     @GetMapping
     public List<Payment> getAllPayments() {
@@ -63,4 +69,15 @@ public class PaymentRestController {
 //        paymentService.postPrepare(request);
         paymentService.postPrepare(request);
     }
+
+    // 결제 사후 검증
+
+    @PostMapping("/validate")
+    public ResponseEntity<com.siot.IamportRestClient.response.Payment> validatePayment(@RequestBody PaymentDTO request)
+            throws IamportResponseException, IOException {
+        com.siot.IamportRestClient.response.Payment payment = paymentService.validatePayment(request);
+        return new ResponseEntity<>(payment, HttpStatus.OK);
+    }
+
+
 }
