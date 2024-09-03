@@ -11,6 +11,7 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.request.PrepareData;
 import com.siot.IamportRestClient.response.IamportResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class PaymentService {
 
     private IamportClient api;
@@ -83,13 +85,19 @@ public class PaymentService {
     public com.siot.IamportRestClient.response.Payment validatePayment(PaymentDTO request) throws IamportResponseException, IOException {
         // 사전 검증에 저장된 내용
         PrePaymentEntity prePayment = prePaymentRepository.findByMerchantUid(request.getMerchant_uid()).orElseThrow();
-        BigDecimal preAmount = prePayment.getAmount(); // DB에 저장된 결제요청 금액
+        BigDecimal preAmount = prePayment.getAmount();
+        int amountAsInt = preAmount.intValue();// DB에 저장된 결제요청 금액
 
         // 포트원에 저장된 내용
         IamportResponse<com.siot.IamportRestClient.response.Payment> iamportResponse = api.paymentByImpUid(request.getImp_uid());
         BigDecimal paidAmount = iamportResponse.getResponse().getAmount(); // 사용자가 실제 결제한 금액
+        int paidAmountAsInt = preAmount.intValue();
+        log.info("preAmount : " + preAmount);
+        log.info("paidAmount : " + paidAmount);
+        log.info("amountAsInt : " + amountAsInt);
+        log.info("paidAmountAsInt : " + paidAmountAsInt);
+        if (amountAsInt != paidAmountAsInt) {
 
-        if (!preAmount.equals(paidAmount)) {
             CancelData cancelData = cancelPayment(iamportResponse);
             api.cancelPaymentByImpUid(cancelData);
         }

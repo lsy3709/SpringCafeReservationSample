@@ -18,7 +18,7 @@ public class OrderInfo {
     private Long id;
 
     @Column(name = "merchant_uid", nullable = false, unique = true)
-    private String merchantUid;
+    private String merchant_uid;
 
     @Column(name = "userid", nullable = false)
     private String userId;
@@ -29,7 +29,7 @@ public class OrderInfo {
     @Column(name = "gname", nullable = false)
     private String gname;
 
-    @Column(name = "gprice", nullable = false)
+    @Column(name = "gprice")
     private Integer gprice;
 
     @Column(name = "gimage")
@@ -41,10 +41,10 @@ public class OrderInfo {
     @Column(name = "gsize")
     private String gsize;
 
-    @Column(name = "gamount", nullable = false)
+    @Column(name = "gamount")
     private Integer gamount;
 
-    @Column(name = "recipient", nullable = false)
+    @Column(name = "recipient")
     private String recipient;
 
     @Column(name = "post", nullable = false)

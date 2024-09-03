@@ -18,13 +18,13 @@ public class BuyerInfo {
     private Long id;
 
     @Column(name = "merchant_uid", nullable = false, unique = true)
-    private String merchantUid;
+    private String merchant_uid;
 
     @Column(name = "userid", nullable = false)
     private String userId;
 
     @Column(name = "pay_method", nullable = false)
-    private String payMethod;
+    private String pay_method;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -41,6 +41,6 @@ public class BuyerInfo {
     @Column(name = "post", nullable = false)
     private String post;
 
-    @Column(name = "recipient", nullable = false)
+    @Column(name = "recipient", nullable = true)
     private String recipient;
 }
