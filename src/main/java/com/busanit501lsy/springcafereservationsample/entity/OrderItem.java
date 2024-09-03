@@ -5,29 +5,27 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
-@ToString
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Payment {
+@AllArgsConstructor
+@Builder
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal amount;
-    private LocalDateTime paymentTime;
+    private String productName;
+    private int quantity;
+    private BigDecimal price;
 
     @ManyToOne
-    @JoinColumn(name = "reservation_id", nullable = false)
-    @JsonBackReference
-    private Reservation reservation;
-
-    @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference
     private Order order;
+
+
 }
