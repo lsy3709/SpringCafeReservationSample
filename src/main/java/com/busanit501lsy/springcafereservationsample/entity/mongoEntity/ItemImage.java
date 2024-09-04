@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "item_image_documents")
-public class ItemImageDocument {
+public class ItemImage {
 
     @Id
     private String id;  // MongoDB의 기본 식별자
@@ -29,6 +29,12 @@ public class ItemImageDocument {
     private String contentType;
 
     private byte[] data;
+
+    public ItemImage(String fileName, String contentType, byte[] data) {
+        this.fileName = fileName;
+        this.contentType = contentType;
+        this.data = data;
+    }
 
     // Getter, Setter, Constructor, etc.
 }

@@ -1,12 +1,15 @@
 package com.busanit501lsy.springcafereservationsample.controller;
 
 import com.busanit501lsy.springcafereservationsample.entity.Item;
+import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,9 +45,24 @@ public class ItemController {
     }
 
     @PostMapping("/new")
-    public String createItem(@ModelAttribute Item item) {
-        itemService.createItem(item);
-        return "redirect:/items";
+    public String createItem(@ModelAttribute Item item , @RequestParam(value = "itemRepImage", required = false) MultipartFile itemRepImage,
+                             @RequestParam(value = "itemAdd1", required = false) MultipartFile itemAdd1,
+                             @RequestParam(value = "itemAdd2", required = false) MultipartFile itemAdd2,
+                             @RequestParam(value = "itemAdd3", required = false) MultipartFile itemAdd3,
+                             @RequestParam(value = "itemAdd4", required = false) MultipartFile itemAdd4) {
+//        itemService.createItem(item);
+//        return "redirect:/items";
+        try {
+
+            if (itemRepImage != null && !itemRepImage.isEmpty()) {
+                Item savedItem = itemService.createItem(item);
+                itemService.saveItemImage(savedItem.getId(), itemRepImage);
+            }
+            itemService.createItem(item);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save user profile image", e);
+        }
+        return "redirect:/users";
     }
 
     @GetMapping("/edit/{id}")

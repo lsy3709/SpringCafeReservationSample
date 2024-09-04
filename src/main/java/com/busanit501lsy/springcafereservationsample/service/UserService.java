@@ -95,6 +95,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    // 이미지 가져오기
     public ProfileImage getProfileImage(String imageId) {
         return profileImageRepository.findById(imageId)
                 .orElseThrow(() -> new RuntimeException("Image not found"));
