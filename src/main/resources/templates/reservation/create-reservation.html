@@ -8,12 +8,12 @@
 <div layout:fragment="content">
 
   <div class="card-header">
-    <h2>Create New Reservation</h2>
+    <h2>cafe 공간 예약</h2>
   </div>
   <div class="card-body">
 
   <form th:action="@{/reservations}" th:object="${reservation}" method="post">
-    <label class="form-control">Reservation Time:</label>
+    <label class="form-control">예약 가능 시간만 표기, 테이블 필요,상품과 예약시간, 1시간 단위로, 예) 9:00~10:00:</label>
     <div class="input-group mb-3">
     <input class="form-control" type="datetime-local" th:field="*{reservationTime}" />
     </div>
@@ -21,16 +21,19 @@
     <div class="input-group mb-3">
     <input class="form-control" type="number" th:field="*{numberOfGuests}" />
     </div>
-    <label class="form-control">User:</label>
+    <label class="form-control">예약자 :</label>
     <div class="input-group mb-3">
+<!--    th:field  전송시 user.id 로 제출이 됨-->
+      <!--        th:value       제출 될 값-->
+      <!--    th:text  화면에 표시 될 값-->
     <select th:field="*{user.id}">
       <option  th:each="user : ${users}"
                th:if="${user != null} and ${user2 != null} and ${user.id == user2.id}"
-               th:value="${user.id}"
-               th:text="${user.username}"></option>
+               th:value="${user.name}"
+               th:text="${user.name}"></option>
     </select>
     </div>
-    <button class="btn btn-primary w-100 submitBtn" type="submit">Create</button>
+    <button class="btn btn-primary w-100 submitBtn" type="submit">예약하기</button>
 
   </form>
   </div>

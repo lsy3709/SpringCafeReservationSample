@@ -43,8 +43,11 @@ public class ReservationController {
     @GetMapping("/new")
     public String showCreateReservationForm(@AuthenticationPrincipal UserDetails user, Model model) {
         Optional<User> user1 = userService.getUserByUsername(user.getUsername());
+        log.info("lsy reservation form : " + user.getUsername());
+
         if (user1 != null && user1.isPresent()) {
             User user2 = user1.get();
+            log.info("lsy reservation user2 : " + user2.getUsername());
             model.addAttribute("user2", user2);
         }
         model.addAttribute("reservation", new Reservation());
