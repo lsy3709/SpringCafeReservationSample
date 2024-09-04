@@ -9,22 +9,34 @@
 
 <div  layout:fragment="content">
   <h2>Item List</h2>
-  <ul>
-    <li th:each="item : ${items}">
-       <span th:if="${item.itemRepImageId}">
-        <img th:src="@{/items/{id}/itemImage(id=${item.id})}" alt="Item Image" width="50"/>
-      </span>
-      <span th:if="${item != null and item.itemRepImageId == null}">
-        <p>No item image uploaded.</p>
-      </span>
-      <span th:text="${item.name}"></span> -
-      <span th:text="${item.price}"></span>
-      <span th:text="${item.description}"></span>
-      <a th:href="@{/items/{id}/edit(id=${item.id})}">Edit</a> |
-      <a th:href="@{/items/{id}/delete(id=${item.id})}">Delete</a>
+  <div class="container mt-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+      <div th:each="item : ${items}" class="col">
+        <div class="card h-100 text-center">
+          <!-- Image filling card size -->
+          <div th:if="${item.itemRepImageId}" class="card-img-top" style="height: 200px; overflow: hidden;">
+            <img th:src="@{/items/{id}/itemImage(id=${item.id})}" alt="Item Image" class="img-fluid" style="height: 100%; width: 100%; object-fit: cover;">
+          </div>
+          <div th:if="${item != null and item.itemRepImageId == null}" class="card-img-top" style="height: 200px; display: flex; justify-content: center; align-items: center;">
+            <p>No item image uploaded.</p>
+          </div>
+          <!-- Card Body with Centered Text -->
+          <div class="card-body">
+            <h5 class="card-title" th:text="${item.name}"></h5>
+            <p class="card-text" th:text="${item.price}"></p>
+            <p class="card-text" th:text="${item.description}"></p>
+          </div>
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <a th:href="@{/items/{id}/edit(id=${item.id})}" class="btn btn-primary">Edit</a>
+            <a th:href="@{/items/{id}/delete(id=${item.id})}" class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    </li>
-  </ul>
+
 
   <!-- 페이지네이션 -->
   <div class="pagination justify-content-center">
