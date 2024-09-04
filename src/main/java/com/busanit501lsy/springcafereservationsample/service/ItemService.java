@@ -7,6 +7,7 @@ import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileI
 import com.busanit501lsy.springcafereservationsample.repository.ItemRepository;
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ItemImageRepository;
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ProfileImageRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class ItemService {
 
     @Autowired
@@ -51,11 +53,11 @@ public class ItemService {
     }
 
     //프로필 이미지 업로드, 레스트 형식
-    public void saveItemImage(Long itemId, MultipartFile file) throws IOException {
+    public void saveItemImage(Long itemId, MultipartFile file, int check) throws IOException {
         // Get the user
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+        log.info("lsy item img imgservice : " + item.getId() + file.getOriginalFilename() );
         // Create and save the profile image
         ItemImage itemImage = new ItemImage(
                 file.getOriginalFilename(),
@@ -65,7 +67,34 @@ public class ItemService {
         ItemImage savedImage = itemImageRepository.save(itemImage);
 
         // Link the profile image to the user
+        log.info("lsy item img imgservice : " + savedImage.getId());
+        // 분기 필요.
         item.setItemRepImageId(savedImage.getId());
+        // check 값에 따라 이미지 저장 로직 분기
+        switch (check) {
+            case 0:
+                // 대표 이미지 저장
+                item.setItemRepImageId(savedImage.getId());
+                break;
+            case 1:
+                // 추가 상품 1 이미지 저장
+                item.setItemAdd1ImageId(savedImage.getId());
+                break;
+            case 2:
+                // 추가 상품 2 이미지 저장
+                item.setItemAdd2ImageId(savedImage.getId());
+                break;
+            case 3:
+                // 추가 상품 3 이미지 저장
+                item.setItemAdd3ImageId(savedImage.getId());
+                break;
+            case 4:
+                // 추가 상품 4 이미지 저장
+                item.setItemAdd4ImageId(savedImage.getId());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid check value: " + check);
+        }
         itemRepository.save(item);
     }
 }

@@ -3,6 +3,7 @@ package com.busanit501lsy.springcafereservationsample.controller;
 import com.busanit501lsy.springcafereservationsample.entity.Item;
 import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.service.ItemService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/items")
+@Log4j2
 public class ItemController {
 
     @Autowired
@@ -53,17 +55,34 @@ public class ItemController {
 //        itemService.createItem(item);
 //        return "redirect:/items";
         try {
-
+            Item savedItem = itemService.createItem(item); // Item 저장을 한 번만 실행
+            // 대표 상품 이미지 처리
             if (itemRepImage != null && !itemRepImage.isEmpty()) {
-                Item savedItem = itemService.createItem(item);
-                itemService.saveItemImage(savedItem.getId(), itemRepImage);
+                log.info("lsy item img1 : " + savedItem.getId() + itemRepImage.getOriginalFilename() );
+                itemService.saveItemImage(savedItem.getId(), itemRepImage,0);
             }
-            itemService.createItem(item);
+            if (itemAdd1 != null && !itemAdd1.isEmpty()) {
+                log.info("lsy item img2 : " + savedItem.getId() + itemAdd1.getOriginalFilename() );
+                itemService.saveItemImage(savedItem.getId(), itemAdd1,1);
+            }
+            if (itemAdd2 != null && !itemAdd2.isEmpty()) {
+                log.info("lsy item img3 : " + savedItem.getId() + itemAdd2.getOriginalFilename() );
+                itemService.saveItemImage(savedItem.getId(), itemAdd2,2);
+            }
+            if (itemAdd3 != null && !itemAdd3.isEmpty()) {
+                log.info("lsy item img4 : " + savedItem.getId() + itemAdd3.getOriginalFilename() );
+                itemService.saveItemImage(savedItem.getId(), itemAdd3,3);
+            }
+            if (itemAdd4 != null && !itemAdd4.isEmpty()) {
+                log.info("lsy item img5 : " + savedItem.getId() + itemAdd4.getOriginalFilename() );
+                itemService.saveItemImage(savedItem.getId(), itemAdd4,4);
+            }
         } catch (IOException e) {
             throw new RuntimeException("Failed to save user profile image", e);
         }
         return "redirect:/users";
     }
+
 
     @GetMapping("/edit/{id}")
     public String updateItemForm(@PathVariable Long id, Model model) {
