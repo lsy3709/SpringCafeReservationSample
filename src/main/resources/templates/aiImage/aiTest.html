@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/layout.html}"
+>
+<body>
+<div layout:fragment="content">
+
+
+  <div class="card-header">
+    <h2>AI Image Classify Predict Resnet50 공구 모델 샘플 망치, 공업용가위</h2>
+  </div>
+  <div class="card-body">
+
+
+    <div class="input-group mb-3">
+    <label for="image">이미지 테스트 : &nbsp;</label>
+    <input type="file" id="image" name="image" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview')" /><br/>
+    </div>
+    <!-- 미리보기 이미지를 표시할 곳 -->
+    <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
+
+    <button id="tryMe" class="btn btn-primary">이미지 예측하기!</button>
+  </div>
+
+</div>
+
+<!--자바스크립트 추가하는 영역-->
+<script layout:fragment="javascript" th:inline="javascript">
+  // 사진 선택시 미리보기
+  function previewImage(input, previewId) {
+    var reader = new FileReader();
+
+    reader.onload = function () {
+      var imagePreview = document.getElementById(previewId);
+      imagePreview.src = reader.result;
+      imagePreview.style.display = 'block';
+    };
+
+    if (input.files && input.files[0]) {
+      reader.readAsDataURL(input.files[0]); // 이미지를 읽어 미리보기로 표시
+    }
+  }
+
+  // 이미지 업로드와 예측 요청을 처리하는 함수
+  function uploadAndPredict() {
+    var formData = new FormData();
+    var imageFile = document.getElementById('image').files[0];
+
+    if (!imageFile) {
+      Swal.fire({
+        title: 'Error!',
+        text: '이미지를 선택해주세요.',
+        icon: 'error'
+      });
+      return;
+    }
+
+    formData.append("image", imageFile);
+
+    // AJAX 비동기 요청
+    $.ajax({
+      url: '/api/ai/predict',  // 서버의 REST API 엔드포인트
+      type: 'POST',
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("accessToken")},
+      data: formData,
+      enctype: 'multipart/form-data',
+      processData: false,  // 파일 전송을 위해 false로 설정
+      contentType: false,
+      success: function(response) {
+        // 서버로부터 받은 JSON 데이터
+        const predictedClassIndex = response.predicted_class_index;
+        const predictedClassLabel = response.predicted_class_label;
+        const confidence = response.confidence;
+        const classConfidences = response.class_confidences;
+
+        // SweetAlert으로 결과를 사용자에게 보여줍니다.
+        Swal.fire({
+          title: 'Prediction Result',
+          html: `
+                        <strong>Class Label:</strong> ${predictedClassLabel} <br/>
+                        <strong>Confidence:</strong> ${(confidence* 100).toFixed(2)}% <br/>
+                        <strong>Class Index:</strong> ${predictedClassIndex} <br/>
+                       <strong>All Class Confidences:</strong> <br/>
+            <ul>
+                <li>망치: ${(classConfidences['망치'] * 100).toFixed(2)}%</li>
+                <li>공업용가위: ${(classConfidences['공업용가위'] * 100).toFixed(2)}%</li>
+            </ul>
+                    `,
+          icon: 'success',
+          imageUrl: 'https://unsplash.it/400/200',  // 원하시는 이미지 URL로 교체 가능
+          imageWidth: 400,
+          imageHeight: 200,
+          imageAlt: 'Custom image'
+        });
+      },
+      error: function(xhr, status, error) {
+        Swal.fire({
+          title: 'Error!',
+          text: '예측 중 오류가 발생했습니다.',
+          icon: 'error'
+        });
+      }
+    });
+  }
+
+  // Try Me 버튼 클릭 시 실행
+  document.getElementById('tryMe').addEventListener('click', function() {
+    uploadAndPredict();
+  });
+
+</script>
+</body>
+</html>
