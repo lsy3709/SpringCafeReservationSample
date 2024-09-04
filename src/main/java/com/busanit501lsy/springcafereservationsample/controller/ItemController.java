@@ -103,12 +103,12 @@ public class ItemController {
     }
 
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/{id}/edit")
     public String updateItemForm(@PathVariable Long id, Model model) {
         Optional<Item> item = itemService.getItemById(id);
         if (item.isPresent()) {
             model.addAttribute("item", item.get());
-            return "items/edit"; // Form for editing the item
+            return "items/update-item"; // Form for editing the item
         } else {
             return "error/404";
         }
