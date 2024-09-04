@@ -38,7 +38,7 @@ public class ItemController {
     @GetMapping("/new")
     public String createItemForm(Model model) {
         model.addAttribute("item", new Item());
-        return "items/create"; // Form for creating a new item
+        return "items/create-item"; // Form for creating a new item
     }
 
     @PostMapping("/new")

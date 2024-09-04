@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/layout.html}"
+>
+<body>
+<div layout:fragment="content">
+
+
+  <div class="card-header">
+    <h2>Create New Item</h2>
+  </div>
+  <div class="card-body">
+  <form th:action="@{/items/new}" method="post" enctype="multipart/form-data">
+    <label class="form-control">상품명 :</label>
+    <div class="input-group mb-3">
+    <input type="text" name="name" class="form-control" placeholder="상품명 입력해주세요"/>
+    </div>
+
+    <label class="form-control">가격 :</label>
+    <div class="input-group mb-3">
+      <input type="number" name="name" class="form-control" />
+    </div>
+
+    <div class="input-group mb-3">
+      <label for="description">상품 설명 : &nbsp;</label>
+      <textarea id="description" name="description" class="form-control" rows="5" placeholder="상품에 대한 설명을 입력하세요..."></textarea>
+    </div>
+
+    <div class="input-group mb-3">
+    <label for="itemRepImage">대표상품 : &nbsp;</label>
+    <input type="file" id="itemRepImage" name="itemRepImage" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview')" /><br/>
+    </div>
+    <!-- 미리보기 이미지를 표시할 곳 -->
+    <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
+
+    <div class="input-group mb-3">
+      <label for="itemAdd1">추가 상품1 : &nbsp;</label>
+      <input type="file" id="itemAdd1" name="itemAdd1" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview1')" /><br/>
+    </div>
+    <!-- 미리보기 이미지를 표시할 곳 -->
+    <img id="imagePreview1" src="#" alt="Image Preview1" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
+
+    <div class="input-group mb-3">
+      <label for="itemAdd1">추가 상품2 : &nbsp;</label>
+      <input type="file" id="itemAdd2" name="itemAdd2" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview2')" /><br/>
+    </div>
+    <!-- 미리보기 이미지를 표시할 곳 -->
+    <img id="imagePreview2" src="#" alt="Image Preview2" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
+
+    <div class="input-group mb-3">
+      <label for="itemAdd1">추가 상품3 : &nbsp;</label>
+      <input type="file" id="itemAdd3" name="itemAdd3" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview3')" /><br/>
+    </div>
+    <!-- 미리보기 이미지를 표시할 곳 -->
+    <img id="imagePreview3" src="#" alt="Image Preview3" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
+
+    <div class="input-group mb-3">
+      <label for="itemAdd1">추가 상품4 : &nbsp;</label>
+      <input type="file" id="itemAdd4" name="itemAdd4" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview4')" /><br/>
+    </div>
+    <!-- 미리보기 이미지를 표시할 곳 -->
+    <img id="imagePreview4" src="#" alt="Image Preview4" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
+
+    <button class="btn btn-primary w-100 submitBtn" type="submit">상품등록</button>
+
+  </form>
+  </div>
+
+</div>
+
+<!--자바스크립트 추가하는 영역-->
+<script layout:fragment="javascript" th:inline="javascript">
+  // 사진 선택시 미리보기
+  function previewImage(input, previewId) {
+    var reader = new FileReader();
+
+    reader.onload = function () {
+      var imagePreview = document.getElementById(previewId);
+      imagePreview.src = reader.result;
+      imagePreview.style.display = 'block';
+    };
+
+    if (input.files && input.files[0]) {
+      reader.readAsDataURL(input.files[0]); // 이미지를 읽어 미리보기로 표시
+    }
+  }
+</script>
+</body>
+</html>
