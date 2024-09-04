@@ -25,7 +25,7 @@ public class Reservation {
     private int numberOfGuests;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
 

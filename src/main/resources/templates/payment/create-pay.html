@@ -23,35 +23,28 @@
         <input type="datetime-local" th:field="*{paymentTime}" />
         </div>
 
-        <label>Customer:</label>
-        <div class="input-group mb-3">
-            <input type="text"  name="name"  id="user_name" class="form-control"  th:value="${user2.name}" placeholder="address 한번 더 입력해주세요"/>
-        </div>
-
-        <label>Phone:</label>
-        <div class="input-group mb-3">
-            <input type="tel"  name="phone" id="user_phone" class="form-control" th:value="${user2.phone}" placeholder="phone 번호 입력해주세요"/>
-        </div>
-
-        <label>Address:</label>
-        <div class="input-group mb-3">
-            <input type="text"  name="address"  id="user_address" class="form-control"  th:value="${user2.address}" placeholder="address 한번 더 입력해주세요"/>
-        </div>
-
-<!--        <label>Reservation:</label>-->
+<!--        <label>Customer:</label>-->
 <!--        <div class="input-group mb-3">-->
-<!--        <select th:field="*{reservation.id}">-->
-<!--            <option th:each="reservation : ${reservations}"-->
-<!--                    th:if="${reservation.user.id == user2.id}"-->
-<!--                    th:value="${reservation.id}"-->
-<!--                    th:text="${reservation.reservationTime}"></option>-->
-<!--        </select>-->
+<!--            <input type="text"  name="name"  id="user_name" class="form-control"  th:if="${user2 != null}" th:text="${user2.name}" placeholder="address 한번 더 입력해주세요"/>-->
 <!--        </div>-->
+
+<!--        <label>Phone:</label>-->
+<!--        <div class="input-group mb-3">-->
+<!--            <input type="tel"  name="phone" id="user_phone" class="form-control" th:if="${user2 != null}" th:text="${user2.phone}" placeholder="phone 번호 입력해주세요"/>-->
+<!--        </div>-->
+
+<!--        <label>Address:</label>-->
+<!--        <div class="input-group mb-3">-->
+<!--            <input type="text"  name="address"  id="user_address" class="form-control"  th:if="${user2 != null}" th:text="${user2.address}" placeholder="address 한번 더 입력해주세요"/>-->
+<!--        </div>-->
+
+
+
         <button class="btn btn-primary w-100 submitBtn" type="submit">Create</button>
     </form>
     </div>
-    <input type="hidden" id="userid" name="id" class="form-control" th:value="${user2.id}" >
-    <input type="hidden" id="username" name="id" class="form-control" th:value="${user2.username}" >
+<!--    <input type="hidden" id="userid" name="id" class="form-control" th:value="${user2.id}" >-->
+<!--    <input type="hidden" id="username" name="id" class="form-control" th:value="${user2.username}" >-->
      <button id="orderBtn" class="btn btn-primary mt-3 w-100 submitBtn" type="submit">결제하기</button>
 </div>
 <!--자바스크립트 추가하는 영역-->

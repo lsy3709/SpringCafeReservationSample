@@ -25,7 +25,7 @@
     <div class="input-group mb-3">
     <select th:field="*{user.id}">
       <option  th:each="user : ${users}"
-               th:if="${user.id == user2.id}"
+               th:if="${user != null} and ${user2 != null} and ${user.id == user2.id}"
                th:value="${user.id}"
                th:text="${user.username}"></option>
     </select>

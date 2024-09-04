@@ -12,7 +12,7 @@
     <li th:each="payment : ${payments}">
       <span th:text="${payment.paymentTime}"></span> -
       <span th:text="${payment.amount}"></span> -
-      <span th:text="${payment.reservation.reservationTime}"></span>
+<!--      <span th:text="${payment.reservation.reservationTime}"></span>-->
       <a th:href="@{/payments/{id}/edit(id=${payment.id})}">Edit</a> |
       <a th:href="@{/payments/{id}/delete(id=${payment.id})}">Delete</a>
     </li>
