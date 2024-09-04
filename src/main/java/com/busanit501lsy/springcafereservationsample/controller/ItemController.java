@@ -115,8 +115,89 @@ public class ItemController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateItem(@PathVariable Long id, @ModelAttribute Item itemDetails) {
-        itemService.updateItem(id, itemDetails);
+    public String updateItem(@PathVariable Long id, @ModelAttribute Item itemDetails,
+                             @RequestParam(value = "itemRepImage", required = false) MultipartFile itemRepImage,
+                             @RequestParam(value = "itemAdd1", required = false) MultipartFile itemAdd1,
+                             @RequestParam(value = "itemAdd2", required = false) MultipartFile itemAdd2,
+                             @RequestParam(value = "itemAdd3", required = false) MultipartFile itemAdd3,
+                             @RequestParam(value = "itemAdd4", required = false) MultipartFile itemAdd4) {
+        try {
+            // 1. Item 저장 (기본 정보 업데이트)
+            Item savedItem = itemService.updateItem(id, itemDetails);
+
+            // 2. 대표 이미지 업데이트
+            if (itemRepImage != null && !itemRepImage.isEmpty()) {
+                log.info("lsy 수정 대표 이미지 업데이트: " + savedItem.getId() + ", 파일명: " + itemRepImage.getOriginalFilename());
+
+                // 기존 대표 이미지 삭제
+                Optional<Item> loadItem = itemService.getItemById(savedItem.getId());
+                loadItem.ifPresent(existingItem -> {
+                    itemService.deleteItemImage(existingItem, 0); // 이미지 타입 0: 대표 이미지 삭제
+                });
+
+                // 새로운 대표 이미지 저장
+                itemService.saveItemImage(savedItem.getId(), itemRepImage, 0);
+            }
+
+            // 3. 추가 이미지 1 업데이트
+            if (itemAdd1 != null && !itemAdd1.isEmpty()) {
+                log.info("lsy 수정 추가 이미지 1 업데이트: " + savedItem.getId() + ", 파일명: " + itemAdd1.getOriginalFilename());
+
+                // 기존 추가 이미지 1 삭제
+                Optional<Item> loadItem = itemService.getItemById(savedItem.getId());
+                loadItem.ifPresent(existingItem -> {
+                    itemService.deleteItemImage(existingItem, 1); // 이미지 타입 1: 추가 이미지 1 삭제
+                });
+
+                // 새로운 추가 이미지 1 저장
+                itemService.saveItemImage(savedItem.getId(), itemAdd1, 1);
+            }
+
+            // 4. 추가 이미지 2 업데이트
+            if (itemAdd2 != null && !itemAdd2.isEmpty()) {
+                log.info("lsy 수정 추가 이미지 2 업데이트: " + savedItem.getId() + ", 파일명: " + itemAdd2.getOriginalFilename());
+
+                // 기존 추가 이미지 2 삭제
+                Optional<Item> loadItem = itemService.getItemById(savedItem.getId());
+                loadItem.ifPresent(existingItem -> {
+                    itemService.deleteItemImage(existingItem, 2); // 이미지 타입 2: 추가 이미지 2 삭제
+                });
+
+                // 새로운 추가 이미지 2 저장
+                itemService.saveItemImage(savedItem.getId(), itemAdd2, 2);
+            }
+
+            // 5. 추가 이미지 3 업데이트
+            if (itemAdd3 != null && !itemAdd3.isEmpty()) {
+                log.info("lsy 수정 추가 이미지 3 업데이트: " + savedItem.getId() + ", 파일명: " + itemAdd3.getOriginalFilename());
+
+                // 기존 추가 이미지 3 삭제
+                Optional<Item> loadItem = itemService.getItemById(savedItem.getId());
+                loadItem.ifPresent(existingItem -> {
+                    itemService.deleteItemImage(existingItem, 3); // 이미지 타입 3: 추가 이미지 3 삭제
+                });
+
+                // 새로운 추가 이미지 3 저장
+                itemService.saveItemImage(savedItem.getId(), itemAdd3, 3);
+            }
+
+            // 6. 추가 이미지 4 업데이트
+            if (itemAdd4 != null && !itemAdd4.isEmpty()) {
+                log.info("lsy 수정 수정 추가 이미지 4 업데이트: " + savedItem.getId() + ", 파일명: " + itemAdd4.getOriginalFilename());
+
+                // 기존 추가 이미지 4 삭제
+                Optional<Item> loadItem = itemService.getItemById(savedItem.getId());
+                loadItem.ifPresent(existingItem -> {
+                    itemService.deleteItemImage(existingItem, 4); // 이미지 타입 4: 추가 이미지 4 삭제
+                });
+
+                // 새로운 추가 이미지 4 저장
+                itemService.saveItemImage(savedItem.getId(), itemAdd4, 4);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update item images", e);
+        }
         return "redirect:/items";
     }
 
@@ -153,7 +234,7 @@ public class ItemController {
             itemImage = Optional.ofNullable(itemService.getItemImage(item.get().getItemAdd4ImageId()));
         }
 
-        if (item.isPresent() && item.get().getItemRepImageId() != null) {
+        if (item.isPresent() && itemImage != null) {
 
 //            ItemImage itemImage = itemService.getItemImage(item.get().getItemRepImageId());
             return ResponseEntity.ok()

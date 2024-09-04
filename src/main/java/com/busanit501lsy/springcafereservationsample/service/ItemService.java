@@ -64,7 +64,7 @@ public class ItemService {
         // Get the user
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        log.info("lsy item img imgservice : " + item.getId() + file.getOriginalFilename() );
+        log.info("lsy 수정 item img imgservice : " + item.getId() + file.getOriginalFilename() );
         // Create and save the profile image
         ItemImage itemImage = new ItemImage(
                 file.getOriginalFilename(),
@@ -74,9 +74,9 @@ public class ItemService {
         ItemImage savedImage = itemImageRepository.save(itemImage);
 
         // Link the profile image to the user
-        log.info("lsy item img imgservice : " + savedImage.getId());
+        log.info("lsy 수정 item img imgservice : " + savedImage.getId());
         // 분기 필요.
-        item.setItemRepImageId(savedImage.getId());
+//        item.setItemRepImageId(savedImage.getId());
         // check 값에 따라 이미지 저장 로직 분기
         switch (check) {
             case 0:
@@ -108,6 +108,66 @@ public class ItemService {
     public ItemImage getItemImage(String imageId) {
         return itemImageRepository.findById(imageId)
                 .orElseThrow(() -> new RuntimeException("Image not found"));
+    }
+
+    // 프로필 이미지만 삭제
+    public void deleteItemImage(Item item, int imageType) {
+        String imageId = null;
+
+        // 이미지 타입에 따라 삭제할 이미지 ID 결정
+        switch (imageType) {
+            case 0: // 대표 이미지
+                imageId = item.getItemRepImageId();
+                break;
+            case 1: // 추가 이미지 1
+                imageId = item.getItemAdd1ImageId();
+                break;
+            case 2: // 추가 이미지 2
+                imageId = item.getItemAdd2ImageId();
+                break;
+            case 3: // 추가 이미지 3
+                imageId = item.getItemAdd3ImageId();
+                break;
+            case 4: // 추가 이미지 4
+                imageId = item.getItemAdd4ImageId();
+                break;
+            default:
+                log.warn("잘못된 이미지 타입입니다: " + imageType);
+                return;
+        }
+
+        log.info("lsy 수정 삭제할 이미지 ID: " + imageId);
+
+        // 이미지 ID가 존재하면 삭제 작업 수행
+        if (imageId != null) {
+            // MongoDB에서 이미지 삭제
+            itemImageRepository.deleteById(imageId);
+
+            // 해당 이미지 ID 필드를 null로 설정
+            switch (imageType) {
+                case 0:
+                    item.setItemRepImageId(null);
+                    break;
+                case 1:
+                    item.setItemAdd1ImageId(null);
+                    break;
+                case 2:
+                    item.setItemAdd2ImageId(null);
+                    break;
+                case 3:
+                    item.setItemAdd3ImageId(null);
+                    break;
+                case 4:
+                    item.setItemAdd4ImageId(null);
+                    break;
+            }
+
+            // 업데이트된 Item 정보 저장
+            itemRepository.save(item);
+            log.info("lsy 수정 이미지 삭제 및 Item 업데이트 완료 : " + imageType);
+        } else {
+            log.warn("삭제할 이미지가 없습니다. 이미지 타입: " + imageType);
+        }
     }
 
 

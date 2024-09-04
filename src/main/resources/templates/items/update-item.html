@@ -12,7 +12,7 @@
     <h2>Update Item</h2>
   </div>
   <div class="card-body">
-  <form th:action="@{/items/new}" th:object="${item}" method="post" enctype="multipart/form-data">
+  <form th:action="@{/items/edit/{id}(id=${item.id})}" th:object="${item}" method="post" enctype="multipart/form-data">
     <input type="hidden"  name="id" class="form-control" th:value="${item.id}" >
     <label class="form-control">상품명 :</label>
     <div class="input-group mb-3">
@@ -34,10 +34,10 @@
     <label for="itemRepImage">대표상품 : &nbsp;</label>
     <input type="file" id="itemRepImage" name="itemRepImage" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview')" /><br/>
     </div>
-    <h3> 새 이미지</h3>
+    <h3> 대표 새 이미지</h3>
     <!-- 미리보기 이미지를 표시할 곳 -->
     <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3> 기존 이미지</h3>
+    <h3> 대표 기존 이미지</h3>
     <span th:if="${item.itemRepImageId}">
         <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='rep')}" alt="Profile Image" width="200"/>
       </span>
@@ -45,14 +45,15 @@
         <p>No profile image uploaded.</p>
       </span>
     <br>
-
+    <br>
+    <br>
     <div class="input-group mb-3">
       <label for="itemAdd1">추가 상품1 : &nbsp;</label>
       <input type="file" id="itemAdd1" name="itemAdd1" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview1')" /><br/>
     </div>
     <!-- 미리보기 이미지를 표시할 곳 -->
     <img id="imagePreview1" src="#" alt="Image Preview1" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3> 기존 이미지</h3>
+    <h3> 추가1 기존 이미지</h3>
     <span th:if="${item.itemAdd1ImageId}">
         <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add1')}" alt="itemAdd1ImageId" width="200"/>
       </span>
@@ -60,14 +61,15 @@
         <p>No profile image uploaded.</p>
       </span>
     <br>
-
+    <br>
+    <br>
     <div class="input-group mb-3">
       <label for="itemAdd1">추가 상품2 : &nbsp;</label>
       <input type="file" id="itemAdd2" name="itemAdd2" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview2')" /><br/>
     </div>
     <!-- 미리보기 이미지를 표시할 곳 -->
     <img id="imagePreview2" src="#" alt="Image Preview2" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3> 기존 이미지</h3>
+    <h3>추가2 기존 이미지</h3>
     <span th:if="${item.itemAdd2ImageId}">
         <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add2')}" alt="itemAdd2ImageId" width="200"/>
       </span>
@@ -75,14 +77,15 @@
         <p>No profile image uploaded.</p>
       </span>
     <br>
-
+    <br>
+    <br>
     <div class="input-group mb-3">
       <label for="itemAdd1">추가 상품3 : &nbsp;</label>
       <input type="file" id="itemAdd3" name="itemAdd3" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview3')" /><br/>
     </div>
     <!-- 미리보기 이미지를 표시할 곳 -->
     <img id="imagePreview3" src="#" alt="Image Preview3" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3> 기존 이미지</h3>
+    <h3>추가3 기존 이미지</h3>
     <span th:if="${item.itemAdd3ImageId}">
         <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add3')}" alt="itemAdd3ImageId" width="200"/>
       </span>
@@ -90,14 +93,15 @@
         <p>No profile image uploaded.</p>
       </span>
     <br>
-
+    <br>
+    <br>
     <div class="input-group mb-3">
       <label for="itemAdd1">추가 상품4 : &nbsp;</label>
       <input type="file" id="itemAdd4" name="itemAdd4" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview4')" /><br/>
     </div>
     <!-- 미리보기 이미지를 표시할 곳 -->
     <img id="imagePreview4" src="#" alt="Image Preview4" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3> 기존 이미지</h3>
+    <h3>추가4 기존 이미지</h3>
     <span th:if="${item.itemAdd4ImageId}">
         <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add4')}" alt="itemAdd4ImageId" width="200"/>
       </span>
@@ -106,7 +110,7 @@
       </span>
     <br>
 
-    <button class="btn btn-primary w-100 submitBtn" type="submit">상품등록</button>
+    <button class="btn btn-primary w-100 submitBtn" type="submit">상품수정</button>
 
   </form>
   </div>
