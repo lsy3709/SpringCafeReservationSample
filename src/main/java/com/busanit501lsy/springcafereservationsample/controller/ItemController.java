@@ -35,13 +35,13 @@ public class ItemController {
         }
     }
 
-    @GetMapping("/create")
+    @GetMapping("/new")
     public String createItemForm(Model model) {
         model.addAttribute("item", new Item());
         return "items/create"; // Form for creating a new item
     }
 
-    @PostMapping("/create")
+    @PostMapping("/new")
     public String createItem(@ModelAttribute Item item) {
         itemService.createItem(item);
         return "redirect:/items";

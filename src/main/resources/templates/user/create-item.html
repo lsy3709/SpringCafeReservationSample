@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/layout.html}"
+>
+<body>
+<div layout:fragment="content">
+
+
+  <div class="card-header">
+    <h2>Create New Item</h2>
+  </div>
+  <div class="card-body">
+  <form th:action="@{/items/new}" method="post" enctype="multipart/form-data">
+    <label class="form-control">상품명 :</label>
+    <div class="input-group mb-3">
+    <input type="text" name="name" class="form-control" placeholder="상품명 입력해주세요"/>
+    </div>
+
+    <label class="form-control">가격 :</label>
+    <div class="input-group mb-3">
+      <input type="number" name="name" class="form-control" />
+    </div>
+
+    <div class="input-group mb-3">
+    <label for="profileImage">대표상품 : &nbsp;</label>
+    <input type="file" id="profileImage" name="profileImage" class="form-control" /><br/>
+    </div>
+
+    <button class="btn btn-primary w-100 submitBtn" type="submit">상품등록</button>
+<!--    profileImageId-->
+  </form>
+  </div>
+
+</div>
+
+<!--자바스크립트 추가하는 영역-->
+<script layout:fragment="javascript" th:inline="javascript">
+
+</script>
+</body>
+</html>

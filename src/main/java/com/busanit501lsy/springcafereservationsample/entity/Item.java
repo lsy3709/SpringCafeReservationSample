@@ -30,10 +30,32 @@ public class Item {
 
     private String description;
 
+    // 대표사진
+    // 프로필 이미지, 몽고디비에 업로드
+    @Column(name = "item_rep_image_id")
+    private String itemRepImageId;
+
+    // 추가사진1
+    @Column(name = "item_add1_image_id")
+    private String itemAdd1ImageId;
+
+    // 추가사진2
+    @Column(name = "item_add2_image_id")
+    private String itemAdd2ImageId;
+
+    // 추가사진3
+    @Column(name = "item_add3_image_id")
+    private String itemAdd3ImageId;
+
+    // 추가사진4
+    @Column(name = "item_add4_image_id")
+    private String itemAdd4ImageId;
+
     // ItemImage와 일대다 관계 설정
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<ItemImage> images;
+//    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonManagedReference
+//    private List<ItemImage> images;
+
 
 
 
