@@ -1,10 +1,15 @@
 package com.busanit501lsy.springcafereservationsample.controller;
 
+import com.busanit501lsy.springcafereservationsample.entity.Item;
 import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,8 +36,17 @@ public class UserController {
     PasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping
-    public String getAllUsers(@AuthenticationPrincipal UserDetails user, Model model) {
-        List<User> users = userService.getAllUsers();
+    public String getAllUsers(@AuthenticationPrincipal UserDetails user, Model model,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        Page<User> userPage = userService.getAllUsersWithPage(pageable);
+        model.addAttribute("users", userPage.getContent());
+        model.addAttribute("pageNumber", userPage.getNumber());
+        model.addAttribute("totalPages", userPage.getTotalPages());
+        model.addAttribute("pageSize", userPage.getSize());
+
+//        List<User> users = userService.getAllUsers();
         Optional<User> user1 = userService.getUserByUsername(user.getUsername());
         if (user1 != null && user1.isPresent()) {
             User user2 = user1.get();
@@ -41,8 +55,6 @@ public class UserController {
             log.info("User found: " + user2.getId());
             log.info("User found: " + user2.getUsername());
         }
-
-        model.addAttribute("users", users);
 
         model.addAttribute("user", user);
 

@@ -25,6 +25,38 @@
 
     </li>
   </ul>
+  <!-- 페이지네이션 -->
+  <div class="pagination justify-content-center">
+    <ul class="pagination">
+      <!-- First page button -->
+      <li th:if="${pageNumber > 0}" class="page-item">
+        <a th:href="@{/users?page=0(size=${pageSize})}" class="page-link">First</a>
+      </li>
+
+      <!-- Previous page button -->
+      <li th:if="${pageNumber > 0}" class="page-item">
+        <a th:href="@{/users(page=${pageNumber - 1}, size=${pageSize})}" class="page-link">Previous</a>
+      </li>
+
+      <!-- Page number buttons -->
+      <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+          th:classappend="${i == pageNumber} ? 'active' : ''" class="page-item">
+        <a th:href="@{/users(page=${i}, size=${pageSize})}" class="page-link" th:text="${i + 1}">Page Number</a>
+      </li>
+
+      <!-- Next page button -->
+      <li th:if="${pageNumber < totalPages - 1}" class="page-item">
+        <a th:href="@{/users(page=${pageNumber + 1}, size=${pageSize})}" class="page-link">Next</a>
+      </li>
+
+      <!-- Last page button -->
+      <li th:if="${pageNumber < totalPages - 1}" class="page-item">
+        <a th:href="@{/users(page=${totalPages - 1}, size=${pageSize})}" class="page-link">Last</a>
+      </li>
+    </ul>
+  </div>
+
+
 </div>
 
 <!--자바스크립트 추가하는 영역-->

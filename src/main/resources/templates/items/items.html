@@ -27,29 +27,35 @@
   </ul>
 
   <!-- 페이지네이션 -->
-  <div class="pagination">
-    <ul class="pagination-list">
-      <li th:if="${pageNumber > 0}">
-        <a th:href="@{/items?page=0(size=${pageSize})}">First</a>
-      </li>
-      <li th:if="${pageNumber > 0}">
-        <a th:href="@{/items?page=${pageNumber - 1}(size=${pageSize})}">Previous</a>
+  <div class="pagination justify-content-center">
+    <ul class="pagination">
+      <!-- First page button -->
+      <li th:if="${pageNumber > 0}" class="page-item">
+        <a th:href="@{/items?page=0(size=${pageSize})}" class="page-link">First</a>
       </li>
 
+      <!-- Previous page button -->
+      <li th:if="${pageNumber > 0}" class="page-item">
+        <a th:href="@{/items(page=${pageNumber - 1}, size=${pageSize})}" class="page-link">Previous</a>
+      </li>
+
+      <!-- Page number buttons -->
       <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-          th:classappend="${i == pageNumber} ? 'active'">
-        <a th:href="@{/items(page=${i}, size=${pageSize})}" th:text="${i + 1}">Page Number</a>
+          th:classappend="${i == pageNumber} ? 'active' : ''" class="page-item">
+        <a th:href="@{/items(page=${i}, size=${pageSize})}" class="page-link" th:text="${i + 1}">Page Number</a>
       </li>
 
-      <li th:if="${pageNumber < totalPages - 1}">
-        <a th:href="@{/items?page=${pageNumber + 1}(size=${pageSize})}">Next</a>
+      <!-- Next page button -->
+      <li th:if="${pageNumber < totalPages - 1}" class="page-item">
+        <a th:href="@{/items(page=${pageNumber + 1}, size=${pageSize})}" class="page-link">Next</a>
       </li>
-      <li th:if="${pageNumber < totalPages - 1}">
-        <a th:href="@{/items?page=${totalPages - 1}(size=${pageSize})}">Last</a>
+
+      <!-- Last page button -->
+      <li th:if="${pageNumber < totalPages - 1}" class="page-item">
+        <a th:href="@{/items(page=${totalPages - 1}, size=${pageSize})}" class="page-link">Last</a>
       </li>
     </ul>
   </div>
-</div>
 
 </div>
 
