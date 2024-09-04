@@ -9,6 +9,9 @@ import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ProfileImageRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +29,10 @@ public class ItemService {
     // 프로필 이미지, 몽고디비 연결
     @Autowired
     ItemImageRepository itemImageRepository;
+
+    public Page<Item> getAllItemsWithPage(Pageable pageable) {
+        return itemRepository.findAll(pageable);
+    }
 
     public List<Item> getAllItems() {
         return itemRepository.findAll();
@@ -97,4 +104,11 @@ public class ItemService {
         }
         itemRepository.save(item);
     }
-}
+    // 이미지 가져오기
+    public ItemImage getItemImage(String imageId) {
+        return itemImageRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Image not found"));
+    }
+
+
+} //end

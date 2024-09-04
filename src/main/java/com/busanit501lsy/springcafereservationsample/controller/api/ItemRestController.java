@@ -1,8 +1,13 @@
 package com.busanit501lsy.springcafereservationsample.controller.api;
 
 import com.busanit501lsy.springcafereservationsample.entity.Item;
+import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +24,13 @@ public class ItemRestController {
     @GetMapping
     public List<Item> getAllItems() {
         return itemService.getAllItems();
+    }
+
+    @GetMapping("/page")
+    public Page<Item> getAllItemsWithPage(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return itemService.getAllItemsWithPage(pageable);
     }
 
     @GetMapping("/{id}")

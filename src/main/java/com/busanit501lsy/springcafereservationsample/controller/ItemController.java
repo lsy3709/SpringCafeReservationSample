@@ -2,9 +2,17 @@ package com.busanit501lsy.springcafereservationsample.controller;
 
 import com.busanit501lsy.springcafereservationsample.entity.Item;
 import com.busanit501lsy.springcafereservationsample.entity.User;
+import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ItemImage;
+import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.service.ItemService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +31,21 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping
-    public String getAllItems(Model model) {
-        List<Item> items = itemService.getAllItems();
-        model.addAttribute("items", items);
-        return "items/list"; // Assuming there is a Thymeleaf template at src/main/resources/templates/items/list.html
+    public String getAllItems(Model model,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size) {
+//        List<Item> items = itemService.getAllItems();
+//        model.addAttribute("items", items);
+//        return "items/items"; // Assuming there is a Thymeleaf template at src/main/resources/templates/items/list.html
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Item> itemPage = itemService.getAllItemsWithPage(pageable);
+
+        model.addAttribute("items", itemPage.getContent());
+        model.addAttribute("pageNumber", itemPage.getNumber());
+        model.addAttribute("totalPages", itemPage.getTotalPages());
+        model.addAttribute("pageSize", itemPage.getSize());
+
+        return "items/items"; // Thymeleaf 템플릿
     }
 
     @GetMapping("/{id}")
@@ -105,5 +124,20 @@ public class ItemController {
     public String deleteItem(@PathVariable Long id) {
         itemService.deleteItem(id);
         return "redirect:/items";
+    }
+
+    // 아이템 이미지 불러오기
+    @GetMapping("/{id}/itemImage")
+    public ResponseEntity<byte[]> getProfileImage(@PathVariable Long id) {
+        log.info("lsy users image 확인 ");
+
+        Optional<Item> item = itemService.getItemById(id);
+        if (item.isPresent() && item.get().getItemRepImageId() != null) {
+            ItemImage itemImage = itemService.getItemImage(item.get().getItemRepImageId());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(itemImage.getContentType()))
+                    .body(itemImage.getData());
+        }
+        return ResponseEntity.notFound().build();
     }
 }
