@@ -99,7 +99,7 @@ public class ItemController {
         } catch (IOException e) {
             throw new RuntimeException("Failed to save user profile image", e);
         }
-        return "redirect:/users";
+        return "redirect:/items";
     }
 
 
@@ -128,16 +128,41 @@ public class ItemController {
 
     // 아이템 이미지 불러오기
     @GetMapping("/{id}/itemImage")
-    public ResponseEntity<byte[]> getProfileImage(@PathVariable Long id) {
+    public ResponseEntity<byte[]> getProfileImage(@PathVariable Long id,
+                                                  @RequestParam(value = "type", required = false) String type) {
         log.info("lsy users image 확인 ");
 
         Optional<Item> item = itemService.getItemById(id);
-        if (item.isPresent() && item.get().getItemRepImageId() != null) {
-            ItemImage itemImage = itemService.getItemImage(item.get().getItemRepImageId());
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(itemImage.getContentType()))
-                    .body(itemImage.getData());
+
+        if (!item.isPresent()) {
+            return ResponseEntity.notFound().build();
         }
+
+        // 널 가능성 있는 type 처리
+        Optional<ItemImage> itemImage = Optional.empty();
+
+        if (type == null || "rep".equals(type)) {
+            itemImage = Optional.ofNullable(itemService.getItemImage(item.get().getItemRepImageId()));
+        } else if ("add1".equals(type)) {
+            itemImage = Optional.ofNullable(itemService.getItemImage(item.get().getItemAdd1ImageId()));
+        } else if ("add2".equals(type)) {
+            itemImage = Optional.ofNullable(itemService.getItemImage(item.get().getItemAdd2ImageId()));
+        } else if ("add3".equals(type)) {
+            itemImage = Optional.ofNullable(itemService.getItemImage(item.get().getItemAdd3ImageId()));
+        } else if ("add4".equals(type)) {
+            itemImage = Optional.ofNullable(itemService.getItemImage(item.get().getItemAdd4ImageId()));
+        }
+
+        if (item.isPresent() && item.get().getItemRepImageId() != null) {
+
+//            ItemImage itemImage = itemService.getItemImage(item.get().getItemRepImageId());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(itemImage.get().getContentType()))
+                    .body(itemImage.get().getData());
+        }
+
+
+
         return ResponseEntity.notFound().build();
     }
 }

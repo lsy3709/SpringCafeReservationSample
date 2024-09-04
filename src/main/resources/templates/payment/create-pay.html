@@ -38,15 +38,15 @@
             <input type="text"  name="address"  id="user_address" class="form-control"  th:value="${user2.address}" placeholder="address 한번 더 입력해주세요"/>
         </div>
 
-        <label>Reservation:</label>
-        <div class="input-group mb-3">
-        <select th:field="*{reservation.id}">
-            <option th:each="reservation : ${reservations}"
-                    th:if="${reservation.user.id == user2.id}"
-                    th:value="${reservation.id}"
-                    th:text="${reservation.reservationTime}"></option>
-        </select>
-        </div>
+<!--        <label>Reservation:</label>-->
+<!--        <div class="input-group mb-3">-->
+<!--        <select th:field="*{reservation.id}">-->
+<!--            <option th:each="reservation : ${reservations}"-->
+<!--                    th:if="${reservation.user.id == user2.id}"-->
+<!--                    th:value="${reservation.id}"-->
+<!--                    th:text="${reservation.reservationTime}"></option>-->
+<!--        </select>-->
+<!--        </div>-->
         <button class="btn btn-primary w-100 submitBtn" type="submit">Create</button>
     </form>
     </div>
