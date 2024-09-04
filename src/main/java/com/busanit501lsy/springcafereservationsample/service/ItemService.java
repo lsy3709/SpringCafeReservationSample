@@ -56,6 +56,28 @@ public class ItemService {
     }
 
     public void deleteItem(Long id) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        // 상품 대표 이미지 삭제
+        if(item.getItemRepImageId() != null && !item.getItemRepImageId().isEmpty()) {
+            deleteItemImage(item,0);
+        }
+        // 상품 대표 이미지 삭제
+        if(item.getItemAdd1ImageId() != null && !item.getItemAdd1ImageId().isEmpty()) {
+            deleteItemImage(item,1);
+        }
+        // 상품 대표 이미지 삭제
+        if(item.getItemAdd2ImageId() != null && !item.getItemAdd2ImageId().isEmpty()) {
+            deleteItemImage(item,2);
+        }
+        // 상품 대표 이미지 삭제
+        if(item.getItemAdd3ImageId() != null && !item.getItemAdd3ImageId().isEmpty()) {
+            deleteItemImage(item,3);
+        }
+        // 상품 대표 이미지 삭제
+        if(item.getItemAdd4ImageId() != null && !item.getItemAdd4ImageId().isEmpty()) {
+            deleteItemImage(item,4);
+        }
         itemRepository.deleteById(id);
     }
 
