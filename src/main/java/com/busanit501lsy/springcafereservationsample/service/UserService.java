@@ -5,6 +5,7 @@ import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.repository.UserRepository;
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ProfileImageRepository;
+import com.busanit501lsy.springcafereservationsample.util.ImageUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -86,12 +87,12 @@ public class UserService {
         // Get the user
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+        byte[] imageFile = ImageUtil.createThumbnail(file,500,500);
         // Create and save the profile image
         ProfileImage profileImage = new ProfileImage(
                 file.getOriginalFilename(),
                 file.getContentType(),
-                file.getBytes()
+                imageFile
         );
         ProfileImage savedImage = profileImageRepository.save(profileImage);
 

@@ -1,17 +1,14 @@
 package com.busanit501lsy.springcafereservationsample.service;
 
 import com.busanit501lsy.springcafereservationsample.entity.Item;
-import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ItemImage;
-import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.repository.ItemRepository;
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ItemImageRepository;
-import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ProfileImageRepository;
+import com.busanit501lsy.springcafereservationsample.util.ImageUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -88,10 +85,11 @@ public class ItemService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         log.info("lsy 수정 item img imgservice : " + item.getId() + file.getOriginalFilename() );
         // Create and save the profile image
+        byte[] imageFile = ImageUtil.createThumbnail(file,500,500);
         ItemImage itemImage = new ItemImage(
                 file.getOriginalFilename(),
                 file.getContentType(),
-                file.getBytes()
+                imageFile
         );
         ItemImage savedImage = itemImageRepository.save(itemImage);
 
