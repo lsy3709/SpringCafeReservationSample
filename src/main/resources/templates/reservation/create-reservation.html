@@ -25,7 +25,7 @@
     </div>
     <label class="form-control">선택 된 상품명 :</label>
     <div class="input-group mb-3">
-      <input type="text" id="selectedItemName" readonly  />
+      <input type="text" id="selectedItemName" name = "selectedItemName"  readonly  />
     </div>
     <label class="form-control">선택 된 상품 가격 :</label>
     <div class="input-group mb-3">
@@ -98,7 +98,7 @@
                   </div>
                   <div class="card-footer">
                     <a href="/items/${item.id}/edit" class="btn btn-primary">상세보기</a>
-                  <a id="selectReservation" class="btn btn-warning" data-name="${item.name}" data-price="${item.price}">예약선택</a>
+                  <a class="selectReservation btn btn-warning" data-name="${item.name}" data-price="${item.price}">예약선택</a>
                   </div>
                 </div>
               </div>`;
@@ -151,6 +151,8 @@
           console.error('Error fetching items:', error);
         }
       });
+
+
     }
 
     // Initial load (fetch the first page with 6 items per page)
@@ -163,24 +165,21 @@
       const size = $(this).data('size');
       fetchItems(page, size); // Fetch the items for the clicked page
     });
-  });
 
-  // 문서가 준비되면 실행
-  document.addEventListener('DOMContentLoaded', function () {
-    const selectReservationButton = document.getElementById('selectReservation');
+    // 예약 선택 버튼 클릭 시 이벤트 핸들러
+    // 동적으로 생성된 .selectReservation 클래스 버튼에 이벤트 핸들러 추가
+    $(document).on('click', '.selectReservation', function() {
+      // 버튼의 data-name과 data-price 속성에서 값 가져오기
+      const productName = $(this).data('name');
+      const productPrice = $(this).data('price');
 
-    if (selectReservationButton) {
-      selectReservationButton.addEventListener('click', function() {
-        const productName = this.getAttribute('data-name');
-        const productPrice = this.getAttribute('data-price');
+      // 값 설정
+      $('#selectedItemName').val(productName);
+      $('#selectedItemPrice').val(productPrice);
+    });
 
-        document.getElementById('selectedItemName').value = productName;
-        document.getElementById('selectedItemPrice').value = productPrice;
-      });
-    } else {
-      console.error("selectReservation 버튼을 찾을 수 없습니다.");
-    }
-  });
+  }); //end
+
 </script>
 
 </body>

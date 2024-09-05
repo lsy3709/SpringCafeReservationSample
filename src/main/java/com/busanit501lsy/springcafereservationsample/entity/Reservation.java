@@ -24,6 +24,9 @@ public class Reservation {
     private LocalDateTime reservationTime;
     private int numberOfGuests;
 
+    private String selectedItemName;
+    private String selectedItemPrice;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
