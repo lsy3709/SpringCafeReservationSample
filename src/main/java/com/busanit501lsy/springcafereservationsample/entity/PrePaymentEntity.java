@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PrePaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

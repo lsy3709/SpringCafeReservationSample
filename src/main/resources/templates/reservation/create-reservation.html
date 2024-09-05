@@ -13,14 +13,17 @@
   <div class="card-body">
 
   <form id="reservationForm"  method="post">
+
+
+
     <label class="form-control">예약 가능 시간만 표기, 테이블 필요,상품과 예약시간, 1시간 단위로, 예) 9:00~10:00:</label>
     <div class="input-group mb-3">
-    <input class="form-control" type="date"  id="reservationTime" name="reservationTime" />
+    <input class="form-control" type="date"  id="reservationDate" name="reservationDate" />
     </div>
 
     <div class="form-group">
-      <label for="timeSelect">예약 시간 :</label>
-      <select id="timeSelect" class="form-control" name="timeSlot">
+      <label for="reservationTime">예약 시간 :</label>
+      <select id="reservationTime" class="form-control" name="reservationTime">
         <option th:each="i : ${#numbers.sequence(0, 23)}"
                 th:value="${i}"
                 th:text="${i} + ':00 ~ ' + ${i + 1} + ':00'">
@@ -30,7 +33,7 @@
 
     <label class="form-control">Number of Guests :</label>
     <div class="input-group mb-3">
-      <input class="form-control" type="number"  id="guestCount" name="guestCount"
+      <input class="form-control" type="number"  id="reservationCount" name="reservationCount"
              value="2"
              min="1" />
     </div>
@@ -48,17 +51,17 @@
       <!--        th:value       제출 될 값-->
       <!--    th:text  화면에 표시 될 값-->
       <div class="form-group">
-        <label for="userSelect">예약자 :</label>
-        <select id="userSelect" class="form-control" name="userId">
+        <label for="reservationName">예약자 :</label>
+        <select id="reservationName" class="form-control" name="reservationName">
           <option th:each="user : ${users}"
                   th:if="${user != null} and ${user2 != null} and ${user.id == user2.id}"
-                  th:value="${user.id}"
+                  th:value="${user.username}"
                   th:text="${user.name}">
           </option>
         </select>
       </div>
     </div>
-    <button class="btn btn-primary w-100 submitBtn" type="submit">예약하기</button>
+    <button id="submitReservation" class="btn btn-primary w-100 submitBtn" type="submit">예약하기</button>
 
   </form>
     <!--  상품넣기, 레스트로-->
@@ -191,6 +194,44 @@
       // 값 설정
       $('#selectedItemName').val(productName);
       $('#selectedItemPrice').val(productPrice);
+    });
+
+    // 예약 생성
+    // 예약하기 버튼 클릭 시 AJAX로 폼 제출
+    $(document).on('click', '#submitReservation', function (e) {
+      e.preventDefault(); // 기본 폼 제출 방지
+
+      const dataToSend = {
+                reservationTime: $('#reservationTime').val(),
+                reservationDate: $('#reservationDate').val(),
+                reservationCount: $('#reservationCount').val(),
+                selectedItemName: $('#selectedItemName').val(),
+                selectedItemPrice: $('#selectedItemPrice').val(),
+                reservationName: $('#reservationName').val()
+              };
+
+
+      // AJAX 요청
+      $.ajax({
+        url: '/api/reservations', // 전송할 URL (Thymeleaf에서 설정한 엔드포인트)
+        type: 'POST',
+        contentType: 'application/json', // JSON 타입으로 전송
+        dataType: 'json', // 서버에서 JSON 형식의 응답을 기대
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("accessToken")},
+
+        data: JSON.stringify(dataToSend), // 데이터를 JSON 문자열로 변환하여 전송
+        success: function (response) {
+          // 성공 시 처리할 동작
+          alert('예약이 성공적으로 완료되었습니다!');
+          console.log(response);
+        },
+        error: function (error) {
+          // 에러 시 처리할 동작
+          alert('예약 처리 중 오류가 발생했습니다.');
+          console.log(error);
+        }
+      });
     });
 
   }); //end

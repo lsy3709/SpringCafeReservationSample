@@ -49,6 +49,11 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public Optional<User> getUserByName(String name) {
+        return userRepository.findByName(name);
+    }
+
+
     public User createUser(User user) {
         user.addRole(MemberRole.USER);
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));

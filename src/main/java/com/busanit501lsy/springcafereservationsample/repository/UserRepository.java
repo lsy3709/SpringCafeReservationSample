@@ -11,4 +11,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = "roleSet")
     Optional<User> findByUsername(String username);
+
+    // 이름으로 사용자 검색
+    @EntityGraph(attributePaths = "roleSet")
+    Optional<User> findByName(String name);
 }

@@ -1,6 +1,10 @@
 package com.busanit501lsy.springcafereservationsample.controller.api;
 
+import com.busanit501lsy.springcafereservationsample.dto.ReservationDto;
 import com.busanit501lsy.springcafereservationsample.entity.Reservation;
+import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
+import com.busanit501lsy.springcafereservationsample.repository.ReservationItemRepository;
+import com.busanit501lsy.springcafereservationsample.service.ReservationItemService;
 import com.busanit501lsy.springcafereservationsample.service.ReservationService;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +24,9 @@ public class ReservationRestController {
     private ReservationService reservationService;
 
     @Autowired
+    private ReservationItemService reservationItemService;
+
+    @Autowired
     private UserService userService;
 
     @GetMapping
@@ -34,11 +41,12 @@ public class ReservationRestController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 유저 아이디, 상품 아이디,
+    // 유저 아이디, 상품 아이디,예약 생성
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        log.info("reservation : " + reservation);
-        Reservation createdReservation = reservationService.createReservation(reservation);
+    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDto reservationDto) {
+        log.info("lsy reservation : " + reservationDto);
+        Reservation createdReservation = reservationService.createApiReservation(reservationDto);
+        ReservationItem reservationItem = reservationItemService.createApiReservationItem(reservationDto,createdReservation);
         return ResponseEntity.ok(createdReservation);
     }
 
