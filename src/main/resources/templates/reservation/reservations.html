@@ -10,7 +10,7 @@
   <a th:href="@{/reservations/new}">Create New Reservation</a>
   <ul>
     <li th:each="reservation : ${reservations}">
-      <span th:text="${reservation.reservationTime}"></span> -
+<!--      <span th:text="${reservation.reservationTime}"></span> - -->
       <span th:text="${reservation.numberOfGuests}"></span> guests -
 <!--      <span th:text="${reservation.user.username}"></span>-->
       <a th:href="@{/reservations/{id}/edit(id=${reservation.id})}">Edit</a> |

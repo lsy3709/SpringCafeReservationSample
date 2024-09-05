@@ -32,7 +32,7 @@ public class ReservationItem {
     private Item item;
 
     @Column(nullable = false)
-    private int quantity;
+    private int numberOfGuests;
 
     @OneToMany(mappedBy = "reservationItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference

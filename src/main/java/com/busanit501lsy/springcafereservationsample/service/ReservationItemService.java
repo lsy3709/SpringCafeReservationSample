@@ -28,7 +28,7 @@ public class ReservationItemService {
 
     public ReservationItem updateReservationItem(Long id, ReservationItem reservationItemDetails) {
         return reservationItemRepository.findById(id).map(reservationItem -> {
-            reservationItem.setQuantity(reservationItemDetails.getQuantity());
+            reservationItem.setNumberOfGuests(reservationItemDetails.getNumberOfGuests());
             // Update other necessary fields
             return reservationItemRepository.save(reservationItem);
         }).orElseThrow(() -> new RuntimeException("ReservationItem not found"));

@@ -19,8 +19,10 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal amount;
+    private BigDecimal price;
     private LocalDateTime paymentTime;
+    private String paymentStatus = "결제대기";
+    private String paymentType;
 
 //    @ManyToOne
 //    @JoinColumn(name = "reservation_id", nullable = false)

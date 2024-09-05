@@ -15,7 +15,7 @@
   <form th:action="@{/reservations}" th:object="${reservation}" method="post">
     <label class="form-control">예약 가능 시간만 표기, 테이블 필요,상품과 예약시간, 1시간 단위로, 예) 9:00~10:00:</label>
     <div class="input-group mb-3">
-    <input class="form-control" type="datetime-local" th:field="*{reservationTime}" />
+    <input class="form-control" type="date" th:field="*{reservationTime}" />
     </div>
     <label class="form-control">Number of Guests :</label>
     <div class="input-group mb-3">

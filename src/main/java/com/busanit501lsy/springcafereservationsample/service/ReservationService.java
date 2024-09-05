@@ -31,7 +31,7 @@ public class ReservationService {
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
 
         reservation.setReservationTime(reservationDetails.getReservationTime());
-        reservation.setNumberOfGuests(reservationDetails.getNumberOfGuests());
+//        reservation.setNumberOfGuests(reservationDetails.getNumberOfGuests());
         reservation.setUser(reservationDetails.getUser());
 
         return reservationRepository.save(reservation);

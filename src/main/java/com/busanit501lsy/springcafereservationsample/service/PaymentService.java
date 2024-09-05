@@ -55,7 +55,7 @@ public class PaymentService {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
 
-        payment.setAmount(paymentDetails.getAmount());
+        payment.setPrice(paymentDetails.getPrice());
         payment.setPaymentTime(paymentDetails.getPaymentTime());
 //        payment.setReservation(paymentDetails.getReservation());
 

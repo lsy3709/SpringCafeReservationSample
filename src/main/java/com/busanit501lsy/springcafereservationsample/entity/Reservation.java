@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,11 +22,8 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime reservationTime;
-    private int numberOfGuests;
-
-    private String selectedItemName;
-    private String selectedItemPrice;
+    private LocalDate reservationDate;
+    private int reservationTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
