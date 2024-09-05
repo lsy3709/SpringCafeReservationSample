@@ -17,9 +17,15 @@
     <div class="input-group mb-3">
     <input class="form-control" type="datetime-local" th:field="*{reservationTime}" />
     </div>
-    <label class="form-control">Number of Guests:</label>
+    <label class="form-control">Number of Guests :</label>
     <div class="input-group mb-3">
-    <input class="form-control" type="number" th:field="*{numberOfGuests}" />
+      <input class="form-control" type="number"
+             value="2"
+             min="1" />
+    </div>
+    <label class="form-control">선택 된 상품명 :</label>
+    <div class="input-group mb-3">
+      <input type="text" id="selectedItem"   />
     </div>
     <label class="form-control">예약자 :</label>
     <div class="input-group mb-3">
@@ -75,9 +81,9 @@
             itemsHtml += `
               <div class="col">
                 <div class="card h-100 text-center">
-                  <div class="card-img-top" style="height: 200px; min-height: 200px; overflow: hidden;">
+                  <div class="card-img-top" style="height: 300px; min-height: 300px; overflow: hidden;">
                     ${item.itemRepImageId ?
-                    `<img src="/items/${item.id}/itemImage?id=${item.itemRepImageId}" alt="Item Image" class="img-fluid" style="height: 100%; width: 100%; object-fit: cover;">` :
+                    `<img src="/items/${item.id}/itemImage?id=${item.itemRepImageId}" alt="Item Image" class="img-fluid" style="height: 100%; width: 100%; object-fit: fill;">` :
                     `<div style="height: 200px; display: flex; justify-content: center; align-items: center;"><p>No item image uploaded.</p></div>`
             }
                   </div>
@@ -87,8 +93,8 @@
                     <p class="card-text">${item.description}</p>
                   </div>
                   <div class="card-footer">
-                    <a href="/items/${item.id}/edit" class="btn btn-primary">Edit</a>
-                    <a href="/items/${item.id}/delete" class="btn btn-danger">Delete</a>
+                    <a href="/items/${item.id}/edit" class="btn btn-primary">상세보기</a>
+                    <a href="/items/${item.id}/edit" class="btn btn-warning">예약선택</a>
                   </div>
                 </div>
               </div>`;
