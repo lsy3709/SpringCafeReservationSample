@@ -7,132 +7,93 @@
 <body>
 <div layout:fragment="content">
 
+  <div class="container my-4">
+    <div class="row">
 
-  <div class="card-header">
-    <h2>Update Item</h2>
+      <!-- 이미지 슬라이드 카드 (왼쪽) -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div id="itemImageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+
+              <!-- 캐러셀 인디케이터 -->
+              <ol class="carousel-indicators">
+                <li data-bs-target="#itemImageCarousel" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#itemImageCarousel" data-bs-slide-to="1"></li>
+                <li data-bs-target="#itemImageCarousel" data-bs-slide-to="2"></li>
+                <li data-bs-target="#itemImageCarousel" data-bs-slide-to="3"></li>
+                <li data-bs-target="#itemImageCarousel" data-bs-slide-to="4"></li>
+              </ol>
+
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='rep')}" class="d-block w-100" alt="대표 이미지" style="width: 300px; height: 300px; object-fit: fill;">
+                </div>
+                <div class="carousel-item">
+                  <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add1')}" class="d-block w-100" alt="추가 이미지 1" style="width: 300px; height: 300px; object-fit: fill;">
+                </div>
+                <div class="carousel-item">
+                  <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add2')}" class="d-block w-100" alt="추가 이미지 2" style="width: 300px; height: 300px; object-fit: fill;">
+                </div>
+                <div class="carousel-item">
+                  <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add3')}" class="d-block w-100" alt="추가 이미지 3" style="width: 300px; height: 300px; object-fit: fill;">
+                </div>
+                <div class="carousel-item">
+                  <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add4')}" class="d-block w-100" alt="추가 이미지 4" style="width: 300px; height: 300px; object-fit: fill;">
+                </div>
+              </div>
+
+              <!-- 슬라이드 컨트롤 (이전, 다음) -->
+              <button class="carousel-control-prev" type="button" data-bs-target="#itemImageCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#itemImageCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+
+              <!-- 슬라이드 위치 표기 -->
+<!--              <div class="carousel-indicators">-->
+<!--                <p id="carouselPosition" style="text-align: center;">1 / 5</p>-->
+<!--              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 정보 카드 (오른쪽) -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h2>상품 정보</h2>
+            <p><strong>상품명:</strong> <span th:text="${item.name}"></span></p>
+            <p><strong>가격:</strong> <span th:text="${item.price}"></span> 원</p>
+            <p><strong>상품 설명:</strong> <span th:text="${item.description}"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
   </div>
-  <div class="card-body">
-  <form th:action="@{/items/edit/{id}(id=${item.id})}" th:object="${item}" method="post" enctype="multipart/form-data">
-    <input type="hidden"  name="id" class="form-control" th:value="${item.id}" >
-    <label class="form-control">상품명 :</label>
-    <div class="input-group mb-3">
-    <input type="text" name="name" class="form-control" placeholder="상품명 입력해주세요" th:value="${item.name}"/>
-    </div>
-
-    <label class="form-control">가격 :</label>
-    <div class="input-group mb-3">
-      <input type="number" name="price" class="form-control" th:value="${item.price}"/>
-<!--      <input type="number" name="price" class="form-control" th:value="${#numbers.formatDecimal(user.price, 1, 2)}" step="0.01" min="0" />-->
-    </div>
-
-    <div class="input-group mb-3">
-      <label for="description">상품 설명 : &nbsp;</label>
-      <textarea id="description" name="description" class="form-control" rows="5" placeholder="상품에 대한 설명을 입력하세요..." th:text="${item.description}"></textarea>
-    </div>
-
-    <div class="input-group mb-3">
-    <label for="itemRepImage">대표상품 : &nbsp;</label>
-    <input type="file" id="itemRepImage" name="itemRepImage" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview')" /><br/>
-    </div>
-    <h3> 대표 새 이미지</h3>
-    <!-- 미리보기 이미지를 표시할 곳 -->
-    <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3> 대표 기존 이미지</h3>
-    <span th:if="${item.itemRepImageId}">
-        <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='rep')}" alt="Profile Image" width="200"/>
-      </span>
-    <span th:if="${item != null and item.itemRepImageId == null}">
-        <p>No profile image uploaded.</p>
-      </span>
-    <br>
-    <br>
-    <br>
-    <div class="input-group mb-3">
-      <label for="itemAdd1">추가 상품1 : &nbsp;</label>
-      <input type="file" id="itemAdd1" name="itemAdd1" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview1')" /><br/>
-    </div>
-    <!-- 미리보기 이미지를 표시할 곳 -->
-    <img id="imagePreview1" src="#" alt="Image Preview1" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3> 추가1 기존 이미지</h3>
-    <span th:if="${item.itemAdd1ImageId}">
-        <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add1')}" alt="itemAdd1ImageId" width="200"/>
-      </span>
-    <span th:if="${item != null and item.itemAdd1ImageId == null}">
-        <p>No profile image uploaded.</p>
-      </span>
-    <br>
-    <br>
-    <br>
-    <div class="input-group mb-3">
-      <label for="itemAdd1">추가 상품2 : &nbsp;</label>
-      <input type="file" id="itemAdd2" name="itemAdd2" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview2')" /><br/>
-    </div>
-    <!-- 미리보기 이미지를 표시할 곳 -->
-    <img id="imagePreview2" src="#" alt="Image Preview2" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3>추가2 기존 이미지</h3>
-    <span th:if="${item.itemAdd2ImageId}">
-        <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add2')}" alt="itemAdd2ImageId" width="200"/>
-      </span>
-    <span th:if="${item != null and item.itemAdd2ImageId == null}">
-        <p>No profile image uploaded.</p>
-      </span>
-    <br>
-    <br>
-    <br>
-    <div class="input-group mb-3">
-      <label for="itemAdd1">추가 상품3 : &nbsp;</label>
-      <input type="file" id="itemAdd3" name="itemAdd3" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview3')" /><br/>
-    </div>
-    <!-- 미리보기 이미지를 표시할 곳 -->
-    <img id="imagePreview3" src="#" alt="Image Preview3" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3>추가3 기존 이미지</h3>
-    <span th:if="${item.itemAdd3ImageId}">
-        <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add3')}" alt="itemAdd3ImageId" width="200"/>
-      </span>
-    <span th:if="${item != null and item.itemAdd3ImageId == null}">
-        <p>No profile image uploaded.</p>
-      </span>
-    <br>
-    <br>
-    <br>
-    <div class="input-group mb-3">
-      <label for="itemAdd1">추가 상품4 : &nbsp;</label>
-      <input type="file" id="itemAdd4" name="itemAdd4" class="form-control" accept="image/*" onchange="previewImage(this, 'imagePreview4')" /><br/>
-    </div>
-    <!-- 미리보기 이미지를 표시할 곳 -->
-    <img id="imagePreview4" src="#" alt="Image Preview4" style="display:none; width: 200px; height: auto; margin-top: 10px;"/><br/>
-    <h3>추가4 기존 이미지</h3>
-    <span th:if="${item.itemAdd4ImageId}">
-        <img th:src="@{/items/{id}/itemImage(id=${item.id}, type='add4')}" alt="itemAdd4ImageId" width="200"/>
-      </span>
-    <span th:if="${item != null and item.itemAdd4ImageId == null}">
-        <p>No profile image uploaded.</p>
-      </span>
-    <br>
-
-    <button class="btn btn-primary w-100 submitBtn" type="submit">상품수정</button>
-
-  </form>
-  </div>
-
-</div>
 
 <!--자바스크립트 추가하는 영역-->
 <script layout:fragment="javascript" th:inline="javascript">
-  // 사진 선택시 미리보기
-  function previewImage(input, previewId) {
-    var reader = new FileReader();
+  // $(document).ready(function() {
+  //   const $carouselElement = $('#itemImageCarousel');
+  //   const totalItems = $carouselElement.find('.carousel-item').length;
+  //   const $positionIndicator = $('#carouselPosition');
+  //
+  //   // 초기에 위치 설정
+  //   $positionIndicator.text(`1 / ${totalItems}`);
+  //
+  //   // 슬라이드 이벤트 리스너 추가
+  //   $carouselElement.on('slide.bs.carousel', function(event) {
+  //     const currentIndex = event.to + 1; // event.to는 0부터 시작하므로 +1
+  //     $positionIndicator.text(`${currentIndex} / ${totalItems}`);
+  //   });
+  // });
 
-    reader.onload = function () {
-      var imagePreview = document.getElementById(previewId);
-      imagePreview.src = reader.result;
-      imagePreview.style.display = 'block';
-    };
-
-    if (input.files && input.files[0]) {
-      reader.readAsDataURL(input.files[0]); // 이미지를 읽어 미리보기로 표시
-    }
-  }
 </script>
 </body>
 </html>

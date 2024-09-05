@@ -119,6 +119,17 @@ public class ItemController {
         }
     }
 
+    @GetMapping("/{id}/detail")
+    public String detailItemForm(@PathVariable Long id, Model model) {
+        Optional<Item> item = itemService.getItemById(id);
+        if (item.isPresent()) {
+            model.addAttribute("item", item.get());
+            return "items/detail-item"; // Form for editing the item
+        } else {
+            return "error/404";
+        }
+    }
+
     @PostMapping("/edit/{id}")
     public String updateItem(@PathVariable Long id, @ModelAttribute Item itemDetails,
                              @RequestParam(value = "itemRepImage", required = false) MultipartFile itemRepImage,

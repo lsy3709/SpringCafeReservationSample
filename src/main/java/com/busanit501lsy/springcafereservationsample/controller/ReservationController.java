@@ -76,6 +76,7 @@ public class ReservationController {
         // returns update-reservation.html
     }
 
+
     @PostMapping("/edit")
     public String updateReservation(@ModelAttribute Reservation reservationDetails) {
         reservationService.updateReservation(reservationDetails.getId(), reservationDetails);
