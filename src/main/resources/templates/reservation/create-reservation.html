@@ -65,8 +65,13 @@
           let itemsHtml = '';
           let paginationHtml = '';
 
+          const startPage = Math.max(0, pageNumber - 5);
+          const endPage = Math.min(response.totalPages - 1, pageNumber + 4);
+
+
           // Loop through the items and create the HTML for the items
           $.each(response.content, function(index, item) {
+
             itemsHtml += `
               <div class="col">
                 <div class="card h-100 text-center">
@@ -101,28 +106,28 @@
             paginationHtml += `<ul class="pagination justify-content-center">`;
 
             // First page link
-            if (response.pageNumber > 0) {
+            if (pageNumber > 0) {
               paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="0" data-size="${pageSize}">First</a></li>`;
             }
 
             // Previous page link
-            if (response.pageNumber > 0) {
-              paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="${response.pageNumber - 1}" data-size="${pageSize}">Previous</a></li>`;
+            if (pageNumber > 0) {
+              paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="${pageNumber - 1}" data-size="${pageSize}">Previous</a></li>`;
             }
 
             // Page numbers
-            for (let i = 0; i < response.totalPages; i++) {
-              paginationHtml += `<li class="page-item ${i === response.pageNumber ? 'active' : ''}">
+            for (let i = startPage; i <= endPage; i++) {
+              paginationHtml += `<li class="page-item ${i === pageNumber ? 'active' : ''}">
                                   <a href="#" class="page-link" data-page="${i}" data-size="${pageSize}">${i + 1}</a></li>`;
             }
 
             // Next page link
-            if (response.pageNumber < response.totalPages - 1) {
-              paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="${response.pageNumber + 1}" data-size="${pageSize}">Next</a></li>`;
+            if (pageNumber < response.totalPages - 1) {
+              paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="${pageNumber + 1}" data-size="${pageSize}">Next</a></li>`;
             }
 
             // Last page link
-            if (response.pageNumber < response.totalPages - 1) {
+            if (pageNumber < response.totalPages - 1) {
               paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="${response.totalPages - 1}" data-size="${pageSize}">Last</a></li>`;
             }
 
