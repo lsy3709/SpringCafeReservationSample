@@ -25,23 +25,27 @@
     </div>
     <label class="form-control">선택 된 상품명 :</label>
     <div class="input-group mb-3">
-      <input type="text" id="selectedItemName" name = "selectedItemName"  readonly  />
+      <input class="form-control" type="text" id="selectedItemName" name = "selectedItemName"  readonly  />
     </div>
     <label class="form-control">선택 된 상품 가격 :</label>
     <div class="input-group mb-3">
-      <input type="text" id="selectedItemPrice" readonly  />
+      <input class="form-control" type="text" id="selectedItemPrice" readonly  />
     </div>
-    <label class="form-control">예약자 :</label>
+
     <div class="input-group mb-3">
 <!--    th:field  전송시 user.id 로 제출이 됨-->
       <!--        th:value       제출 될 값-->
       <!--    th:text  화면에 표시 될 값-->
-    <select th:field="*{user.id}">
-      <option  th:each="user : ${users}"
-               th:if="${user != null} and ${user2 != null} and ${user.id == user2.id}"
-               th:value="${user.name}"
-               th:text="${user.name}"></option>
-    </select>
+      <div class="form-group">
+        <label for="userSelect">예약자 :</label>
+        <select id="userSelect" class="form-control" th:field="*{user.id}">
+          <option th:each="user : ${users}"
+                  th:if="${user != null} and ${user2 != null} and ${user.id == user2.id}"
+                  th:value="${user.id}"
+                  th:text="${user.name}">
+          </option>
+        </select>
+      </div>
     </div>
     <button class="btn btn-primary w-100 submitBtn" type="submit">예약하기</button>
 
