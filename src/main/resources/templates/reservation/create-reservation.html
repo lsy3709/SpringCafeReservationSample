@@ -70,7 +70,7 @@
             itemsHtml += `
               <div class="col">
                 <div class="card h-100 text-center">
-                  <div class="card-img-top" style="height: 200px; overflow: hidden;">
+                  <div class="card-img-top" style="height: 200px; min-height: 200px; overflow: hidden;">
                     ${item.itemRepImageId ?
                     `<img src="/items/${item.id}/itemImage?id=${item.itemRepImageId}" alt="Item Image" class="img-fluid" style="height: 100%; width: 100%; object-fit: cover;">` :
                     `<div style="height: 200px; display: flex; justify-content: center; align-items: center;"><p>No item image uploaded.</p></div>`

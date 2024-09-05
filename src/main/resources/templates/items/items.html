@@ -14,10 +14,10 @@
       <div th:each="item : ${items}" class="col">
         <div class="card h-100 text-center">
           <!-- Image filling card size -->
-          <div th:if="${item.itemRepImageId}" class="card-img-top" style="height: 200px; overflow: hidden;">
-            <img th:src="@{/items/{id}/itemImage(id=${item.id})}" alt="Item Image" class="img-fluid" style="height: 100%; width: 100%; object-fit: cover;">
+          <div th:if="${item.itemRepImageId}" class="card-img-top" style="height: 300px; min-height: 300px; overflow: hidden;">
+            <img th:src="@{/items/{id}/itemImage(id=${item.id})}" alt="Item Image" class="img-fluid" style="height: 100%; width: 100%; object-fit: fill;">
           </div>
-          <div th:if="${item != null and item.itemRepImageId == null}" class="card-img-top" style="height: 200px; display: flex; justify-content: center; align-items: center;">
+          <div th:if="${item != null and item.itemRepImageId == null}" class="card-img-top" style="height: 300px; display: flex; justify-content: center; align-items: center;">
             <p>No item image uploaded.</p>
           </div>
           <!-- Card Body with Centered Text -->
