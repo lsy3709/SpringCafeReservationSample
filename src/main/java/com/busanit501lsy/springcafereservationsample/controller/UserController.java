@@ -1,6 +1,5 @@
 package com.busanit501lsy.springcafereservationsample.controller;
 
-import com.busanit501lsy.springcafereservationsample.entity.Item;
 import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -70,6 +68,12 @@ public class UserController {
     @GetMapping("/login")
     public String showLoginUserForm() {
         return "user/login";
+        // returns create-user.html
+    }
+
+    @GetMapping("/token")
+    public String showLoginUserFormWithToken() {
+        return "user/login-token";
         // returns create-user.html
     }
 
