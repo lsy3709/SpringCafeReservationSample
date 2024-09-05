@@ -111,7 +111,7 @@
                   </div>
                   <div class="card-body">
                     <h5 class="card-title">${item.name}</h5>
-                    <p class="card-text">Price: $${item.price.toFixed(2)}</p>
+                    <p class="card-text">Price: ${item.price}</p>
                     <p class="card-text">${item.description}</p>
                   </div>
                   <div class="card-footer">
@@ -223,7 +223,16 @@
         data: JSON.stringify(dataToSend), // 데이터를 JSON 문자열로 변환하여 전송
         success: function (response) {
           // 성공 시 처리할 동작
-          alert('예약이 성공적으로 완료되었습니다!');
+          Swal.fire({
+            title: '예약 확인, 선결제 순서로 예약완료됩니다. 감사합니다.',
+            html: `
+                    `,
+            icon: 'success',
+            imageUrl: 'https://unsplash.it/400/200',  // 원하시는 이미지 URL로 교체 가능
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image'
+          });
           console.log(response);
         },
         error: function (error) {
