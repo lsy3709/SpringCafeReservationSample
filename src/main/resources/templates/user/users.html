@@ -51,8 +51,8 @@
         <a th:href="@{/users(page=${pageNumber - 1}, size=${pageSize})}" class="page-link">Previous</a>
       </li>
 
-      <!-- Page number buttons -->
-      <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+      <!-- Page number buttons (10 pages visible at a time) -->
+      <li th:each="i : ${#numbers.sequence(startPage, endPage)}"
           th:classappend="${i == pageNumber} ? 'active' : ''" class="page-item">
         <a th:href="@{/users(page=${i}, size=${pageSize})}" class="page-link" th:text="${i + 1}">Page Number</a>
       </li>
@@ -68,6 +68,7 @@
       </li>
     </ul>
   </div>
+
 
 
 </div>

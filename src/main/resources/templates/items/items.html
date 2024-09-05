@@ -52,7 +52,7 @@
       </li>
 
       <!-- Page number buttons -->
-      <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+      <li th:each="i : ${#numbers.sequence(startPage, endPage)}"
           th:classappend="${i == pageNumber} ? 'active' : ''" class="page-item">
         <a th:href="@{/items(page=${i}, size=${pageSize})}" class="page-link" th:text="${i + 1}">Page Number</a>
       </li>

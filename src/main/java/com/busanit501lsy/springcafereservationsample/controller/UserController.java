@@ -41,7 +41,11 @@ public class UserController {
                               @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<User> userPage = userService.getAllUsersWithPage(pageable);
+        int startPage = Math.max(0, userPage.getNumber() - 5);
+        int endPage = Math.min(userPage.getTotalPages() - 1, userPage.getNumber() + 4);
         model.addAttribute("users", userPage.getContent());
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("pageNumber", userPage.getNumber());
         model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("pageSize", userPage.getSize());

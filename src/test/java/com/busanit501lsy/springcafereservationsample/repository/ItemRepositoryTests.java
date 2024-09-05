@@ -20,10 +20,10 @@ public class ItemRepositoryTests {
     public void testInserts() {
         IntStream.rangeClosed(1,100).forEach(i -> {
             Item item = Item.builder()
-                    .name("상품"+i)
+                    .name("상품_"+i)
                     .price(BigDecimal.valueOf(100+i))
                     // 아래 이미지는 현재 몽고디비에 있는 임의의 이미지를 재사용함
-                    .itemRepImageId("66d8c42f2a112c0ea296df33")
+                    .itemRepImageId("66d8fb2e21c97f15572391ce")
                     .description("상품 설명 " + i)
                     .build();
 

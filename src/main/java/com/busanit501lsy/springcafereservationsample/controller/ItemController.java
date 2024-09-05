@@ -40,6 +40,11 @@ public class ItemController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Item> itemPage = itemService.getAllItemsWithPage(pageable);
 
+        int startPage = Math.max(0, itemPage.getNumber() - 5);
+        int endPage = Math.min(itemPage.getTotalPages() - 1, itemPage.getNumber() + 4);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
         model.addAttribute("items", itemPage.getContent());
         model.addAttribute("pageNumber", itemPage.getNumber());
         model.addAttribute("totalPages", itemPage.getTotalPages());
