@@ -25,7 +25,11 @@
     </div>
     <label class="form-control">선택 된 상품명 :</label>
     <div class="input-group mb-3">
-      <input type="text" id="selectedItem"   />
+      <input type="text" id="selectedItemName" readonly  />
+    </div>
+    <label class="form-control">선택 된 상품 가격 :</label>
+    <div class="input-group mb-3">
+      <input type="text" id="selectedItemPrice" readonly  />
     </div>
     <label class="form-control">예약자 :</label>
     <div class="input-group mb-3">
@@ -94,7 +98,7 @@
                   </div>
                   <div class="card-footer">
                     <a href="/items/${item.id}/edit" class="btn btn-primary">상세보기</a>
-                    <a href="/items/${item.id}/edit" class="btn btn-warning">예약선택</a>
+                  <a id="selectReservation" class="btn btn-warning" data-name="${item.name}" data-price="${item.price}">예약선택</a>
                   </div>
                 </div>
               </div>`;
@@ -159,6 +163,23 @@
       const size = $(this).data('size');
       fetchItems(page, size); // Fetch the items for the clicked page
     });
+  });
+
+  // 문서가 준비되면 실행
+  document.addEventListener('DOMContentLoaded', function () {
+    const selectReservationButton = document.getElementById('selectReservation');
+
+    if (selectReservationButton) {
+      selectReservationButton.addEventListener('click', function() {
+        const productName = this.getAttribute('data-name');
+        const productPrice = this.getAttribute('data-price');
+
+        document.getElementById('selectedItemName').value = productName;
+        document.getElementById('selectedItemPrice').value = productPrice;
+      });
+    } else {
+      console.error("selectReservation 버튼을 찾을 수 없습니다.");
+    }
   });
 </script>
 
