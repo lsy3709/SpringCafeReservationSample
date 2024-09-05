@@ -12,14 +12,25 @@
   </div>
   <div class="card-body">
 
-  <form th:action="@{/reservations}" th:object="${reservation}" method="post">
+  <form id="reservationForm"  method="post">
     <label class="form-control">예약 가능 시간만 표기, 테이블 필요,상품과 예약시간, 1시간 단위로, 예) 9:00~10:00:</label>
     <div class="input-group mb-3">
-    <input class="form-control" type="date" th:field="*{reservationTime}" />
+    <input class="form-control" type="date"  id="reservationTime" name="reservationTime" />
     </div>
+
+    <div class="form-group">
+      <label for="timeSelect">예약 시간 :</label>
+      <select id="timeSelect" class="form-control" name="timeSlot">
+        <option th:each="i : ${#numbers.sequence(0, 23)}"
+                th:value="${i}"
+                th:text="${i} + ':00 ~ ' + ${i + 1} + ':00'">
+        </option>
+      </select>
+    </div>
+
     <label class="form-control">Number of Guests :</label>
     <div class="input-group mb-3">
-      <input class="form-control" type="number"
+      <input class="form-control" type="number"  id="guestCount" name="guestCount"
              value="2"
              min="1" />
     </div>
@@ -38,7 +49,7 @@
       <!--    th:text  화면에 표시 될 값-->
       <div class="form-group">
         <label for="userSelect">예약자 :</label>
-        <select id="userSelect" class="form-control" th:field="*{user.id}">
+        <select id="userSelect" class="form-control" name="userId">
           <option th:each="user : ${users}"
                   th:if="${user != null} and ${user2 != null} and ${user.id == user2.id}"
                   th:value="${user.id}"

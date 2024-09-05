@@ -34,6 +34,7 @@ public class ReservationRestController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // 유저 아이디, 상품 아이디,
     @PostMapping
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         log.info("reservation : " + reservation);
