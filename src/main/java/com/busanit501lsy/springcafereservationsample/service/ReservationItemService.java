@@ -8,6 +8,8 @@ import com.busanit501lsy.springcafereservationsample.repository.ItemRepository;
 import com.busanit501lsy.springcafereservationsample.repository.ReservationItemRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,10 @@ public class ReservationItemService {
 
     public List<ReservationItem> getAllReservationItems() {
         return reservationItemRepository.findAll();
+    }
+
+    public Page<ReservationItem> getAllReservationItemsWithPage(Pageable pageable) {
+        return reservationItemRepository.findAll(pageable);
     }
 
     public Optional<ReservationItem> getReservationItemById(Long id) {

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/layout.html}"
+>
+<body>
+<div layout:fragment="content">
+
+  <div class="card-header">
+    <h2>cafe 공간 예약</h2>
+  </div>
+  <div class="card-body">
+
+  <form id="reservationForm"  method="post">
+
+
+
+    <label class="form-control">예약 가능 시간만 표기, 테이블 필요,상품과 예약시간, 1시간 단위로, 예) 9:00~10:00:</label>
+    <div class="input-group mb-3">
+    <input class="form-control" type="date"  id="reservationDate" name="reservationDate" />
+    </div>
+
+    <div class="form-group">
+      <label for="reservationTime">예약 시간 :</label>
+      <select id="reservationTime" class="form-control" name="reservationTime">
+        <option th:each="i : ${#numbers.sequence(0, 23)}"
+                th:value="${i}"
+                th:text="${i} + ':00 ~ ' + ${i + 1} + ':00'">
+        </option>
+      </select>
+    </div>
+
+    <label class="form-control">Number of Guests :</label>
+    <div class="input-group mb-3">
+      <input class="form-control" type="number"  id="reservationCount" name="reservationCount"
+             value="2"
+             min="1" />
+    </div>
+    <label class="form-control">선택 된 상품명 :</label>
+    <div class="input-group mb-3">
+      <input class="form-control" type="text" id="selectedItemName" name = "selectedItemName"  readonly  />
+    </div>
+    <label class="form-control">선택 된 상품 가격 :</label>
+    <div class="input-group mb-3">
+      <input class="form-control" type="text" id="selectedItemPrice" readonly  />
+    </div>
+
+    <div class="input-group mb-3">
+<!--    th:field  전송시 user.id 로 제출이 됨-->
+      <!--        th:value       제출 될 값-->
+      <!--    th:text  화면에 표시 될 값-->
+      <div class="form-group">
+        <label for="reservationName">예약자 :</label>
+        <select id="reservationName" class="form-control" name="reservationName">
+          <option th:each="user : ${users}"
+                  th:if="${user != null} and ${user2 != null} and ${user.id == user2.id}"
+                  th:value="${user.username}"
+                  th:text="${user.name}">
+          </option>
+        </select>
+      </div>
+    </div>
+    <button id="submitReservation" class="btn btn-primary w-100 submitBtn" type="submit">예약하기</button>
+
+  </form>
+    <!--  상품넣기, 레스트로-->
+    <!-- Container for items -->
+    <div class="container mt-4" id="jsonResult"></div>
+
+    <!-- Pagination -->
+    <div class="pagination justify-content-center" id="paginationContainer"></div>
+
+  </div>
+
+
+
+
+</div>
+
+<!--자바스크립트 추가하는 영역-->
+<script layout:fragment="javascript" th:inline="javascript">
+  $(document).ready(function() {
+    // Function to fetch paginated items
+    function fetchItems(pageNumber = 0, pageSize = 6) {
+      $.ajax({
+        url: `/api/items/page?page=${pageNumber}&size=${pageSize}`,
+        type: 'GET',
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("accessToken")},
+        dataType: 'json',
+        success: function(response) {
+          let itemsHtml = '';
+          let paginationHtml = '';
+
+          const startPage = Math.max(0, pageNumber - 5);
+          const endPage = Math.min(response.totalPages - 1, pageNumber + 4);
+
+
+          // Loop through the items and create the HTML for the items
+          $.each(response.content, function(index, item) {
+
+            itemsHtml += `
+              <div class="col">
+                <div class="card h-100 text-center">
+                  <div class="card-img-top" style="height: 300px; min-height: 300px; overflow: hidden;">
+                    ${item.itemRepImageId ?
+                    `<img src="/items/${item.id}/itemImage?id=${item.itemRepImageId}" alt="Item Image" class="img-fluid" style="height: 100%; width: 100%; object-fit: fill;">` :
+                    `<div style="height: 200px; display: flex; justify-content: center; align-items: center;"><p>No item image uploaded.</p></div>`
+            }
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">${item.name}</h5>
+                    <p class="card-text">Price: ${item.price}</p>
+                    <p class="card-text">${item.description}</p>
+                  </div>
+                  <div class="card-footer">
+                    <a href="/items/${item.id}/detail" class="btn btn-primary">상세보기</a>
+                  <a class="selectReservation btn btn-warning" data-name="${item.name}" data-price="${item.price}">예약선택</a>
+                  </div>
+                </div>
+              </div>`;
+          });
+
+          // Insert items into the result container
+          $('#jsonResult').html(`
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+              ${itemsHtml}
+            </div>
+          `);
+
+          // Generate pagination links
+          if (response.totalPages > 1) {
+            paginationHtml += `<ul class="pagination justify-content-center">`;
+
+            // First page link
+            if (pageNumber > 0) {
+              paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="0" data-size="${pageSize}">First</a></li>`;
+            }
+
+            // Previous page link
+            if (pageNumber > 0) {
+              paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="${pageNumber - 1}" data-size="${pageSize}">Previous</a></li>`;
+            }
+
+            // Page numbers
+            for (let i = startPage; i <= endPage; i++) {
+              paginationHtml += `<li class="page-item ${i === pageNumber ? 'active' : ''}">
+                                  <a href="#" class="page-link" data-page="${i}" data-size="${pageSize}">${i + 1}</a></li>`;
+            }
+
+            // Next page link
+            if (pageNumber < response.totalPages - 1) {
+              paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="${pageNumber + 1}" data-size="${pageSize}">Next</a></li>`;
+            }
+
+            // Last page link
+            if (pageNumber < response.totalPages - 1) {
+              paginationHtml += `<li class="page-item"><a href="#" class="page-link" data-page="${response.totalPages - 1}" data-size="${pageSize}">Last</a></li>`;
+            }
+
+            paginationHtml += `</ul>`;
+          }
+
+          // Insert pagination into the pagination container
+          $('#paginationContainer').html(paginationHtml);
+        },
+        error: function(xhr, status, error) {
+          console.error('Error fetching items:', error);
+        }
+      });
+
+
+    }
+
+    // Initial load (fetch the first page with 6 items per page)
+    fetchItems(0, 10);
+
+    // Handle pagination click event
+    $(document).on('click', '.page-link', function(e) {
+      e.preventDefault(); // Prevent default link behavior
+      const page = $(this).data('page');
+      const size = $(this).data('size');
+      fetchItems(page, size); // Fetch the items for the clicked page
+    });
+
+    // 예약 선택 버튼 클릭 시 이벤트 핸들러
+    // 동적으로 생성된 .selectReservation 클래스 버튼에 이벤트 핸들러 추가
+    $(document).on('click', '.selectReservation', function() {
+      // 버튼의 data-name과 data-price 속성에서 값 가져오기
+      const productName = $(this).data('name');
+      const productPrice = $(this).data('price');
+
+      // 값 설정
+      $('#selectedItemName').val(productName);
+      $('#selectedItemPrice').val(productPrice);
+    });
+
+    // 예약 생성
+    // 예약하기 버튼 클릭 시 AJAX로 폼 제출
+    $(document).on('click', '#submitReservation', function (e) {
+      e.preventDefault(); // 기본 폼 제출 방지
+
+      const dataToSend = {
+                reservationTime: $('#reservationTime').val(),
+                reservationDate: $('#reservationDate').val(),
+                reservationCount: $('#reservationCount').val(),
+                selectedItemName: $('#selectedItemName').val(),
+                selectedItemPrice: $('#selectedItemPrice').val(),
+                reservationName: $('#reservationName').val()
+              };
+
+
+      // AJAX 요청
+      $.ajax({
+        url: '/api/reservations', // 전송할 URL (Thymeleaf에서 설정한 엔드포인트)
+        type: 'POST',
+        contentType: 'application/json', // JSON 타입으로 전송
+        dataType: 'json', // 서버에서 JSON 형식의 응답을 기대
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("accessToken")},
+
+        data: JSON.stringify(dataToSend), // 데이터를 JSON 문자열로 변환하여 전송
+        success: function (response) {
+          // 성공 시 처리할 동작
+          Swal.fire({
+            title: '예약 확인, 선결제 순서로 예약완료됩니다. 감사합니다.',
+            html: `
+                    `,
+            icon: 'success',
+            imageUrl: 'https://unsplash.it/400/200',  // 원하시는 이미지 URL로 교체 가능
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image'
+          });
+          console.log(response);
+        },
+        error: function (error) {
+          // 에러 시 처리할 동작
+          alert('예약 처리 중 오류가 발생했습니다.');
+          console.log(error);
+        }
+      });
+    });
+
+  }); //end
+
+</script>
+
+</body>
+</html>
