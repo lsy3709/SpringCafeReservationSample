@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReservationDto {
+public class ReservationDTO {
 
     private String reservationName;       // 예약자 이름 (select)
     private LocalDate reservationDate;

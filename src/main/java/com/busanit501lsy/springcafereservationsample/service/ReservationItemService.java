@@ -1,6 +1,7 @@
 package com.busanit501lsy.springcafereservationsample.service;
 
-import com.busanit501lsy.springcafereservationsample.dto.ReservationDto;
+import com.busanit501lsy.springcafereservationsample.dto.ReservationDTO;
+import com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO;
 import com.busanit501lsy.springcafereservationsample.entity.Item;
 import com.busanit501lsy.springcafereservationsample.entity.Reservation;
 import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
@@ -32,6 +33,16 @@ public class ReservationItemService {
         return reservationItemRepository.findAll(pageable);
     }
 
+    // 예약 번호에 대한 하나 조회
+    public Page<ReservationItemDTO> getAllReservationItemsWithPageDTO(Long reservationId,Pageable pageable) {
+        return reservationItemRepository.findReservationItemsWithDetails(reservationId, pageable);
+    }
+
+    // 전체 조회
+    public Page<ReservationItemDTO> getAllReservationItemsWithPageDTO2(Pageable pageable) {
+        return reservationItemRepository.findReservationItemsWithDetails2(pageable);
+    }
+
     public Optional<ReservationItem> getReservationItemById(Long id) {
         return reservationItemRepository.findById(id);
     }
@@ -40,7 +51,7 @@ public class ReservationItemService {
         return reservationItemRepository.save(reservationItem);
     }
 
-    public ReservationItem createApiReservationItem(ReservationDto reservationDto, Reservation reservation) {
+    public ReservationItem createApiReservationItem(ReservationDTO reservationDto, Reservation reservation) {
         Optional<Item> item = itemRepository.findByName(reservationDto.getSelectedItemName());
         Item item1 = item.orElseThrow(() -> new IllegalArgumentException("Item not found with name: " + reservationDto.getSelectedItemName()));
         log.info("item : " + item1.getName());

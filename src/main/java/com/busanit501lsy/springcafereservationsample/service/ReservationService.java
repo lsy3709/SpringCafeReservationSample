@@ -1,6 +1,6 @@
 package com.busanit501lsy.springcafereservationsample.service;
 
-import com.busanit501lsy.springcafereservationsample.dto.ReservationDto;
+import com.busanit501lsy.springcafereservationsample.dto.ReservationDTO;
 import com.busanit501lsy.springcafereservationsample.entity.Reservation;
 import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.repository.ReservationRepository;
@@ -33,7 +33,7 @@ public class ReservationService {
     }
 
     // 예약 작업중.
-    public Reservation createApiReservation(ReservationDto reservationDto) {
+    public Reservation createApiReservation(ReservationDTO reservationDto) {
 
         Optional<User> user = userService.getUserByUsername(reservationDto.getReservationName());
         User user1 = user.get();
