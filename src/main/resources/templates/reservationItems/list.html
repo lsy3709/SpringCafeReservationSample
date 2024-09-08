@@ -23,6 +23,7 @@
     예약자:    <span th:text="${reservationItem.reservation.user.name}"></span> -
     예약자아이디:    <span th:text="${reservationItem.reservation.user.username}"></span> -
     예약자폰번호:    <span th:text="${reservationItem.reservation.user.phone}"></span> -
+        예약자주소:    <span th:text="${reservationItem.reservation.user.address}"></span> -
         <a th:href="@{/reservation-items/{id}/edit(id=${reservationItem.id})}">Edit</a> |
       <a th:href="@{/reservation-items/{id}/delete(id=${reservationItem.id})}">Delete</a>
     </li>
