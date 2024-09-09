@@ -88,6 +88,8 @@ public class ReservationItemController {
         Optional<ReservationItem> reservationItem = reservationItemService.getReservationItemById(id);
         if (reservationItem.isPresent()) {
             model.addAttribute("reservationItem", reservationItem.get());
+            model.addAttribute("reservationAddress", reservationItem.get().getReservation().getUser().getAddress());
+            model.addAttribute("reservationPhone", reservationItem.get().getReservation().getUser().getPhone());
             model.addAttribute("reservationTime", reservationItem.get().getReservation().getReservationTime());
             return "reservationItems/edit";
         } else {

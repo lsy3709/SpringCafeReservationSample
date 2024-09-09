@@ -16,6 +16,7 @@
 
 
 
+
     <label class="form-control">예약 가능 시간만 표기, 테이블 필요,상품과 예약시간, 1시간 단위로, 예) 9:00~10:00:</label>
     <div class="input-group mb-3">
     <input class="form-control" type="date"  id="reservationDate" name="reservationDate" />
@@ -305,6 +306,7 @@
               var address = $("#reservationAddress").val();
               var price2 = $("#selectedItemPrice").val();
               var zipCode = address.match(/\d{5}/)[0];
+              var merchant_uid = "O" + new Date().getTime(); // 고유한 주문번호 생성
 
               // 사전검증
               $.ajax({
@@ -314,7 +316,7 @@
                 headers: { "Content-Type": "application/json" ,
                   "Authorization": "Bearer " + localStorage.getItem("accessToken")},
                 data: JSON.stringify({
-                  merchant_uid: reservationItemId, // 가맹점 주문번호
+                  merchant_uid: merchant_uid, // 가맹점 주문번호
                   amount: price2 // 결제 예정금액
 
                 }),
@@ -335,7 +337,7 @@
                             pg: "html5_inicis",           // 등록된 pg사 (적용된 pg사는 KG이니시스)
                             pay_method: "card",           // 결제방식: card(신용카드), trans(실시간계좌이체), vbank(가상계좌), phone(소액결제)
                             // 확인 테스트시, 해당 아이디를 매번 변경해서 확인 해보기.
-                            merchant_uid: reservationItemId,   // 주문번호
+                            merchant_uid: merchant_uid,   // 주문번호
                             name: reservationItemName,                  // 상품명
                             amount: price2,           // 금액
                             buyer_name: username,         // 주문자
@@ -367,6 +369,8 @@
                                 var msg = '결제가 완료되었습니다. 결제 정보 & 주문 정보 DB 저장 ';
                                 console.log(msg);
 
+                                const id = $('#reservationItemId').val()
+
                                 //결제 테이블에 저장.
                                 var paymentInfo = {
                                   "reservationItem": rsp.merchant_uid,
@@ -383,7 +387,7 @@
 
                                 $.ajax({
                                   type: "post",
-                                  url: "http://localhost:8080/api/payments",
+                                  url: "http://localhost:8080/api/payments/"+reservationItemId,
                                   contentType: "application/json",
                                   headers: { "Content-Type": "application/json" ,
                                     "Authorization": "Bearer " + localStorage.getItem("accessToken")},
@@ -506,6 +510,13 @@
 
   }); //end
 
+  // 음수 입력을 막고, 음수가 입력되면 자동으로 1로 변경하는 함수
+  document.getElementById('reservationCount').addEventListener('input', function () {
+    let value = parseInt(this.value);
+    if (value < 1) {
+      this.value = 1;  // 음수 입력 시 자동으로 1로 설정
+    }
+  });
 </script>
 
 </body>

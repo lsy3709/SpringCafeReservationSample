@@ -46,10 +46,11 @@ public class PaymentRestController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<Payment> createPayment(@RequestBody PaymentDTO2 paymentDTO) {
+    @PostMapping("/{id}")
+    public ResponseEntity<Payment> createPayment(@PathVariable Long id, @RequestBody PaymentDTO2 paymentDTO) {
         log.info("Payment created" + paymentDTO);
-        ReservationItem reservationItem = reservationItemService.getReservationItemById(Long.valueOf(paymentDTO.getReservationItem())).get();
+//        ReservationItem reservationItem = reservationItemService.getReservationItemById(Long.valueOf(paymentDTO.getReservationItem())).get();
+        ReservationItem reservationItem = reservationItemService.getReservationItemById(id).get();
         reservationItem.setPayStatus("결제완료");
         Payment createdPayment = paymentService.createPayment2(paymentDTO,reservationItem);
         return ResponseEntity.ok(createdPayment);
