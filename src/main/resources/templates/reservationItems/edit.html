@@ -8,12 +8,16 @@
 <div layout:fragment="content">
 
   <div class="card-header">
-    <h2>cafe 공간 예약</h2>
+    <h2>cafe 공간 예약 수정 및 결제하기</h2>
   </div>
   <div class="card-body">
 
   <form id="reservationForm"  method="post">
 
+    <label class="form-control">결제 상태:</label>
+    <div class="input-group mb-3">
+      <input class="form-control" type="text"  id="payStatus" name="payStatus"    th:value="${reservationItem.payStatus}" readonly/>
+    </div>
 
 
     <label class="form-control">예약 가능 시간만 표기, 테이블 필요,상품과 예약시간, 1시간 단위로, 예) 9:00~10:00:</label>
@@ -21,13 +25,13 @@
     <input class="form-control" type="date"  id="reservationDate" name="reservationDate"    th:value="${reservationItem.reservation.reservationDate}" />
     </div>
 
-    <input type="text" th:value="${reservationTime}">
     <div class="form-group">
-      <label for="reservationTime">예약 시간 :</label>
-      <select id="reservationTime" class="form-control" name="reservationTime"  th:field="*{reservationTime}">
+      <select id="reservationTime" class="form-control" name="reservationTime" >
+        <option value="">==예약 시간 선택==</option>
         <option th:each="i : ${#numbers.sequence(0, 23)}"
                 th:value="${i}"
                 th:text="${i} + ':00 ~ ' + ${i + 1} + ':00'"
+                th:selected="${i} == ${reservationTime}"
                 >
         </option>
       </select>
@@ -36,16 +40,16 @@
     <label class="form-control">Number of Guests :</label>
     <div class="input-group mb-3">
       <input class="form-control" type="number"  id="reservationCount" name="reservationCount"
-             value="2"
+             th:value="${reservationItem.numberOfGuests}"
              min="1" />
     </div>
     <label class="form-control">선택 된 상품명 :</label>
     <div class="input-group mb-3">
-      <input class="form-control" type="text" id="selectedItemName" name = "selectedItemName"  readonly  />
+      <input class="form-control" type="text" id="selectedItemName" name = "selectedItemName" th:value="${reservationItem.item.name}" readonly  />
     </div>
     <label class="form-control">선택 된 상품 가격 :</label>
     <div class="input-group mb-3">
-      <input class="form-control" type="text" id="selectedItemPrice" readonly  />
+      <input class="form-control" type="text" id="selectedItemPrice" th:value="${reservationItem.item.price}" readonly  />
     </div>
 
     <div class="input-group mb-3">
@@ -63,7 +67,9 @@
         </select>
       </div>
     </div>
-    <button id="submitReservation" class="btn btn-primary w-100 submitBtn" type="submit">예약하기</button>
+    <button id="updateReservation" class="btn btn-primary w-100 submitBtn" type="submit">수정하기</button>
+    <button id="cancleReservation" class="btn btn-warning w-100 submitBtn" type="submit">취소하기</button>
+    <button id="submitReservation" class="btn btn-danger w-100 submitBtn" type="submit">결제하기</button>
 
   </form>
     <!--  상품넣기, 레스트로-->

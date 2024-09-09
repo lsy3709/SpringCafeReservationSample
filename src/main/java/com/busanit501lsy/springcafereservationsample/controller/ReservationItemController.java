@@ -77,7 +77,14 @@ public class ReservationItemController {
     }
 
     @GetMapping("/{id}/edit")
-    public String updateReservationItemForm(@PathVariable Long id, Model model) {
+    public String updateReservationItemForm(@AuthenticationPrincipal UserDetails user,
+                                            @PathVariable Long id, Model model) {
+        Optional<User> user1 = userService.getUserByUsername(user.getUsername());
+        if (user1 != null && user1.isPresent()) {
+            User user2 = user1.get();
+            model.addAttribute("user2", user2);
+        }
+        model.addAttribute("users", userService.getAllUsers());
         Optional<ReservationItem> reservationItem = reservationItemService.getReservationItemById(id);
         if (reservationItem.isPresent()) {
             model.addAttribute("reservationItem", reservationItem.get());
