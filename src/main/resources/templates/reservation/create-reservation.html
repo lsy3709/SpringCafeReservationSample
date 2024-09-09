@@ -32,6 +32,11 @@
       </select>
     </div>
 
+    <label class="form-control">예약 가능 시간 :</label>
+    <div class="input-group mb-3">
+      <input class="form-control" type="text" id="availableTime" readonly  />
+    </div>
+
     <label class="form-control">Number of Guests :</label>
     <div class="input-group mb-3">
       <input class="form-control" type="number"  id="reservationCount" name="reservationCount"
@@ -160,7 +165,7 @@
                   </div>
                   <div class="card-footer">
                     <a href="/items/${item.id}/detail" class="btn btn-primary">상세보기</a>
-                  <a class="selectReservation btn btn-warning" data-name="${item.name}" data-price="${item.price}">예약선택</a>
+                  <a class="selectReservation btn btn-warning" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}">예약선택</a>
                   </div>
                 </div>
               </div>`;
@@ -234,10 +239,36 @@
       // 버튼의 data-name과 data-price 속성에서 값 가져오기
       const productName = $(this).data('name');
       const productPrice = $(this).data('price');
+      const productId = $(this).data('id');
+      const reservationDate = $('#reservationDate').val();
 
       // 값 설정
       $('#selectedItemName').val(productName);
       $('#selectedItemPrice').val(productPrice);
+      console.log("productId : " + productId)
+      console.log("reservationDate : " + reservationDate)
+
+      // 상품 선택시, 이용 가능한 시간 조회.
+      var timeSlotInfo = {
+        "itemId": productId,
+        "date": reservationDate
+      }
+      // 타임 슬롯에 추가하기.
+      $.ajax({
+        type: "post",
+        url: "http://localhost:8080/api/reservations/available-times",
+        contentType: "application/json",
+        headers: { "Content-Type": "application/json" ,
+          "Authorization": "Bearer " + localStorage.getItem("accessToken")},
+        data: JSON.stringify(timeSlotInfo),
+        success: function (response) {
+          console.log("타임슬롯 조회 완료");
+          console.log(response);
+          $('#availableTime').val(response);
+        }
+      });
+
+
     });
 
     // 예약 생성

@@ -73,7 +73,7 @@ public class ReservationRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/available-times")
+    @PostMapping("/available-times")
     public List<Integer> getAvailableTimeSlots(@RequestBody TimeSlotAvaiableDTO timeSlotAvaiableDTO) {
         LocalDate reservationDate = LocalDate.parse(timeSlotAvaiableDTO.getDate());
         return reservationService.getAvailableTimeSlots(Long.valueOf(timeSlotAvaiableDTO.getItemId()), reservationDate);
