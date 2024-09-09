@@ -14,6 +14,7 @@
         상품대표사진:    <span th:if="${reservationItem.item.itemRepImageId}">
            <img th:src="@{/items/{id}/itemImage(id=${reservationItem.item.id})}" alt="Item Image" style="height:100px; width: 100px; object-fit: fill;">
       </span>
+        결제 상태: <span th:text="${reservationItem.payStatus}"></span>  -
         예약상품아이디: <span th:text="${reservationItem.id}"></span>  -
         예약아이디:  <span th:text="${reservationItem.reservation.id}"></span>  -
         날짜:  <span th:text="${reservationItem.reservation.reservationDate}"></span>  -

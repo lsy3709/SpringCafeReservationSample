@@ -18,15 +18,17 @@
 
     <label class="form-control">예약 가능 시간만 표기, 테이블 필요,상품과 예약시간, 1시간 단위로, 예) 9:00~10:00:</label>
     <div class="input-group mb-3">
-    <input class="form-control" type="date"  id="reservationDate" name="reservationDate" />
+    <input class="form-control" type="date"  id="reservationDate" name="reservationDate"    th:value="${reservationItem.reservation.reservationDate}" />
     </div>
 
+    <input type="text" th:value="${reservationTime}">
     <div class="form-group">
       <label for="reservationTime">예약 시간 :</label>
-      <select id="reservationTime" class="form-control" name="reservationTime">
+      <select id="reservationTime" class="form-control" name="reservationTime"  th:field="*{reservationTime}">
         <option th:each="i : ${#numbers.sequence(0, 23)}"
                 th:value="${i}"
-                th:text="${i} + ':00 ~ ' + ${i + 1} + ':00'">
+                th:text="${i} + ':00 ~ ' + ${i + 1} + ':00'"
+                >
         </option>
       </select>
     </div>
