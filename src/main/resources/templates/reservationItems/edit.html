@@ -206,52 +206,6 @@
       $('#selectedItemPrice').val(productPrice);
     });
 
-    // 예약 생성
-    // 예약하기 버튼 클릭 시 AJAX로 폼 제출
-    $(document).on('click', '#submitReservation', function (e) {
-      e.preventDefault(); // 기본 폼 제출 방지
-
-      const dataToSend = {
-                reservationTime: $('#reservationTime').val(),
-                reservationDate: $('#reservationDate').val(),
-                reservationCount: $('#reservationCount').val(),
-                selectedItemName: $('#selectedItemName').val(),
-                selectedItemPrice: $('#selectedItemPrice').val(),
-                reservationName: $('#reservationName').val()
-              };
-
-
-      // AJAX 요청
-      $.ajax({
-        url: '/api/reservations', // 전송할 URL (Thymeleaf에서 설정한 엔드포인트)
-        type: 'POST',
-        contentType: 'application/json', // JSON 타입으로 전송
-        dataType: 'json', // 서버에서 JSON 형식의 응답을 기대
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem("accessToken")},
-
-        data: JSON.stringify(dataToSend), // 데이터를 JSON 문자열로 변환하여 전송
-        success: function (response) {
-          // 성공 시 처리할 동작
-          Swal.fire({
-            title: '예약 확인, 선결제 순서로 예약완료됩니다. 감사합니다.',
-            html: `
-                    `,
-            icon: 'success',
-            imageUrl: 'https://unsplash.it/400/200',  // 원하시는 이미지 URL로 교체 가능
-            imageWidth: 400,
-            imageHeight: 200,
-            imageAlt: 'Custom image'
-          });
-          console.log(response);
-        },
-        error: function (error) {
-          // 에러 시 처리할 동작
-          alert('예약 처리 중 오류가 발생했습니다.');
-          console.log(error);
-        }
-      });
-    });
 
     // 예약 취소
     $(document).on('click', '#cancleReservation', function (e) {
@@ -308,6 +262,76 @@
           Swal.fire({
             title: "취소됨!",
             text: "예약이 취소되었습니다.",
+            icon: "info"
+          });
+        }
+      });
+    }); //예약취소 end
+
+    // 예약 수정하기
+    $(document).on('click', '#updateReservation', function (e) {
+      e.preventDefault(); // 기본 폼 제출 방지
+
+      Swal.fire({
+        title: "예약 수정할까요?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, cancel it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          const id = $('#reservationItemId').val()
+
+          const dataToSend = {
+            reservationTime: $('#reservationTime').val(),
+            reservationDate: $('#reservationDate').val(),
+            reservationCount: $('#reservationCount').val(),
+            selectedItemName: $('#selectedItemName').val(),
+            selectedItemPrice: $('#selectedItemPrice').val(),
+            reservationName: $('#reservationName').val()
+          };
+
+          // AJAX 요청
+          $.ajax({
+            url: '/api/reservation-items/'+id, // 전송할 URL (Thymeleaf에서 설정한 엔드포인트)
+            type: 'PUT',
+            contentType: 'application/json', // JSON 타입으로 전송
+            dataType: 'json', // 서버에서 JSON 형식의 응답을 기대
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem("accessToken")
+            },
+            data: JSON.stringify(dataToSend),
+            success: function (response) {
+              // 성공 시 처리할 동작
+              Swal.fire({
+                title: '예약 수정 완료. 감사합니다.',
+                icon: 'success',
+                imageUrl: 'https://unsplash.it/400/200',  // 원하시는 이미지 URL로 교체 가능
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Custom image'
+              }).then(() => {
+                window.location.href = '/reservation-items';
+              });
+              console.log(response);
+            },
+            error: function (error) {
+              // 에러 시 처리할 동작
+              Swal.fire({
+                title: '오류!',
+                text: '수정 처리 중 오류가 발생했습니다.',
+                icon: 'error'
+              });
+              console.log(error);
+            }
+          });
+        } else {
+          // 취소 선택 시 추가적인 동작이 필요하면 이곳에 추가
+          Swal.fire({
+            title: "수정 취소됨!",
+            text: "수정이 취소되었습니다.",
             icon: "info"
           });
         }

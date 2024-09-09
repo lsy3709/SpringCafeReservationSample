@@ -1,8 +1,12 @@
 package com.busanit501lsy.springcafereservationsample.controller.api;
 
+import com.busanit501lsy.springcafereservationsample.dto.ReservationDTO;
 import com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO;
+import com.busanit501lsy.springcafereservationsample.entity.Reservation;
 import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
 import com.busanit501lsy.springcafereservationsample.service.ReservationItemService;
+import com.busanit501lsy.springcafereservationsample.service.ReservationService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +20,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reservation-items")
+@Log4j2
 public class ReservationItemRestController {
+    @Autowired
+    private ReservationService reservationService;
+
     @Autowired
     private ReservationItemService reservationItemService;
 
@@ -55,11 +63,17 @@ public class ReservationItemRestController {
         return reservationItemService.createReservationItem(reservationItem);
     }
 
+    //사용
     @PutMapping("/{id}")
-    public ResponseEntity<ReservationItem> updateReservationItem(@PathVariable Long id, @RequestBody ReservationItem reservationItemDetails) {
-        return ResponseEntity.ok(reservationItemService.updateReservationItem(id, reservationItemDetails));
+    public ResponseEntity<ReservationItemDTO> updateReservationItem(@PathVariable Long id, @RequestBody ReservationDTO reservationDto) {
+        log.info("lsy reservation put: " + reservationDto);
+        Reservation createdReservation = reservationService.createApiReservation(reservationDto);
+        ReservationItem reservationItem = reservationItemService.createApiReservationItem(reservationDto,createdReservation);
+        ReservationItemDTO reservationItemDTO = ReservationItemDTO.fromEntities(createdReservation,reservationItem);
+        return ResponseEntity.ok(reservationItemDTO);
     }
 
+    //사용
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReservationItem(@PathVariable Long id) {
         reservationItemService.deleteReservationItem(id);

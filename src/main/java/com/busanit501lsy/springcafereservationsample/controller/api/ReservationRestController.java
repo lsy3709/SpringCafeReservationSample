@@ -42,6 +42,7 @@ public class ReservationRestController {
     }
 
     // 유저 아이디, 상품 아이디,예약 생성
+    // 사용
     @PostMapping
     public ResponseEntity<ReservationItemDTO> createReservation(@RequestBody ReservationDTO reservationDto) {
         log.info("lsy reservation : " + reservationDto);
