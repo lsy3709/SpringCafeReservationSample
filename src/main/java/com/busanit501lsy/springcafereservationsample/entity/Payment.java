@@ -1,5 +1,7 @@
 package com.busanit501lsy.springcafereservationsample.entity;
 
+import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO;
+import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO2;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,5 +36,18 @@ public class Payment {
     @JsonBackReference
     @JoinColumn(name = "reservation_item_id")
     private ReservationItem reservationItem;
+
+    // DTO를 엔티티로 변환하는 메서드
+    public static Payment fromDTO(PaymentDTO2 paymentDTO, ReservationItem reservationItem) {
+        Payment payment = new Payment();
+        payment.setReservationItem(reservationItem);
+        payment.setPrice(new BigDecimal(paymentDTO.getPrice()));
+        payment.setPaymentTime(paymentDTO.getPaymentTime());
+        payment.setPaymentStatus(paymentDTO.getPaymentStatus());
+        payment.setPaymentType(paymentDTO.getPaymentType());
+        return payment;
+    }
+
+
 
 }

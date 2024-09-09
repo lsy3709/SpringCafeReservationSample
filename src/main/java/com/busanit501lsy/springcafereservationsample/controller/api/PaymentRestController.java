@@ -1,10 +1,13 @@
 package com.busanit501lsy.springcafereservationsample.controller.api;
 
 import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO;
+import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO2;
 import com.busanit501lsy.springcafereservationsample.entity.BuyerInfo;
 import com.busanit501lsy.springcafereservationsample.entity.Payment;
 import com.busanit501lsy.springcafereservationsample.entity.PrePaymentEntity;
+import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
 import com.busanit501lsy.springcafereservationsample.service.PaymentService;
+import com.busanit501lsy.springcafereservationsample.service.ReservationItemService;
 import com.busanit501lsy.springcafereservationsample.service.ReservationService;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import jakarta.validation.Valid;
@@ -28,7 +31,7 @@ public class PaymentRestController {
     private PaymentService paymentService;
 
     @Autowired
-    private ReservationService reservationService;
+    private ReservationItemService reservationItemService;
 
 
     @GetMapping
@@ -44,9 +47,10 @@ public class PaymentRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Payment> createPayment(@RequestBody Payment payment) {
-        log.info("Payment created" + payment);
-        Payment createdPayment = paymentService.createPayment(payment);
+    public ResponseEntity<Payment> createPayment(@RequestBody PaymentDTO2 paymentDTO) {
+        log.info("Payment created" + paymentDTO);
+        ReservationItem reservationItem = reservationItemService.getReservationItemById(Long.valueOf(paymentDTO.getReservationItem())).get();
+        Payment createdPayment = paymentService.createPayment2(paymentDTO,reservationItem);
         return ResponseEntity.ok(createdPayment);
     }
 

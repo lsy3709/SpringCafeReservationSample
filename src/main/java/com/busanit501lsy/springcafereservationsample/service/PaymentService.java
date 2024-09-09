@@ -2,8 +2,10 @@ package com.busanit501lsy.springcafereservationsample.service;
 
 import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO;
 
+import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO2;
 import com.busanit501lsy.springcafereservationsample.entity.Payment;
 import com.busanit501lsy.springcafereservationsample.entity.PrePaymentEntity;
+import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
 import com.busanit501lsy.springcafereservationsample.repository.PaymentRepository;
 import com.busanit501lsy.springcafereservationsample.repository.PrePaymentRepository;
 import com.siot.IamportRestClient.IamportClient;
@@ -49,6 +51,11 @@ public class PaymentService {
     }
 
     public Payment createPayment(Payment payment) {
+        return paymentRepository.save(payment);
+    }
+
+    public Payment createPayment2(PaymentDTO2 paymentDTO, ReservationItem reservationItem) {
+        Payment payment = Payment.fromDTO(paymentDTO,reservationItem);
         return paymentRepository.save(payment);
     }
 
