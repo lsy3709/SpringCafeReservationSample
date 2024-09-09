@@ -2,6 +2,7 @@ package com.busanit501lsy.springcafereservationsample.controller.api;
 
 import com.busanit501lsy.springcafereservationsample.dto.ReservationDTO;
 import com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO;
+import com.busanit501lsy.springcafereservationsample.dto.TimeSlotAvaiableDTO;
 import com.busanit501lsy.springcafereservationsample.dto.TimeSlotDTO;
 import com.busanit501lsy.springcafereservationsample.entity.Reservation;
 import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
@@ -73,9 +74,9 @@ public class ReservationRestController {
     }
 
     @GetMapping("/available-times")
-    public List<Integer> getAvailableTimeSlots(@RequestParam Long itemId, @RequestParam String date) {
-        LocalDate reservationDate = LocalDate.parse(date);
-        return reservationService.getAvailableTimeSlots(itemId, reservationDate);
+    public List<Integer> getAvailableTimeSlots(@RequestBody TimeSlotAvaiableDTO timeSlotAvaiableDTO) {
+        LocalDate reservationDate = LocalDate.parse(timeSlotAvaiableDTO.getDate());
+        return reservationService.getAvailableTimeSlots(Long.valueOf(timeSlotAvaiableDTO.getItemId()), reservationDate);
     }
 
 
