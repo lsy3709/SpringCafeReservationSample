@@ -60,6 +60,7 @@ public class ReservationItemService {
         ReservationItem reservationItem = ReservationItem.builder()
                 .reservation(reservation)
                 .item(item1)
+                .payStatus("입금대기")
                 .numberOfGuests(reservationDto.getReservationCount())
                 .build();
         return reservationItemRepository.save(reservationItem);

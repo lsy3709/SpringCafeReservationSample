@@ -19,4 +19,5 @@ public class ReservationDTO {
     private String selectedItemName;      // 선택된 상품 이름 (readonly text)
     private String selectedItemPrice;     // 선택된 상품 가격 (readonly text)
     private String reservationTime; // 예약 시간 (time), 매시간마다
+    private String payStatus;
 }

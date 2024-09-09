@@ -50,6 +50,7 @@ public class PaymentRestController {
     public ResponseEntity<Payment> createPayment(@RequestBody PaymentDTO2 paymentDTO) {
         log.info("Payment created" + paymentDTO);
         ReservationItem reservationItem = reservationItemService.getReservationItemById(Long.valueOf(paymentDTO.getReservationItem())).get();
+        reservationItem.setPayStatus("결제완료");
         Payment createdPayment = paymentService.createPayment2(paymentDTO,reservationItem);
         return ResponseEntity.ok(createdPayment);
     }

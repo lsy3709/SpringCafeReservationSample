@@ -11,7 +11,6 @@ public class PaymentDTO2 {
     private String reservationItem ;
     private String price ;
     private LocalDateTime paymentTime;
-    private String paymentStatus;
     private String paymentType;
 
 

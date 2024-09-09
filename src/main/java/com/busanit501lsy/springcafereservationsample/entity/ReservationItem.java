@@ -34,6 +34,8 @@ public class ReservationItem {
     @Column(nullable = false)
     private int numberOfGuests;
 
+    private String payStatus = "입금대기";
+
     @OneToMany(mappedBy = "reservationItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Payment> payments;

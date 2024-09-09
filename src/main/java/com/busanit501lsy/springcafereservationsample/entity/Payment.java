@@ -24,7 +24,6 @@ public class Payment {
 
     private BigDecimal price;
     private LocalDateTime paymentTime;
-    private String paymentStatus;
     private String paymentType;
 
 //    @ManyToOne
@@ -43,7 +42,6 @@ public class Payment {
         payment.setReservationItem(reservationItem);
         payment.setPrice(new BigDecimal(paymentDTO.getPrice()));
         payment.setPaymentTime(paymentDTO.getPaymentTime());
-        payment.setPaymentStatus(paymentDTO.getPaymentStatus());
         payment.setPaymentType(paymentDTO.getPaymentType());
         return payment;
     }
