@@ -37,6 +37,7 @@ public class PaymentService {
     // 로그인 후, 연동관리 -> 연동정보 -> REST API KEY, REST API SECRET 가져오기,
     public PaymentService() {
 //        this.api = new IamportClient("REST API KEY", "REST API SECRET");
+
     }
 
     public List<Payment> getAllPayments() {
