@@ -6,6 +6,7 @@ import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileI
 import com.busanit501lsy.springcafereservationsample.repository.UserRepository;
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ProfileImageRepository;
 import com.busanit501lsy.springcafereservationsample.util.ImageUtil;
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,12 +56,14 @@ public class UserService {
     }
 
 
+    @Transactional
     public User createUser(User user) {
         user.addRole(MemberRole.USER);
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
+    @Transactional
     public User updateUser(Long id, User userDetails) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -68,10 +71,13 @@ public class UserService {
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
         user.setName(userDetails.getName());
+        user.setAddress(userDetails.getAddress());
+        user.setPhone(userDetails.getPhone());
 
         return userRepository.save(user);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -82,6 +88,7 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    @Transactional
     //프로필 이미지 업로드, 레스트 형식
     public void saveProfileImage(Long userId, MultipartFile file) throws IOException {
         // Get the user
@@ -101,12 +108,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     // 이미지 가져오기
     public ProfileImage getProfileImage(String imageId) {
         return profileImageRepository.findById(imageId)
                 .orElseThrow(() -> new RuntimeException("Image not found"));
     }
 
+    @Transactional
     // 프로필 이미지만 삭제
     public void deleteProfileImage(User user) {
         // 현재 사용자가 가진 프로필 이미지 ID 가져오기

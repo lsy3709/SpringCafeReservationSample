@@ -23,6 +23,15 @@
     <input type="text"  name="email" class="form-control" placeholder="email 입력해주세요" th:value="${user.email}" >
     </div>
     <div class="input-group mb-3">
+      <input type="password" id="userPassword" name="password" class="form-control" placeholder="새로운 password 입력해주세요">
+    </div>
+    <div class="input-group mb-3">
+      <input type="password" id="userPassword2" name="password2" class="form-control" placeholder="한번 더 password 입력해주세요">
+    </div>
+    <div id="passwordWarning" style="color: red; display: none;">
+      비밀번호가 일치하지 않습니다.
+    </div>
+    <div class="input-group mb-3">
       <input type="text"  name="phone" class="form-control" placeholder="phone 입력해주세요" th:value="${user.phone}" >
     </div>
     <div class="input-group mb-3">
@@ -151,6 +160,24 @@
   document.getElementById('sample6_detailAddress').addEventListener('input', updateFullAddress);
   document.getElementById('sample6_extraAddress').addEventListener('input', updateFullAddress);
 
+  //패스워드 체크
+  document.getElementById('userPassword2').addEventListener('input', function () {
+    var password = document.getElementById('userPassword').value;
+    var password2 = document.getElementById('userPassword2').value;
+    var warningMessage = document.getElementById('passwordWarning');
+    var passwordField = document.getElementById('userPassword');
+    var passwordField2 = document.getElementById('userPassword2');
+
+    if (password !== password2) {
+      warningMessage.style.display = 'block';
+      passwordField.style.border = '2px solid red';
+      passwordField2.style.border = '2px solid red';
+    } else {
+      warningMessage.style.display = 'none';
+      passwordField.style.border = '2px solid green';
+      passwordField2.style.border = '2px solid green';
+    }
+  });
 </script>
 </body>
 </html>

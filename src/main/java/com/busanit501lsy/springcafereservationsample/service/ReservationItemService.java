@@ -7,6 +7,7 @@ import com.busanit501lsy.springcafereservationsample.entity.Reservation;
 import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
 import com.busanit501lsy.springcafereservationsample.repository.ItemRepository;
 import com.busanit501lsy.springcafereservationsample.repository.ReservationItemRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,10 +48,12 @@ public class ReservationItemService {
         return reservationItemRepository.findById(id);
     }
 
+    @Transactional
     public ReservationItem createReservationItem(ReservationItem reservationItem) {
         return reservationItemRepository.save(reservationItem);
     }
 
+    @Transactional
     public ReservationItem createApiReservationItem(ReservationDTO reservationDto, Reservation reservation) {
         Optional<Item> item = itemRepository.findByName(reservationDto.getSelectedItemName());
         Item item1 = item.orElseThrow(() -> new IllegalArgumentException("Item not found with name: " + reservationDto.getSelectedItemName()));
@@ -66,6 +69,7 @@ public class ReservationItemService {
         return reservationItemRepository.save(reservationItem);
     }
 
+    @Transactional
     public ReservationItem updateReservationItem(Long id, ReservationItem reservationItemDetails) {
         return reservationItemRepository.findById(id).map(reservationItem -> {
             reservationItem.setNumberOfGuests(reservationItemDetails.getNumberOfGuests());
@@ -74,6 +78,7 @@ public class ReservationItemService {
         }).orElseThrow(() -> new RuntimeException("ReservationItem not found"));
     }
 
+    @Transactional
     public void deleteReservationItem(Long id) {
         reservationItemRepository.deleteById(id);
     }

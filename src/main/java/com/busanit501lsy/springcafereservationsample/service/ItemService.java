@@ -5,6 +5,7 @@ import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ItemImag
 import com.busanit501lsy.springcafereservationsample.repository.ItemRepository;
 import com.busanit501lsy.springcafereservationsample.repository.mongoRepository.ItemImageRepository;
 import com.busanit501lsy.springcafereservationsample.util.ImageUtil;
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,10 +40,12 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
+    @Transactional
     public Item createItem(Item item) {
         return itemRepository.save(item);
     }
 
+    @Transactional
     public Item updateItem(Long id, Item itemDetails) {
         return itemRepository.findById(id).map(item -> {
             item.setName(itemDetails.getName());
@@ -52,6 +55,7 @@ public class ItemService {
         }).orElseThrow(() -> new RuntimeException("Item not found"));
     }
 
+    @Transactional
     public void deleteItem(Long id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -78,6 +82,7 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
+    @Transactional
     //프로필 이미지 업로드, 레스트 형식
     public void saveItemImage(Long itemId, MultipartFile file, int check) throws IOException {
         // Get the user
@@ -130,6 +135,7 @@ public class ItemService {
                 .orElseThrow(() -> new RuntimeException("Image not found"));
     }
 
+    @Transactional
     // 프로필 이미지만 삭제
     public void deleteItemImage(Item item, int imageType) {
         String imageId = null;

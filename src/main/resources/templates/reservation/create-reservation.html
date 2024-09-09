@@ -270,6 +270,7 @@
           var reservationItemId = response.reservationItemId
           var reservationItemName = response.name
           var reservationDate = response.reservationDate
+          var reservationTime = response.reservationTime
           var username_ = response.username
           var phone_ = response.phone
           var address = response.address
@@ -307,6 +308,8 @@
               var price2 = $("#selectedItemPrice").val();
               var zipCode = address.match(/\d{5}/)[0];
               var merchant_uid = "O" + new Date().getTime(); // 고유한 주문번호 생성
+
+              // 결제 완료 여부 확인
 
               // 사전검증
               $.ajax({
@@ -369,7 +372,7 @@
                                 var msg = '결제가 완료되었습니다. 결제 정보 & 주문 정보 DB 저장 ';
                                 console.log(msg);
 
-                                const id = $('#reservationItemId').val()
+                                // const id = $('#reservationItemId').val()
 
                                 //결제 테이블에 저장.
                                 var paymentInfo = {
@@ -422,6 +425,24 @@
                                   data: JSON.stringify(buyerInfo),
                                   success: function (response) {
                                     console.log("결제정보 저장 완료");
+                                  }
+                                });
+
+                                var timeSlotInfo = {
+                                  "slotTime": reservationTime,
+                                  "reservationId": reservationId,
+                                  "reservationItemId": reservationItemId
+                                }
+                                // 타임 슬롯에 추가하기.
+                                $.ajax({
+                                  type: "post",
+                                  url: "http://localhost:8080/api/reservations/add",
+                                  contentType: "application/json",
+                                  headers: { "Content-Type": "application/json" ,
+                                    "Authorization": "Bearer " + localStorage.getItem("accessToken")},
+                                  data: JSON.stringify(timeSlotInfo),
+                                  success: function (response) {
+                                    console.log("타임슬롯 저장 완료");
                                   }
                                 });
 

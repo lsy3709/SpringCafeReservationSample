@@ -13,6 +13,7 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.request.PrepareData;
 import com.siot.IamportRestClient.response.IamportResponse;
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,15 +51,18 @@ public class PaymentService {
         return paymentRepository.findById(id);
     }
 
+    @Transactional
     public Payment createPayment(Payment payment) {
         return paymentRepository.save(payment);
     }
 
+    @Transactional
     public Payment createPayment2(PaymentDTO2 paymentDTO, ReservationItem reservationItem) {
         Payment payment = Payment.fromDTO(paymentDTO,reservationItem);
         return paymentRepository.save(payment);
     }
 
+    @Transactional
     public Payment updatePayment(Long id, Payment paymentDetails) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
@@ -70,12 +74,14 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
+    @Transactional
     public void deletePayment(Long id) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
         paymentRepository.delete(payment);
     }
 
+    @Transactional
     // 결제 사전 검증
     public void postPrepare(PrePaymentEntity request) throws IamportResponseException, IOException {
         PrepareData prepareData = new PrepareData(request.getMerchant_uid(), request.getAmount());
@@ -84,6 +90,7 @@ public class PaymentService {
         prePaymentRepository.save(request); // 주문번호와 결제예정 금액 DB 저장
     }
 
+    @Transactional
     // 결제 사후 검증
     public com.siot.IamportRestClient.response.Payment validatePayment(PaymentDTO request) throws IamportResponseException, IOException {
         // 사전 검증에 저장된 내용
@@ -108,6 +115,7 @@ public class PaymentService {
         return iamportResponse.getResponse();
     }
 
+    @Transactional
     // 전체 환불
     public CancelData cancelPayment(IamportResponse<com.siot.IamportRestClient.response.Payment> response) {
         return new CancelData(response.getResponse().getImpUid(), true);

@@ -2,6 +2,7 @@ package com.busanit501lsy.springcafereservationsample.service;
 
 import com.busanit501lsy.springcafereservationsample.entity.OrderInfo;
 import com.busanit501lsy.springcafereservationsample.repository.OrderInfoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class OrderInfoService {
         this.orderInfoRepository = orderInfoRepository;
     }
 
+    @Transactional
     public void saveOrderInfo(OrderInfo orderInfo) {
         orderInfoRepository.save(orderInfo);
     }

@@ -2,6 +2,7 @@ package com.busanit501lsy.springcafereservationsample.service;
 
 import com.busanit501lsy.springcafereservationsample.dto.PredictionResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class ImageUploadService {
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper(); // JSON 파싱을 위한 ObjectMapper
 
+    @Transactional
     public PredictionResponseDTO sendImageToDjangoServer(byte[] imageBytes, String filename) throws IOException {
         // 이미지 파일을 MultipartBody로 구성
         RequestBody fileBody = RequestBody.create(imageBytes, MediaType.parse("image/jpeg"));
@@ -45,26 +47,5 @@ public class ImageUploadService {
             return objectMapper.readValue(responseBody, PredictionResponseDTO.class);
         }
     }
-
-    // WebClient 방식, 오류1, 400 bad request
-//    private final WebClient webClient;
-//
-//    public ImageUploadService(WebClient.Builder webClientBuilder) {
-//        this.webClient = webClientBuilder.baseUrl("http://localhost:8000").build();
-//    }
-//
-//    public Mono<PredictionResponseDTO> uploadImage(MultipartFile file) throws IOException {
-//        log.info("ailsy 2 ImageUploadService file.getOriginalFilename() : " + file.getOriginalFilename());
-//        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-//        builder.part("image", new ByteArrayResource(file.getBytes()))
-//                .header("Content-Disposition", "form-data; name=image; filename=" + file.getOriginalFilename());
-//
-//        return webClient.post()
-//                .uri("/api/classify/")
-//                .contentType(MediaType.MULTIPART_FORM_DATA)
-//                .body(BodyInserters.fromMultipartData(builder.build()))
-//                .retrieve()
-//                .bodyToMono(PredictionResponseDTO.class);
-//    }
 
 }
