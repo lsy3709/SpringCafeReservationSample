@@ -265,6 +265,20 @@
 
         data: JSON.stringify(dataToSend), // 데이터를 JSON 문자열로 변환하여 전송
         success: function (response) {
+          var reservationItemId = response.reservationItemId
+          var reservationItemName = response.name
+          var reservationDate = response.reservationDate
+          var username_ = response.username
+          var phone_ = response.phone
+          var address = response.address
+          var reservationId = response.reservationId
+          console.log("reservationItemId : " + reservationItemId)
+          console.log("reservationItemName : " + reservationItemName)
+          console.log("reservationDate : " + reservationDate)
+          console.log("username_ : " + username_)
+          console.log("reservationId : " + reservationId)
+          console.log("phone_ : " + phone_)
+          console.log("address : " + address)
           // 성공 시 처리할 동작
           Swal.fire({
             title: '예약 확인, 선결제 순서로 예약완료됩니다. 감사합니다.',
@@ -287,6 +301,7 @@
               var username = $("#reservationName2").val();
               var phone = $("#reservationPhone").val();
               var address = $("#reservationAddress").val();
+              var price = $("#selectedItemPrice").val();
 
               Swal.fire({
                 title: "결제완료",

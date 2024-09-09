@@ -1,6 +1,7 @@
 package com.busanit501lsy.springcafereservationsample.controller.api;
 
 import com.busanit501lsy.springcafereservationsample.dto.ReservationDTO;
+import com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO;
 import com.busanit501lsy.springcafereservationsample.entity.Reservation;
 import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
 import com.busanit501lsy.springcafereservationsample.service.ReservationItemService;
@@ -42,11 +43,12 @@ public class ReservationRestController {
 
     // 유저 아이디, 상품 아이디,예약 생성
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDTO reservationDto) {
+    public ResponseEntity<ReservationItemDTO> createReservation(@RequestBody ReservationDTO reservationDto) {
         log.info("lsy reservation : " + reservationDto);
         Reservation createdReservation = reservationService.createApiReservation(reservationDto);
         ReservationItem reservationItem = reservationItemService.createApiReservationItem(reservationDto,createdReservation);
-        return ResponseEntity.ok(createdReservation);
+        ReservationItemDTO reservationItemDTO = ReservationItemDTO.fromEntities(createdReservation,reservationItem);
+        return ResponseEntity.ok(reservationItemDTO);
     }
 
     @PutMapping("/{id}")
@@ -61,4 +63,5 @@ public class ReservationRestController {
         reservationService.deleteReservation(id);
         return ResponseEntity.noContent().build();
     }
+
 }

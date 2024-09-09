@@ -22,7 +22,7 @@ public class Payment {
 
     private BigDecimal price;
     private LocalDateTime paymentTime;
-    private String paymentStatus = "결제대기";
+    private String paymentStatus;
     private String paymentType;
 
 //    @ManyToOne
