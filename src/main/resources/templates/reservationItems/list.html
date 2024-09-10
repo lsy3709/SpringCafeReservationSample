@@ -5,9 +5,10 @@
       layout:decorate="~{layout/layout.html}"
 >
 <body>
+
 <div layout:fragment="content">
+    <h1><a th:href="@{/reservations/new}">예약하기</a></h1>
   <h2>Reservation List</h2>
-  <a th:href="@{/reservations/new}">Create New Reservation</a>
   <ul>
     <li th:each="reservationItem : ${items}">
 <!--      <span th:text="${reservation.reservationTime}"></span> - -->
