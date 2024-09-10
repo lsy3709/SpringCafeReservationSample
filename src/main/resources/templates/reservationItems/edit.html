@@ -574,6 +574,24 @@
     }
   });
 
+  document.addEventListener("DOMContentLoaded", function() {
+    const payStatus = document.getElementById("payStatus").value;
+
+    const updateButton = document.getElementById("updateReservation");
+    const cancelButton = document.getElementById("cancleReservation");
+    const payButton = document.getElementById("payReservation");
+    const itemList = document.getElementById("jsonResult");
+    const itemPaging = document.getElementById("paginationContainer");
+
+    if (payStatus === "결제완료") {
+      updateButton.style.display = "none";
+      cancelButton.style.display = "none";
+      payButton.style.display = "none";
+      itemList.style.display = "none";
+      itemPaging.style.display = "none";
+    }
+  });
+
 </script>
 
 </body>
