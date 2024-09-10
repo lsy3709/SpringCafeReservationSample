@@ -1,12 +1,10 @@
 package com.busanit501lsy.springcafereservationsample.service;
 
 import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO;
-
 import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO2;
 import com.busanit501lsy.springcafereservationsample.entity.Payment;
 import com.busanit501lsy.springcafereservationsample.entity.PrePaymentEntity;
 import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
-import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.repository.PaymentRepository;
 import com.busanit501lsy.springcafereservationsample.repository.PrePaymentRepository;
 import com.siot.IamportRestClient.IamportClient;
@@ -41,6 +39,10 @@ public class PaymentService {
     // 포트원
     // 관린자 콘솔 , https://admin.portone.io/
     // 로그인 후, 연동관리 -> 연동정보 -> REST API KEY, REST API SECRET 가져오기,
+    // imp 번호 본인꺼로 변경 해야 할 파일
+    // create-pay.html,
+    // create-reservation.html
+    // edit.html
     public PaymentService() {
 //        this.api = new IamportClient("REST API KEY", "REST API SECRET");
 

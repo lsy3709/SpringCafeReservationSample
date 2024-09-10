@@ -7,6 +7,7 @@
 <body>
 <div layout:fragment="content">
   <h2>Payment List</h2>
+  <h3>결제 완료시만 출력됨</h3>
 
   <a th:href="@{/payments/new}">Create New Payment</a>
 
@@ -16,7 +17,10 @@
       <span id="paymentId" th:text="${payment.id}"></span> -
       <span th:text="${payment.paymentTime}"></span> -
       <span th:text="${payment.price}"></span> -
-      <span th:text="${payment.reservationItem.payStatus}"></span> -
+      <span th:text="${payment.reservationItem.payStatus}" ></span> -
+      <span th:text="${payment.reservationItem.reservation.user.name}"></span> -
+      <span th:text="${payment.reservationItem.reservation.user.phone}"></span> -
+      <span th:text="${payment.reservationItem.reservation.reservationTime}"></span>시 -
 <!--      <span th:text="${payment.amount}"></span> - -->
 <!--      <span th:text="${payment.reservation.reservationTime}"></span>-->
 <!--      <a th:href="@{/payments/{id}/edit(id=${payment.id})}">Edit</a> |-->

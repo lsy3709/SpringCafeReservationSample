@@ -3,8 +3,8 @@ package com.busanit501lsy.springcafereservationsample.controller;
 import com.busanit501lsy.springcafereservationsample.entity.Item;
 import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ItemImage;
-import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
 import com.busanit501lsy.springcafereservationsample.service.ItemService;
+import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,13 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,9 +30,11 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping
-    public String getAllItems(Model model,
+    public String getAllItems(@AuthenticationPrincipal UserDetails user, Model model,
                               @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size) {
 //        List<Item> items = itemService.getAllItems();
@@ -50,6 +53,16 @@ public class ItemController {
         model.addAttribute("totalPages", itemPage.getTotalPages());
         model.addAttribute("pageSize", itemPage.getSize());
 
+        Optional<User> user1 = userService.getUserByUsername(user.getUsername());
+        if (user1 != null && user1.isPresent()) {
+            User user2 = user1.get();
+            model.addAttribute("user2", user2);
+            model.addAttribute("user2_id", user2.getId());
+            log.info("User found: " + user2.getId());
+            log.info("User found: " + user2.getUsername());
+        }
+        model.addAttribute("user", user);
+
         return "items/items"; // Thymeleaf 템플릿
     }
 
@@ -65,8 +78,17 @@ public class ItemController {
     }
 
     @GetMapping("/new")
-    public String createItemForm(Model model) {
+    public String createItemForm(@AuthenticationPrincipal UserDetails user, Model model) {
         model.addAttribute("item", new Item());
+        Optional<User> user1 = userService.getUserByUsername(user.getUsername());
+        if (user1 != null && user1.isPresent()) {
+            User user2 = user1.get();
+            model.addAttribute("user2", user2);
+            model.addAttribute("user2_id", user2.getId());
+            log.info("User found: " + user2.getId());
+            log.info("User found: " + user2.getUsername());
+        }
+        model.addAttribute("user", user);
         return "items/create-item"; // Form for creating a new item
     }
 
