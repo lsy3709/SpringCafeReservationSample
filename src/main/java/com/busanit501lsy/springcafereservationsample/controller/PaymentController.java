@@ -9,6 +9,10 @@ import com.busanit501lsy.springcafereservationsample.service.UserService;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -34,21 +38,33 @@ public class PaymentController {
     private UserService userService;
 
     @GetMapping
-    public String getAllPayments(@AuthenticationPrincipal UserDetails user, Model model) {
-        List<Payment> payments = paymentService.getAllPayments();
+    public String getAllPayments(@AuthenticationPrincipal UserDetails user, Model model
+            , @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Payment> payments = paymentService.getAllPaymentsWithPage(pageable);
+
+        int startPage = Math.max(0, payments.getNumber() - 5);
+        int endPage = Math.min(payments.getTotalPages() - 1, payments.getNumber() + 4);
+        model.addAttribute("payments", payments.getContent());
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("pageNumber", payments.getNumber());
+        model.addAttribute("totalPages", payments.getTotalPages());
+        model.addAttribute("pageSize", payments.getSize());
+
         Optional<User> user1 = userService.getUserByUsername(user.getUsername());
         if (user1 != null && user1.isPresent()) {
             User user2 = user1.get();
             model.addAttribute("user2", user2);
         }
-        model.addAttribute("payments", payments);
         model.addAttribute("user", user);
         return "payment/payments";
         // returns payments.html
     }
 
     @GetMapping("/new")
-    public String showCreatePaymentForm(@AuthenticationPrincipal UserDetails user,Model model) {
+    public String showCreatePaymentForm(@AuthenticationPrincipal UserDetails user, Model model) {
         List<Payment> payments = paymentService.getAllPayments();
         Optional<User> user1 = userService.getUserByUsername(user.getUsername());
         if (user1 != null && user1.isPresent()) {

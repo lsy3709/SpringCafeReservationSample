@@ -6,6 +6,7 @@ import com.busanit501lsy.springcafereservationsample.dto.PaymentDTO2;
 import com.busanit501lsy.springcafereservationsample.entity.Payment;
 import com.busanit501lsy.springcafereservationsample.entity.PrePaymentEntity;
 import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
+import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.repository.PaymentRepository;
 import com.busanit501lsy.springcafereservationsample.repository.PrePaymentRepository;
 import com.siot.IamportRestClient.IamportClient;
@@ -16,6 +17,8 @@ import com.siot.IamportRestClient.response.IamportResponse;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -41,6 +44,11 @@ public class PaymentService {
     public PaymentService() {
 //        this.api = new IamportClient("REST API KEY", "REST API SECRET");
 
+    }
+
+    // 페이징 처리
+    public Page<Payment> getAllPaymentsWithPage(Pageable pageable) {
+        return paymentRepository.findAll(pageable);
     }
 
     public List<Payment> getAllPayments() {

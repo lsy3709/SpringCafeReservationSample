@@ -24,6 +24,38 @@
       <button id="deletePay" class="btn btn-warning deletePayBtn" >삭제하기</button>
     </li>
   </ul>
+
+  <!-- 페이지네이션 -->
+  <div class="pagination justify-content-center">
+    <ul class="pagination">
+      <!-- First page button -->
+      <li th:if="${pageNumber > 0}" class="page-item">
+        <a th:href="@{/payments?page=0(size=${pageSize})}" class="page-link">First</a>
+      </li>
+
+      <!-- Previous page button -->
+      <li th:if="${pageNumber > 0}" class="page-item">
+        <a th:href="@{/payments(page=${pageNumber - 1}, size=${pageSize})}" class="page-link">Previous</a>
+      </li>
+
+      <!-- Page number buttons (10 pages visible at a time) -->
+      <li th:each="i : ${#numbers.sequence(startPage, endPage)}"
+          th:classappend="${i == pageNumber} ? 'active' : ''" class="page-item">
+        <a th:href="@{/payments(page=${i}, size=${pageSize})}" class="page-link" th:text="${i + 1}">Page Number</a>
+      </li>
+
+      <!-- Next page button -->
+      <li th:if="${pageNumber < totalPages - 1}" class="page-item">
+        <a th:href="@{/payments(page=${pageNumber + 1}, size=${pageSize})}" class="page-link">Next</a>
+      </li>
+
+      <!-- Last page button -->
+      <li th:if="${pageNumber < totalPages - 1}" class="page-item">
+        <a th:href="@{/payments(page=${totalPages - 1}, size=${pageSize})}" class="page-link">Last</a>
+      </li>
+    </ul>
+  </div>
+
 </div>
 <script layout:fragment="javascript" th:inline="javascript">
   // 예약 취소
