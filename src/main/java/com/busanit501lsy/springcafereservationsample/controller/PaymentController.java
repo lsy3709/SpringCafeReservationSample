@@ -1,12 +1,10 @@
 package com.busanit501lsy.springcafereservationsample.controller;
 
 import com.busanit501lsy.springcafereservationsample.entity.Payment;
-import com.busanit501lsy.springcafereservationsample.entity.PrePaymentEntity;
 import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.service.PaymentService;
 import com.busanit501lsy.springcafereservationsample.service.ReservationService;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
-import com.siot.IamportRestClient.exception.IamportResponseException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +54,7 @@ public class PaymentController {
         if (user1 != null && user1.isPresent()) {
             User user2 = user1.get();
             model.addAttribute("user2", user2);
+            model.addAttribute("user2_id", user2.getId());
         }
         model.addAttribute("user", user);
         return "payment/payments";
@@ -70,6 +68,7 @@ public class PaymentController {
         if (user1 != null && user1.isPresent()) {
             User user2 = user1.get();
             model.addAttribute("user2", user2);
+            model.addAttribute("user2_id", user2.getId());
         }
         model.addAttribute("payment", new Payment());
         model.addAttribute("reservations", reservationService.getAllReservations());

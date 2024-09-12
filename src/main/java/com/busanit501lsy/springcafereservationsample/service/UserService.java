@@ -85,6 +85,11 @@ public class UserService {
         if(user.getProfileImageId() != null && !user.getProfileImageId().isEmpty()) {
             deleteProfileImage(user);
         }
+        //reservationItem 삭제되면
+
+        // 유저 삭제시, reservation도 같이 삭제
+
+        //
         userRepository.delete(user);
     }
 

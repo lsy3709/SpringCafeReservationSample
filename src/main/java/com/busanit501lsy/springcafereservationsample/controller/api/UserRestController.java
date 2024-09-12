@@ -1,7 +1,10 @@
 package com.busanit501lsy.springcafereservationsample.controller.api;
 
+import com.busanit501lsy.springcafereservationsample.entity.Reservation;
 import com.busanit501lsy.springcafereservationsample.entity.User;
 import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileImage;
+import com.busanit501lsy.springcafereservationsample.service.ReservationItemService;
+import com.busanit501lsy.springcafereservationsample.service.TimeSlotService;
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,12 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReservationItemService reservationItemService;
+
+    @Autowired
+    private TimeSlotService timeSlotService;
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -112,6 +121,17 @@ public class UserRestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         log.info("Deleting user with id: " + id);
+        User user = userService.getUserById(id).get();
+        List<Reservation> reservationList = user.getReservations();
+        if (reservationList != null ) {
+            for (Reservation reservation : reservationList) {
+                Long reservationId = reservation.getId(); // Reservation 객체의 id 가져오기
+
+                timeSlotService.deleteTimeSlotsByReservationId(reservationId);
+
+                reservationItemService.deleteReservationItemsByReservationId(reservationId); // 삭제 메서드 호출
+            }
+        }
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
@@ -153,5 +173,7 @@ public class UserRestController {
             return "User not found";
         }
     }
+
+
 
 }

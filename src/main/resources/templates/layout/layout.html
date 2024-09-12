@@ -32,7 +32,7 @@
                         <!--      <nav class="navbar bg-primary navbar-expand-lg bg-body-tertiary bg-primary"  data-bs-theme="" >-->
                         <!--      <nav class="navbar bg-primary" data-bs-theme="dark">-->
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="#">LogoImg</a>
+                            <a class="navbar-brand" th:href="@{/users}">LogoImg</a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#navbarTogglerDemo02"
                                     aria-controls="navbarTogglerDemo02" aria-expanded="false"
@@ -41,35 +41,39 @@
                             </button>
                             <div class="collapse navbar-collapse " id="navbarTogglerDemo02">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 " >
-                                    <li class="nav-item">
+                                    <li class="nav-item " th:if="${user} != null ">
                                         <a th:href="@{/users}">Users 전체&nbsp;&nbsp; </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item " th:if="${user} != null ">
                                         <a th:href="@{/reservation-items}">cafe 공간 예약 전체 현황 &nbsp;&nbsp; </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item " th:if="${user} != null ">
                                         <a th:href="@{/payments}">Payments 전체  &nbsp;&nbsp;</a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item " th:if="${user} == null ">
                                         <a th:href="@{/users/login}">Login &nbsp;&nbsp;</a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item " th:if="${user} == null ">
                                         <a th:href="@{/users/new}">Join &nbsp;&nbsp;</a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item " th:if="${user} != null ">
                                         <a th:href="@{/items/new}">상품등록 &nbsp;&nbsp;</a>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <li class="nav-item " th:if="${user} != null ">
                                         <a th:href="@{/items}">상품목록 &nbsp;&nbsp;</a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item " th:if="${user} != null ">
                                         <a th:href="@{/imageAI}">이미지예측 &nbsp;&nbsp;</a>
                                     </li>
                                     <li class="nav-item">
                                         <a th:href="@{/users/token}">토클발급 &nbsp;&nbsp;</a>
+                                    </li>
+
+                                    <li class="nav-item " th:if="${user} != null ">
+                                        <a th:href="@{/users/{id}/edit(id=${user2_id})}">Mypage &nbsp;&nbsp;</a>
                                     </li>
 
                                     <li class="nav-item " th:if="${user} != null ">

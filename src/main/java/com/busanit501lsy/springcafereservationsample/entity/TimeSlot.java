@@ -22,13 +22,13 @@ public class TimeSlot {
     private Integer slotTime;  // 예약 가능한 시간(예: 0~23)
 
     // 예약과 다대일 관계
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reservation_id", nullable = false)
     @JsonBackReference
     private Reservation reservation;
 
     // 예약 아이템과 다대일 관계
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reservation_item_id", nullable = false)
     @JsonBackReference
     private ReservationItem reservationItem;

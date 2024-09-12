@@ -1,7 +1,6 @@
 package com.busanit501lsy.springcafereservationsample.repository;
 
 import com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO;
-import com.busanit501lsy.springcafereservationsample.entity.Item;
 import com.busanit501lsy.springcafereservationsample.entity.ReservationItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,8 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface ReservationItemRepository extends JpaRepository<ReservationItem, Long> {
@@ -35,6 +33,9 @@ public interface ReservationItemRepository extends JpaRepository<ReservationItem
             + "JOIN r.user u "
             )
     Page<ReservationItemDTO> findReservationItemsWithDetails2(Pageable pageable);
+
+    @Transactional
+    void deleteByReservationId(Long reservationId);
 
 }
 

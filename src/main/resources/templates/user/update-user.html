@@ -11,8 +11,8 @@
     <h2>Update User</h2>
   </div>
   <div class="card-body">
-  <form th:action="@{/users/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
-    <input type="hidden"  name="id" class="form-control" th:value="${user.id}" >
+  <form th:action="@{/users/edit}" th:object="${user}" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <input type="hidden" id="userId" name="id" class="form-control" th:value="${user.id}" >
     <div class="input-group mb-3">
     <input type="text"  name="username" class="form-control" placeholder="id 입력해주세요" th:value="${user.username}" >
     </div>
@@ -58,6 +58,7 @@
     </div>
 
     <button class="btn btn-primary w-100 submitBtn" type="submit">Update</button>
+
     <h3> 새 이미지</h3>
     <!-- 미리보기 이미지를 표시할 곳 -->
     <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 200px; height: auto; margin-top: 10px;"/>
@@ -71,11 +72,80 @@
     <br>
 
   </form>
+    <button id="deleteUserBtn" class="btn btn-danger w-100 ">회원탈퇴</button>
   </div>
 
 </div>
 <!--자바스크립트 추가하는 영역-->
 <script layout:fragment="javascript" th:inline="javascript">
+  // userId 값 가져오기
+  var userId = document.getElementById("userId").value;
+
+  document.getElementById("deleteUserBtn").addEventListener("click", function(event) {
+    event.preventDefault();  // 기본 동작(페이지 리로드)을 막습니다.
+
+    if (!checkPasswordMatch()) {
+      return false;
+    }
+    // 회원탈퇴 확인
+    var confirmation = confirm("정말로 회원탈퇴 하시겠습니까?");
+    if (!confirmation) {
+      return;  // 사용자가 취소를 누르면 아무 작업도 하지 않습니다.
+    }
+
+    // DELETE 요청 보내기
+
+
+      const userId = $('#userId').val();//  userId 값을 가져옴
+
+      $.ajax({
+        url: `/api/users/${userId}`,  // 요청 보낼 URL
+        type: 'DELETE',  // HTTP DELETE 메서드 사용
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("accessToken")
+        },
+        success: function(response) {
+          alert("회원탈퇴가 완료되었습니다. 이용해 주셔서 감사합니다.");
+          window.location.href = '/users/logout';  // 성공 후 리다이렉트
+        },
+        error: function(xhr, status, error) {
+          alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
+          console.error('오류 발생:', error);
+        }
+      });
+    });
+
+
+  function checkPasswordMatch() {
+    var password = document.getElementById("userPassword").value;
+    var password2 = document.getElementById("userPassword2").value;
+
+    // null 체크
+    if (!password || !password2) {
+      alert("비밀번호를 모두 입력해주세요.");
+      return false;
+    }
+
+    if (password !== password2) {
+      alert("비밀번호가 일치하지 않습니다. 다시 확인해주세요.");
+      return false;  // 폼 제출을 막습니다.
+    }
+    return true;  // 폼 제출을 진행합니다.
+  }
+
+  function confirmSubmission() {
+    return confirm("수정 하시겠습니까?");
+  }
+
+  function validateForm() {
+    // 1단계: 비밀번호 일치 여부 검사
+    if (!checkPasswordMatch()) {
+      return false;
+    }
+    // 2단계: 확인창 띄우기
+    return confirmSubmission();
+  }
+
   function previewImage(input) {
     var reader = new FileReader();
 

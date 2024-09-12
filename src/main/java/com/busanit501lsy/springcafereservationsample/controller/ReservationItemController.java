@@ -36,6 +36,7 @@ public class ReservationItemController {
         if (user1 != null && user1.isPresent()) {
             User user2 = user1.get();
             model.addAttribute("user2", user2);
+            model.addAttribute("user2_id", user2.getId());
         }
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<ReservationItem> itemPage = reservationItemService.getAllReservationItemsWithPage(pageable);

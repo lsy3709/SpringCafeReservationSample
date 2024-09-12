@@ -82,4 +82,10 @@ public class ReservationItemService {
     public void deleteReservationItem(Long id) {
         reservationItemRepository.deleteById(id);
     }
+    @Transactional
+    // 특정 reservation id로 관련된 ReservationItem 삭제하는 메서드
+    public void deleteReservationItemsByReservationId(Long reservationId) {
+        reservationItemRepository.deleteByReservationId(reservationId);
+        System.out.println("Deleted reservation items for reservation ID: " + reservationId);
+    }
 }

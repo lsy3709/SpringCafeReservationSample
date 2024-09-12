@@ -49,9 +49,11 @@ public class ReservationController {
             User user2 = user1.get();
             log.info("lsy reservation user2 : " + user2.getUsername());
             model.addAttribute("user2", user2);
+            model.addAttribute("user2_id", user2.getId());
         }
         model.addAttribute("reservation", new Reservation());
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("user", user);
         // Provide users list to populate dropdown
         return "reservation/create-reservation";
         // returns create-reservation.html

@@ -39,4 +39,14 @@ public class TimeSlotService {
             throw new IllegalArgumentException("TimeSlot with id " + id + " not found");
         }
     }
+    public void deleteTimeSlotsByReservationItemId(Long reservationItemId) {
+        timeSlotRepository.deleteByReservationItemId(reservationItemId);
+        System.out.println("Deleted time slots for reservation item ID: " + reservationItemId);
+    }
+
+    @Transactional
+    public void deleteTimeSlotsByReservationId(Long reservationId) {
+        timeSlotRepository.deleteByReservationId(reservationId);
+    }
+
 }
