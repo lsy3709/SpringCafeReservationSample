@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ReservationItemRepository extends JpaRepository<ReservationItem, Long> {
     // 예약 아이디에 대한 조회
-    @Query("SELECT new com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO(r.reservationDate, r.reservationTime, "
+    @Query("SELECT new com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO(r.id,ri.id,r.reservationDate, r.reservationTime, "
             + "u.username, u.phone, u.address, i.name, i.price, i.description, i.itemRepImageId, "
             + "i.itemAdd1ImageId, i.itemAdd2ImageId, i.itemAdd3ImageId, i.itemAdd4ImageId) "
             + "FROM ReservationItem ri "
@@ -26,7 +26,7 @@ public interface ReservationItemRepository extends JpaRepository<ReservationItem
     Page<ReservationItemDTO> findReservationItemsWithDetails(@Param("reservationId") Long reservationId, Pageable pageable);
 
     // 전체 조회
-    @Query("SELECT new com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO(r.reservationDate, r.reservationTime, "
+    @Query("SELECT new com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO(r.id,ri.id,r.reservationDate, r.reservationTime, "
             + "u.username, u.phone, u.address, i.name, i.price, i.description, i.itemRepImageId, "
             + "i.itemAdd1ImageId, i.itemAdd2ImageId, i.itemAdd3ImageId, i.itemAdd4ImageId) "
             + "FROM ReservationItem ri "

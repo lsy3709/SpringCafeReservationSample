@@ -284,4 +284,16 @@ public class ItemController {
 
         return ResponseEntity.notFound().build();
     }
+
+    // 아이템 이미지 불러오기, 해당, 아이템 이미지 아이디로
+    @GetMapping("/{id}/itemImageObjectId")
+    public ResponseEntity<byte[]> getItemImageObjectId(@PathVariable String id) {
+
+           ItemImage itemImage = itemService.getItemImage(id);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(itemImage.getContentType()))
+                    .body(itemImage.getData());
+
+    }
 }
