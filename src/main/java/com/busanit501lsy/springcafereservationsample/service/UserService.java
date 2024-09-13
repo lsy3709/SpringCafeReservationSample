@@ -73,6 +73,7 @@ public class UserService {
         user.setName(userDetails.getName());
         user.setAddress(userDetails.getAddress());
         user.setPhone(userDetails.getPhone());
+        user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
 
         return userRepository.save(user);
     }

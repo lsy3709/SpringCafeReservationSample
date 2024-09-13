@@ -34,6 +34,7 @@ public class APILoginFilter extends AbstractAuthenticationProcessingFilter {
         }
         log.info("-----------------------------------------");
         log.info("lsy request.getMethod()" + request.getMethod());
+        log.info("lsy request.getMethod()" + request);
 
         Map<String, String> jsonData = parseRequestJSON(request);
 
