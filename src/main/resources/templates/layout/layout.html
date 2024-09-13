@@ -77,7 +77,7 @@
                                     </li>
 
                                     <li class="nav-item " th:if="${user} != null ">
-                                        <a th:href="@{/users/logout}">Logout &nbsp;&nbsp;</a>
+                                        <a href="javascript:void(0);" id="logoutBtn">Logout &nbsp;&nbsp;</a>
                                     </li>
                                     <li class="nav-item " th:if="${user} != null and ${user.social.toString().equals('true')}">
                                         <a th:href="@{/users/kakaoLogout}">소셜 로그아웃</a>
@@ -129,6 +129,41 @@
         <th:block layout:fragment="javascript">
 
         </th:block>
+        <script>
+            $('#logoutBtn').on('click', function() {
+                const accessToken = localStorage.getItem('accessToken');
+                const refreshToken = localStorage.getItem('refreshToken');
+
+                // accessToken 존재 여부 확인 후 삭제
+                if (accessToken) {
+                    console.log('accessToken이 존재합니다. 로컬 스토리지에서 삭제합니다.');
+                    localStorage.removeItem('accessToken');
+                } else {
+                    console.log('accessToken이 존재하지 않습니다.');
+                }
+
+                // refreshToken 존재 여부 확인 후 삭제 (필요 시)
+                if (refreshToken) {
+                    console.log('refreshToken이 존재합니다. 로컬 스토리지에서 삭제합니다.');
+                    localStorage.removeItem('refreshToken');
+                } else {
+                    console.log('refreshToken이 존재하지 않습니다.');
+                }
+
+                // 서버에 로그아웃 요청 (AJAX 사용)
+                $.ajax({
+                    url: '/users/logout',
+                    type: 'POST',
+                    success: function(data) {
+                        // 로그아웃 성공 시 리디렉션
+                        window.location.href = '/users/login';
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('로그아웃 실패:', status, error);
+                    }
+                });
+            });
+        </script>
 
 <!--        <footer>-->
 <!--            <p>© 2024 My Application. All rights reserved.</p>-->

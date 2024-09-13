@@ -46,6 +46,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                 "accessToken", accessToken,
                 "refreshToken", refreshToken,
         "username", authentication.getName());
+        log.info("====lsy  keyMap 확인 ===============================" + keyMap);
 
         String jsonStr = gson.toJson(keyMap);
 

@@ -14,7 +14,7 @@
     <h3>기본 로그인 후, 레스트로 데이터 연동 하려면, 토큰발급 로그인 해야 해당 아이디로 로컬 스토리지에 토큰 발급됨</h3>
   </div>
   <div class="card-body">
-  <form th:action="@{/users/login}" method="post">
+  <form th:action="@{/users/login}" method="post" id="loginForm">
     <div class="input-group mb-3">
     <input type="text" class="form-control" name="username" id="username" placeholder="username 입력해주세요" />
     </div>
@@ -23,7 +23,8 @@
     </div>
     <button class="btn btn-primary w-100 submitBtn" type="submit">Login</button>
   </form>
-    <a href="/oauth2/authorization/kakao">
+
+    <a href="/oauth2/authorization/kakao" id="kakao-login">
       <img th:src="@{/images/login/kakao_login_medium_narrow.png}" alt="카카오 로그인 화면">
     </a>
   </div>
@@ -32,7 +33,56 @@
 </div>
 <!--자바스크립트 추가하는 영역-->
 <script layout:fragment="javascript" th:inline="javascript">
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    // 입력 필드 가져오기
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
+    // 유효성 검사
+    if (!username) {
+      alert('username을 입력해주세요.');
+      event.preventDefault(); // 제출 방지
+      return;
+    }
+
+    if (!password) {
+      alert('password를 입력해주세요.');
+      event.preventDefault(); // 제출 방지
+      return;
+    }
+
+    // 여기서 추가적인 유효성 검사를 수행할 수 있습니다 (비밀번호 길이, 특수 문자 등)
+  });
+  // 서버에서 받은 응답을 처리하여 로컬 스토리지에 저장하는 함수
+  function handleResponse(data, textStatus, jqXHR) {
+    console.log('받은 데이터:', data);
+
+    // accessToken이 존재하면 로컬 스토리지에 저장
+    if (data.accessToken) {
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      console.log('accessToken이 저장되었습니다.');
+    } else {
+      console.log('accessToken이 존재하지 않습니다.');
+    }
+  }
+
+  // 카카오 로그인 버튼 클릭 시 동작
+  $('#kakao-login').on('click', function(event) {
+    event.preventDefault(); // 기본 동작 방지
+
+    // 카카오 OAuth2 인증 요청 후 응답 처리
+    $.ajax({
+      url: '/oauth2/authorization/kakao',
+      method: 'GET',  // 필요에 따라 POST로 변경 가능
+      success: function(data, textStatus, jqXHR) {
+        handleResponse(data, textStatus, jqXHR);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error('에러 발생:', textStatus, errorThrown);
+      }
+    });
+  });
 </script>
 </body>
 </html>
