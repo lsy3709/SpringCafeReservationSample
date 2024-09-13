@@ -81,9 +81,9 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect("/users");
             return;
         }
-//        else {
-//            // 기본 패스워드 1111를 사용안하고, 변경했다면, 목록 리스트 이동.
-//            response.sendRedirect("/users");
-//        }
+        else if(memberSecurityDTO.isSocial()) {
+            // 기본 패스워드 1111를 사용안하고, 변경했다면, 목록 리스트 이동.
+            response.sendRedirect("/users");
+        }
     }
 }
