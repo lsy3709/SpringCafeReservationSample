@@ -19,6 +19,10 @@
           <div th:if="${user.profileImageId}" class="card-img-top" style="height: 300px; min-height: 300px; overflow: hidden;">
             <img th:src="@{/users/{id}/profileImage(id=${user.id})}" alt="Item Image" class="img-fluid" style="height: 100%; width: 100%; object-fit: fill;">
           </div>
+          <div th:if="${user.profileImageServer}" class="card-img-top" style="height: 300px; min-height: 300px; overflow: hidden;">
+            <img th:src="${user.profileImageServer}" alt="Profile Image" class="img-fluid" style="height: 100%; width: 100%; object-fit: fill;">
+          </div>
+
           <div th:if="${user != null and user.profileImageId == null}" class="card-img-top" style="height: 300px; min-height: 300px; display: flex; justify-content: center; align-items: center;">
             <p>No profile image uploaded.</p>
           </div>

@@ -5,6 +5,7 @@ import com.busanit501lsy.springcafereservationsample.entity.mongoEntity.ProfileI
 import com.busanit501lsy.springcafereservationsample.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -26,6 +28,8 @@ import java.util.Optional;
 @RequestMapping("/users")
 @Log4j2
 public class UserController {
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String restAPIKEY;
 
     @Autowired
     private UserService userService;
@@ -153,4 +157,11 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
+    @GetMapping("/kakaoLogout")
+    public String kakaoLogout(String error, String logout,
+                              RedirectAttributes redirectAttributes) {
+        return "redirect:https://kauth.kakao.com/oauth/logout?client_id="+restAPIKEY+"&logout_redirect_uri=http://localhost:8080/users/login";
+
+    }
+
 }

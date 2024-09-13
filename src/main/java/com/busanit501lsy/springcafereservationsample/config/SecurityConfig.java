@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -79,7 +80,7 @@ public class SecurityConfig {
 
 
         //APILoginSuccessHandler , 세팅2
-        APILoginSuccessHandler successHandler = new APILoginSuccessHandler(jwtUtil);
+        APILoginSuccessHandler successHandler = new APILoginSuccessHandler(jwtUtil,passwordEncoder());
         //SuccessHandler 세팅2
         apiLoginFilter.setAuthenticationSuccessHandler(successHandler);
 
@@ -126,6 +127,12 @@ public class SecurityConfig {
 
                 );
 
+        // 카카오 로그인 API 설정
+        http.oauth2Login(
+                oauthLogin -> oauthLogin.loginPage("/users/login")
+                        .successHandler(authenticationSuccessHandler())
+        );
+
         // 로그 아웃 설정.
         http.logout(
                 logout -> logout.logoutUrl("/users/logout").logoutSuccessUrl("/users/login")
@@ -138,6 +145,8 @@ public class SecurityConfig {
         );
 
 
+
+
 //        http.authorizeHttpRequests(authorize -> authorize
 //                        .requestMatchers("/api/**","/refreshTest.html","/sendJWT.html","/v3/api-docs/**","/swagger-ui/**","/js**","/css/**","/generateToken","/users/*/profileImage","/api/users/*/profileImage","/users","/users/new","/users/login", "/api/token/refresh").permitAll()
 //                        .anyRequest().authenticated());
@@ -147,25 +156,13 @@ public class SecurityConfig {
 
         return http.build();
     }
-    // 세션 분리 해서 정책 설정 샘플코드
-    //  http
-    //                .formLogin(formLogin ->
-    //                        formLogin
-    //                                .loginPage("/member/login")
-    //                                .permitAll()
-    //                )
-    //                .authorizeRequests(authorizeRequests ->
-    //                        authorizeRequests
-    //                                .requestMatchers("/web/**").authenticated()
-    //                )
-    //                .sessionManagement(sessionManagement ->
-    //                        sessionManagement
-    //                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-    //                )
-    //                .authorizeRequests(authorizeRequests ->
-    //                        authorizeRequests
-    //                                .requestMatchers("/web/**").authenticated()
-    //                );
+
+    // 소셜 로그인 후, 후처리 하는 빈등록.
+    // 카카오 로그인 API 설정, 수정.
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new APILoginSuccessHandler(jwtUtil,passwordEncoder());
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
