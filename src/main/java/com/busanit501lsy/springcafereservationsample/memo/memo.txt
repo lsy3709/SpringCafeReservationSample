@@ -1,0 +1,31 @@
+실행시, 주의 사항,
+1. application.properties
+카카오 개발자 센터에서 확인.
+앱키, 레스트키
+spring.security.oauth2.client.registration.kakao.client-id=
+보안, 시크릿 킷 활용
+spring.security.oauth2.client.registration.kakao.client-secret=
+
+2.
+포트원 결제 api,
+포트원 콘솔 관리자 페이지에서 확인
+PaymentService
+  public PaymentService() {
+//        this.api = new IamportClient("REST API KEY", "REST API SECRET");
+
+    }
+
+3.
+ImageUploadService
+장고 레스트 아이피 확인.
+
+       // Request 객체 생성
+        Request request = new Request.Builder()
+                .url("http://localhost:8000/api/classify/")
+                .post(requestBody)
+                .build();
+
+
+
+4.
+
