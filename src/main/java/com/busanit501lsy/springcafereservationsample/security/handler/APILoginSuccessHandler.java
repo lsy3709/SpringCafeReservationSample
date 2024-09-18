@@ -56,7 +56,8 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                 "name",memberSecurityDTO.getName(),
                 "phone",memberSecurityDTO.getPhone(),
                 "address",memberSecurityDTO.getAddress(),
-                "social", String.valueOf(memberSecurityDTO.isSocial())
+                "social", String.valueOf(memberSecurityDTO.isSocial()),
+                "id", String.valueOf(memberSecurityDTO.getId())
                 );
         log.info("====lsy  keyMap 확인 ===============================" + keyMap);
 

@@ -33,6 +33,7 @@ public class APIUserDetailsService implements UserDetailsService {
 
         // 일반 유저 로그인과, api 로그인 처리 확인 필요
         APIUserDTO dto =  new APIUserDTO(
+                apiUser.getId(),
                 apiUser.getUsername(),
                 apiUser.getPassword(),
                 apiUser.getEmail(),

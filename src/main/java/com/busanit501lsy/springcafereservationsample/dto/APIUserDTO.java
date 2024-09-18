@@ -15,6 +15,7 @@ import java.util.Map;
 @ToString
 public class APIUserDTO extends User implements OAuth2User {
 
+    private Long id;
     private String username;
     private String password;
     private String email;
@@ -27,6 +28,18 @@ public class APIUserDTO extends User implements OAuth2User {
     private Map<String, Object> props;
     // 소셜 프로필 이미지 만 뽑기
     private String profileImageServer;
+
+    public APIUserDTO(Long id , String username, String password, String email, String profileImageId,String name, String phone, String address, Collection<GrantedAuthority> authorities) {
+        super(username, password, authorities);
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.profileImageId = profileImageId;
+    }
 
     public APIUserDTO(String username, String password, String email, String profileImageId,String name, String phone, String address, Collection<GrantedAuthority> authorities) {
         super(username, password, authorities);
