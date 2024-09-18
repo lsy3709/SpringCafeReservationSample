@@ -54,9 +54,10 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
         //카카오 로그인 후, 처리 로직
         log.info("=====CustomSocialLoginSuccessHandler  onAuthenticationSuccess 확인 ===============================");
-        log.info(authentication.getPrincipal());
+        log.info("====authentication.getPrincipal()====="+authentication.getPrincipal());
 
         APIUserDTO memberSecurityDTO = (APIUserDTO) authentication.getPrincipal();
+        log.info("====lsy  memberSecurityDTO 확인 ===============================" + memberSecurityDTO);
         String encodePw = memberSecurityDTO.getPassword();
         log.info("패스워드를 변경해주세요. encodePw = memberSecurityDTO.getPassword(); : " + encodePw);
 
