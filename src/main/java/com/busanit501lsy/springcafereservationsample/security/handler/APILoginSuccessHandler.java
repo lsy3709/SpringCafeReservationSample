@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -28,7 +27,10 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
         log.info("lsy Login Success Handler................................");
 
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        // Content-Type에 UTF-8 설정 추가
+        // 앱에서 응답 받을시 한글 깨지는 문제 방지
+        response.setContentType("application/json; charset=UTF-8");
+//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         log.info("lsy authentication : " +authentication);
         log.info("lsy authentication.getName() : " +authentication.getName()); //username
@@ -40,23 +42,32 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         //Refresh Token 유효기간 30일
         String refreshToken = jwtUtil.generateToken(claim, 30);
 
+        //
+        APIUserDTO memberSecurityDTO = (APIUserDTO) authentication.getPrincipal();
+
         Gson gson = new Gson();
 
         Map<String,String> keyMap = Map.of(
                 "accessToken", accessToken,
                 "refreshToken", refreshToken,
-        "username", authentication.getName());
+        "username", authentication.getName(),
+                "email",memberSecurityDTO.getEmail(),
+                "profileImageId",memberSecurityDTO.getProfileImageId(),
+                "name",memberSecurityDTO.getName(),
+                "phone",memberSecurityDTO.getPhone(),
+                "address",memberSecurityDTO.getAddress(),
+                "social", String.valueOf(memberSecurityDTO.isSocial())
+                );
         log.info("====lsy  keyMap 확인 ===============================" + keyMap);
 
         String jsonStr = gson.toJson(keyMap);
-
+        log.info("====lsy  jsonStr 확인 ===============================" + jsonStr);
         response.getWriter().println(jsonStr);
 
         //카카오 로그인 후, 처리 로직
         log.info("=====CustomSocialLoginSuccessHandler  onAuthenticationSuccess 확인 ===============================");
         log.info("====authentication.getPrincipal()====="+authentication.getPrincipal());
 
-        APIUserDTO memberSecurityDTO = (APIUserDTO) authentication.getPrincipal();
         log.info("====lsy  memberSecurityDTO 확인 ===============================" + memberSecurityDTO);
         String encodePw = memberSecurityDTO.getPassword();
         log.info("패스워드를 변경해주세요. encodePw = memberSecurityDTO.getPassword(); : " + encodePw);
