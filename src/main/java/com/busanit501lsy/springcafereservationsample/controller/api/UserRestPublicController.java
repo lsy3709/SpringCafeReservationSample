@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/public/users")
@@ -48,6 +50,19 @@ public class UserRestPublicController {
         } catch (IOException e) {
             throw new RuntimeException("Failed to save user or profile image", e);
         }
+    }
+
+    //아이디 중복 검사
+    @PostMapping("/check-username")
+    public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        log.info("username: " + username);
+        boolean isAvailable = userService.checkUsernameAvailability(username);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("available", isAvailable);
+
+        return ResponseEntity.ok(response);
     }
 
 

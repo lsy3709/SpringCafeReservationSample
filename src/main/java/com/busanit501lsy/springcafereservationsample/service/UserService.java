@@ -142,4 +142,11 @@ public class UserService {
         }
     }
 
+    // 아이디 중복 검사
+    // 아이디 중복 여부 체크
+    public boolean checkUsernameAvailability(String username) {
+        // 레포지토리에서 아이디로 유저를 찾고, 존재하면 중복된 아이디로 판단
+        return !userRepository.existsByUsername(username);
+    }
+
 }

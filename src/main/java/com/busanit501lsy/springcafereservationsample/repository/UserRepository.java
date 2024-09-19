@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = "roleSet")
     Optional<User> findByEmail(String email);
 
+    // 아이디 중복 여부 체크를 위한 메소드
+    boolean existsByUsername(String username);
+
 }

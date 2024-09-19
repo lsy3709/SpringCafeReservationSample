@@ -13,9 +13,12 @@
   </div>
   <div class="card-body">
   <form th:action="@{/users/new}" method="post" enctype="multipart/form-data">
-    <div class="input-group mb-3">
-    <input type="text" name="username" class="form-control" placeholder="id 입력해주세요"/>
+    <div class="d-flex mb-3">
+      <input type="text" id="username" name="username" class="form-control" placeholder="id 입력해주세요" />
+      <button class="btn btn-primary ms-2" style="width: 150px;" onclick="checkUsername(event)">id 중복검사</button>
     </div>
+
+    <div id="result"></div>
 
     <div class="input-group mb-3">
       <input type="text" name="name" class="form-control" placeholder="name 입력해주세요"/>
@@ -76,6 +79,43 @@
 
 <!--자바스크립트 추가하는 영역-->
 <script layout:fragment="javascript" th:inline="javascript">
+  //id 중복 검사
+  function checkUsername(event) {
+    // 기본 폼 제출 이벤트를 막음
+    event.preventDefault();
+
+    const username = document.getElementById('username').value;
+
+    if (!username) {
+      document.getElementById('result').innerHTML = "아이디를 입력해주세요.";
+      document.getElementById('result').style.color = 'red';
+      document.getElementById('result').style.fontSize = '20px';
+      return;
+    }
+
+    // Ajax 요청
+    fetch('/public/users/check-username', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username: username })
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.available) {
+                document.getElementById('result').innerHTML = "사용 가능한 아이디입니다.";
+                document.getElementById('result').style.color = 'green';
+                document.getElementById('result').style.fontSize = '20px';
+              } else {
+                document.getElementById('result').innerHTML = "이미 사용 중인 아이디입니다.";
+                document.getElementById('result').style.color = 'red';
+                document.getElementById('result').style.fontSize = '20px';
+              }
+            })
+            .catch(error => console.error('Error:', error));
+  }
+
   // 사진 선택시 미리보기
   function previewImage(input) {
     var reader = new FileReader();
