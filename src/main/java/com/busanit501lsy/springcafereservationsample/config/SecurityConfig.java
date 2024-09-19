@@ -112,7 +112,7 @@ public class SecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/users","/users/new","/refreshToken").permitAll()
-                                .requestMatchers("/users/**").authenticated()
+                                .requestMatchers("/users/**","/api/users/**").authenticated()
 
                 )
                 .sessionManagement(sessionManagement ->

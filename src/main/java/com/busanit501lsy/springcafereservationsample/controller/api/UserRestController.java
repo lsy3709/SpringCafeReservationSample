@@ -94,6 +94,8 @@ public class UserRestController {
             @RequestParam(value = "profileImage", required = false) MultipartFile file) {
 
         try {
+            log.info("lsy id : "+ id);
+            log.info("lsy user : "+ user);
             User updatedUser = userService.updateUser(id, user);
 
             // 파일이 존재할 경우 프로필 이미지 저장

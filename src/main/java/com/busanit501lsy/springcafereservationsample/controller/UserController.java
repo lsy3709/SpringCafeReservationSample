@@ -116,7 +116,8 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String updateUser( @ModelAttribute User user , @RequestParam("profileImage") MultipartFile file) {
+    public String updateUser( @ModelAttribute User user ,
+                              @RequestParam("profileImage") MultipartFile file) {
 
         try {
             if (!file.isEmpty()) {
