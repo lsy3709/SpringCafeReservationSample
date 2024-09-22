@@ -50,7 +50,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
         log.info("====lsy  memberSecurityDTO 확인 1 ===============================" + memberSecurityDTO);
 
-        if(!memberSecurityDTO.isSocial()){
+//        if(!memberSecurityDTO.isSocial()){
             keyMap = Map.of(
                     "accessToken", accessToken,
                     "refreshToken", refreshToken,
@@ -63,17 +63,17 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                     "social", String.valueOf(memberSecurityDTO.isSocial()),
                     "id", String.valueOf(memberSecurityDTO.getId())
             );
-        }
+//        }
 
 
-        keyMap = Map.of(
-                "accessToken", accessToken,
-                "refreshToken", refreshToken,
-                "username", authentication.getName(),
-                "email",memberSecurityDTO.getEmail(),
-                "name",memberSecurityDTO.getName(),
-                "social", String.valueOf(memberSecurityDTO.isSocial())
-        );
+//        keyMap = Map.of(
+//                "accessToken", accessToken,
+//                "refreshToken", refreshToken,
+//                "username", authentication.getName(),
+//                "email",memberSecurityDTO.getEmail(),
+//                "name",memberSecurityDTO.getName(),
+//                "social", String.valueOf(memberSecurityDTO.isSocial())
+//        );
 
         log.info("====lsy  keyMap 확인 ===============================" + keyMap);
 
