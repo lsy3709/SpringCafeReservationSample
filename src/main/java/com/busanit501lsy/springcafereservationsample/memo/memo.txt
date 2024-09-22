@@ -6,6 +6,8 @@ spring.security.oauth2.client.registration.kakao.client-id=
 보안, 시크릿 킷 활용
 spring.security.oauth2.client.registration.kakao.client-secret=
 
+카카오 개발자 사이트에서 허용할 아이피 주소에서, 본인 공인 아이피 등록 하기. 테스트.
+
 2.
 포트원 결제 api,
 포트원 콘솔 관리자 페이지에서 확인

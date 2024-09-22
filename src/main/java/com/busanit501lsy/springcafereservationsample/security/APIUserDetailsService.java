@@ -43,7 +43,8 @@ public class APIUserDetailsService implements UserDetailsService {
                 apiUser.getAddress(),
                 apiUser.getRoleSet().stream().map(
                         memberRole -> new SimpleGrantedAuthority("ROLE_"+ memberRole.name())
-                ).collect(Collectors.toList()));
+                ).collect(Collectors.toList()),
+                apiUser.isSocial());
 
         log.info("lsy dto : "+dto);
 

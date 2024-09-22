@@ -29,7 +29,7 @@ public class APIUserDTO extends User implements OAuth2User {
     // 소셜 프로필 이미지 만 뽑기
     private String profileImageServer;
 
-    public APIUserDTO(Long id , String username, String password, String email, String profileImageId,String name, String phone, String address, Collection<GrantedAuthority> authorities) {
+    public APIUserDTO(Long id , String username, String password, String email, String profileImageId,String name, String phone, String address, Collection<GrantedAuthority> authorities,boolean social) {
         super(username, password, authorities);
         this.id = id;
         this.username = username;
@@ -39,6 +39,7 @@ public class APIUserDTO extends User implements OAuth2User {
         this.phone = phone;
         this.address = address;
         this.profileImageId = profileImageId;
+        this.social = social;
     }
 
     public APIUserDTO(String username, String password, String email, String profileImageId,String name, String phone, String address, Collection<GrantedAuthority> authorities) {

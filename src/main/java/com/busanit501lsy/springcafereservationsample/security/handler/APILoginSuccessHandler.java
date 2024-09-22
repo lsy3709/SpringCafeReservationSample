@@ -21,6 +21,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JWTUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private Map<String,String> keyMap;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -47,29 +48,45 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
         Gson gson = new Gson();
 
-        Map<String,String> keyMap = Map.of(
+        log.info("====lsy  memberSecurityDTO 확인 1 ===============================" + memberSecurityDTO);
+
+        if(!memberSecurityDTO.isSocial()){
+            keyMap = Map.of(
+                    "accessToken", accessToken,
+                    "refreshToken", refreshToken,
+                    "username", authentication.getName(),
+                    "email",memberSecurityDTO.getEmail(),
+                    "profileImageId",memberSecurityDTO.getProfileImageId(),
+                    "name",memberSecurityDTO.getName(),
+                    "phone",memberSecurityDTO.getPhone(),
+                    "address",memberSecurityDTO.getAddress(),
+                    "social", String.valueOf(memberSecurityDTO.isSocial()),
+                    "id", String.valueOf(memberSecurityDTO.getId())
+            );
+        }
+
+
+        keyMap = Map.of(
                 "accessToken", accessToken,
                 "refreshToken", refreshToken,
-        "username", authentication.getName(),
+                "username", authentication.getName(),
                 "email",memberSecurityDTO.getEmail(),
-                "profileImageId",memberSecurityDTO.getProfileImageId(),
                 "name",memberSecurityDTO.getName(),
-                "phone",memberSecurityDTO.getPhone(),
-                "address",memberSecurityDTO.getAddress(),
-                "social", String.valueOf(memberSecurityDTO.isSocial()),
-                "id", String.valueOf(memberSecurityDTO.getId())
-                );
+                "social", String.valueOf(memberSecurityDTO.isSocial())
+        );
+
         log.info("====lsy  keyMap 확인 ===============================" + keyMap);
 
         String jsonStr = gson.toJson(keyMap);
         log.info("====lsy  jsonStr 확인 ===============================" + jsonStr);
+        // rest 로 올 경우, 로그인 성공하면, 리턴으로 jwt 토큰을 전달함.
         response.getWriter().println(jsonStr);
 
         //카카오 로그인 후, 처리 로직
         log.info("=====CustomSocialLoginSuccessHandler  onAuthenticationSuccess 확인 ===============================");
         log.info("====authentication.getPrincipal()====="+authentication.getPrincipal());
 
-        log.info("====lsy  memberSecurityDTO 확인 ===============================" + memberSecurityDTO);
+        log.info("====lsy  memberSecurityDTO 확인 2 ===============================" + memberSecurityDTO);
         String encodePw = memberSecurityDTO.getPassword();
         log.info("패스워드를 변경해주세요. encodePw = memberSecurityDTO.getPassword(); : " + encodePw);
 
