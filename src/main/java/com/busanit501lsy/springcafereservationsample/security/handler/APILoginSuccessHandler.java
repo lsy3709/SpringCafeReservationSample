@@ -70,7 +70,9 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                     "username", authentication.getName(),
                     "email",memberSecurityDTO.getEmail(),
                     "name",memberSecurityDTO.getName(),
-                    "social", String.valueOf(memberSecurityDTO.isSocial())
+                    "social", String.valueOf(memberSecurityDTO.isSocial()),
+                    "id", String.valueOf(memberSecurityDTO.getId())
+
             );
         }
 
