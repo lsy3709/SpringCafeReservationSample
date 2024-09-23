@@ -50,7 +50,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
         log.info("====lsy  memberSecurityDTO 확인 1 ===============================" + memberSecurityDTO);
 
-//        if(!memberSecurityDTO.isSocial()){
+        if(!memberSecurityDTO.isSocial()){
             keyMap = Map.of(
                     "accessToken", accessToken,
                     "refreshToken", refreshToken,
@@ -63,17 +63,17 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                     "social", String.valueOf(memberSecurityDTO.isSocial()),
                     "id", String.valueOf(memberSecurityDTO.getId())
             );
-//        }
+        }
 
 
-//        keyMap = Map.of(
-//                "accessToken", accessToken,
-//                "refreshToken", refreshToken,
-//                "username", authentication.getName(),
-//                "email",memberSecurityDTO.getEmail(),
-//                "name",memberSecurityDTO.getName(),
-//                "social", String.valueOf(memberSecurityDTO.isSocial())
-//        );
+        keyMap = Map.of(
+                "accessToken", accessToken,
+                "refreshToken", refreshToken,
+                "username", authentication.getName(),
+                "email",memberSecurityDTO.getEmail(),
+                "name",memberSecurityDTO.getName(),
+                "social", String.valueOf(memberSecurityDTO.isSocial())
+        );
 
         log.info("====lsy  keyMap 확인 ===============================" + keyMap);
 
@@ -108,12 +108,13 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
             boolean test4 = passwordEncoder.matches("1111", memberSecurityDTO.getPassword());
             log.info("패스워드 일치 여부3 memberSecurityDTO.getMpw().equals(\"1111\"); : " + test3);
             log.info("패스워드 일치 여부4  passwordEncoder.matches(\"1111\", memberSecurityDTO.getMpw()); : " + test4);
-            response.sendRedirect("/users");
+//            response.sendRedirect("/users/token");
             return;
         }
         else if(memberSecurityDTO.isSocial()) {
             // 기본 패스워드 1111를 사용안하고, 변경했다면, 목록 리스트 이동.
-            response.sendRedirect("/users");
+            // json 데이터를 전달 할수 없음.
+//            response.sendRedirect("/users/token");
         }
     }
 }
