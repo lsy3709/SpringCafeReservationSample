@@ -63,17 +63,19 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                     "social", String.valueOf(memberSecurityDTO.isSocial()),
                     "id", String.valueOf(memberSecurityDTO.getId())
             );
+        } else {
+            keyMap = Map.of(
+                    "accessToken", accessToken,
+                    "refreshToken", refreshToken,
+                    "username", authentication.getName(),
+                    "email",memberSecurityDTO.getEmail(),
+                    "name",memberSecurityDTO.getName(),
+                    "social", String.valueOf(memberSecurityDTO.isSocial())
+            );
         }
 
 
-        keyMap = Map.of(
-                "accessToken", accessToken,
-                "refreshToken", refreshToken,
-                "username", authentication.getName(),
-                "email",memberSecurityDTO.getEmail(),
-                "name",memberSecurityDTO.getName(),
-                "social", String.valueOf(memberSecurityDTO.isSocial())
-        );
+
 
         log.info("====lsy  keyMap 확인 ===============================" + keyMap);
 
