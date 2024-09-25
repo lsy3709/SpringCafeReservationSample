@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Log4j2
 public class ReservationItemDTO {
 
     private Long reservationId;
@@ -24,6 +26,7 @@ public class ReservationItemDTO {
     private String phone;
     private String address;
     private String name;
+    // 입금 상태 추가하기
     private BigDecimal price;
     private String description;
     private String itemRepImageId;

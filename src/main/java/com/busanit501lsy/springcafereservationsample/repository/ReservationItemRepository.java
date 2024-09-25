@@ -25,7 +25,7 @@ public interface ReservationItemRepository extends JpaRepository<ReservationItem
 
     // 전체 조회
     @Query("SELECT new com.busanit501lsy.springcafereservationsample.dto.ReservationItemDTO(r.id,ri.id,r.reservationDate, r.reservationTime, "
-            + "u.username, u.phone, u.address, i.name, i.price, i.description, i.itemRepImageId, "
+            + "u.name, u.phone, u.address, i.name, i.price, i.description, i.itemRepImageId, "
             + "i.itemAdd1ImageId, i.itemAdd2ImageId, i.itemAdd3ImageId, i.itemAdd4ImageId) "
             + "FROM ReservationItem ri "
             + "JOIN ri.item i "
