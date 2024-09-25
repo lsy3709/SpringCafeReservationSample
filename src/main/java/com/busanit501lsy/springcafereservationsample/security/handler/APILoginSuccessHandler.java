@@ -99,6 +99,8 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("패스워드 일치 여부1 memberSecurityDTO.getMpw().equals(\"1111\"); : " + test1);
         log.info("패스워드 일치 여부2  passwordEncoder.matches(\"1111\", memberSecurityDTO.getMpw()); : " + test2);
 
+
+
         // 소셜 로그인은 무조건 패스워드를 1111 , 설정
         // 변경이 필요함.
         // 처음에 소셜 로그인으로 최초 로그인시, 사용하는 패스워드 1111 를 사용시
@@ -113,12 +115,19 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
             log.info("패스워드 일치 여부3 memberSecurityDTO.getMpw().equals(\"1111\"); : " + test3);
             log.info("패스워드 일치 여부4  passwordEncoder.matches(\"1111\", memberSecurityDTO.getMpw()); : " + test4);
 //            response.sendRedirect("/users/token");
-            return;
+//            return;
         }
         else if(memberSecurityDTO.isSocial()) {
             // 기본 패스워드 1111를 사용안하고, 변경했다면, 목록 리스트 이동.
             // json 데이터를 전달 할수 없음.
 //            response.sendRedirect("/users/token");
         }
-    }
-}
+
+
+
+
+    }// 함수
+
+
+
+} // 클래스

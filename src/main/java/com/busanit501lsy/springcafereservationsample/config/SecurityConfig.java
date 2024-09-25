@@ -111,7 +111,7 @@ public class SecurityConfig {
                 )
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/users","/users/new","/refreshToken").permitAll()
+                                .requestMatchers("/api/users","/users/new","/refreshToken","/login/oauth2/code/**").permitAll()
                                 .requestMatchers("/users/**","/api/users/**").authenticated()
 
                 )
@@ -121,7 +121,7 @@ public class SecurityConfig {
                 )
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/users/new","/refreshToken").permitAll()
+                                .requestMatchers("/users/new","/refreshToken","/login/oauth2/code/**").permitAll()
                                 .requestMatchers("/users/**","/reservations/**","/payments/**").authenticated()
 
 
