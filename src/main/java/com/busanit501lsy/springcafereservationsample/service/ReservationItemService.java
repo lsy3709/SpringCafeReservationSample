@@ -44,6 +44,11 @@ public class ReservationItemService {
         return reservationItemRepository.findReservationItemsWithDetails2(pageable);
     }
 
+    // 나의 예약 현황만 조회
+    public Page<ReservationItemDTO> getAllReservationItemsWithMyPage(Pageable pageable, String username) {
+        return reservationItemRepository.findReservationItemsWithDetailsByUsername(username,pageable);
+    }
+
     public Optional<ReservationItem> getReservationItemById(Long id) {
         return reservationItemRepository.findById(id);
     }

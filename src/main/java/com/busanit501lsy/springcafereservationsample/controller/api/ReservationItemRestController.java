@@ -51,6 +51,16 @@ public class ReservationItemRestController {
         return reservationItemService.getAllReservationItemsWithPageDTO2(pageable);
     }
 
+    // 나의 예약 전체 조회, username
+    @GetMapping("/myPage")
+    public Page<ReservationItemDTO> getAllItemsWithMyPage(@RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam String username
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return reservationItemService.getAllReservationItemsWithMyPage(pageable,username);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ReservationItem> getReservationItemById(@PathVariable Long id) {
         Optional<ReservationItem> reservationItem = reservationItemService.getReservationItemById(id);
