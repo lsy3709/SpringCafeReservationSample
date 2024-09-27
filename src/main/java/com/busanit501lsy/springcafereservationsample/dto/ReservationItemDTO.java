@@ -27,6 +27,7 @@ public class ReservationItemDTO {
     private String address;
     private String name;
     // 입금 상태 추가하기
+    private String payStatus;
     private BigDecimal price;
     private String description;
     private String itemRepImageId;
@@ -76,6 +77,7 @@ public class ReservationItemDTO {
         dto.reservationItemId = reservationItem.getId();
         dto.name = reservationItem.getItem().getName();
         dto.price = reservationItem.getItem().getPrice();
+        dto.payStatus = reservationItem.getPayStatus();
         dto.description = reservationItem.getItem().getDescription();
         dto.itemRepImageId = reservationItem.getItem().getItemRepImageId();
         dto.itemAdd1ImageId = reservationItem.getItem().getItemAdd1ImageId();
